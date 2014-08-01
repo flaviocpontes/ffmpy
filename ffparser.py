@@ -2,13 +2,13 @@
 # -*- coding: utf-8 -*-
 
 __author__ = 'Flávio Pontes <flaviopontes@acerp.org.br>'
+__Version__ = '0.1a'
 
 import os
 import subprocess
 import logging
 import re
 import io
-from pprint import pprint
 
 class FFprobeParser():
     #Expressões regulares utilizadas no processo de parsing
@@ -54,7 +54,7 @@ class FFprobeParser():
     ffprobe_path = '/opt/ffmpeg/bin/ffprobe'
 
     @staticmethod
-    def parse_ffprobe(filename, path=ffprobe_path):
+    def probe_media_file(filename, path=ffprobe_path):
 
         logging.info('Iniciando parsing do arquivo {}'.format(filename))
 
@@ -282,15 +282,4 @@ class FFprobeParser():
                             valor = line[line.index(':')+1:].strip()
                             meta_input[campo] = valor
 
-        return resultado
-
-
-class MediaAnalyser():
-
-    def __init__(self, filename):
-
-        self.filename = filename
-
-if __name__ == '__main__':
-    #Para fins de teste
-    pprint(FFprobeParser.parse_ffprobe('/home/Compartilhado/VIDEO PADRAO FORK.mov'))
+        return resultado.get('Input 0')

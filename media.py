@@ -17,8 +17,17 @@ def sorted_list(lista):
 class MediaAnalyser:
 
     @staticmethod
-    def validate_media_file(media_file, media_template):
-        pass
+    def media_file_difference(media_file_path, media_file_template):
+        descriptor = p.FFprobeParser.probe_media_file(media_file_path)
+        media_file = MediaFile(**descriptor)
+        if media_file_template != media_file:
+            return media_file_template.difference(media_file)
+
+    @staticmethod
+    def validate_media_file(media_file_path, media_file_template):
+        descriptor = p.FFprobeParser.probe_media_file(media_file_path)
+        media_file = MediaFile(**descriptor)
+        return media_file_template == media_file
 
 
 class MediaStream():
@@ -215,21 +224,19 @@ class MediaFileTemplate():
 
 if __name__ == '__main__':
     #Para fins de teste
-    descriptor = p.FFprobeParser.parse_ffprobe('/home/Compartilhado/teste parser/ATIV001 ATLETISMO 1.mov')
-    pprint(descriptor.get('Input 0'))
-    teste = MediaFile(**descriptor.get('Input 0'))
-    print(teste.__dict__)
-    teste_template = MediaFileTemplate(**{'type': 'mov,mp4,m4a,3gp,3g2,mj2',
-                                          'start_time': '0.000000',
-                                          'streams': [{'sample_format': 'yuv420p',
-                                                       'width': '1920',
-                                                       'type': 'Video',
-                                                       'profile': 'Main',
-                                                       'codec': 'mpeg2video',
-                                                       'height': '1080'},
-                                                      {'sampling_rate': '48000',
-                                                       'type': 'Audio',
-                                                       'codec': 'pcm_s16le'},
-                                                      ]})
-    print(teste_template == teste)
-    print(teste_template.difference(teste))
+    template = MediaFileTemplate(**{'type': 'mov,mp4,m4a,3gp,3g2,mj2',
+                                    'start_time': '0.000000',
+                                    'streams': [{'sample_format': 'yuv420p',
+                                                 'width': '1920',
+                                                 'type': 'Video',
+                                                 'profile': 'Main',
+                                                 'codec': 'mpeg2video',
+                                                 'height': '1080'},
+                                                {'sampling_rate': '48000',
+                                                 'type': 'Audio',
+                                                 'codec': 'pcm_s16le'},
+                                                ]})
+    os.chdir('/mnt/fork/EXPT_VOD_INES')
+    for file in os.listdir():
+        if file[-3:] == 'mov':
+            print(MediaAnalyser.media_file_difference(file, template))
