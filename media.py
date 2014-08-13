@@ -20,6 +20,13 @@ class MediaAnalyser:
     def media_file_difference(media_file_path, media_file_template):
         descriptor = p.FFprobeParser.probe_media_file(media_file_path)
         media_file = MediaFile(**descriptor)
+        if isinstance(media_file_template, MediaFileTemplate):
+            pass
+        elif isinstance(media_file_template, dict):
+            media_file_template = MediaFileTemplate(**media_file_template)
+        else:
+            raise ValueError('media_file_template must be a MediaFileTemplate instance or a dict')
+
         if media_file_template != media_file:
             return media_file_template.difference(media_file)
 
