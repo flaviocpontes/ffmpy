@@ -40,7 +40,7 @@ class MediaAnalyser:
 
 class FFMPEGStream():
     """
-    Classe abstrata
+    Classe abstrata ancestral dos MediaStreams que faz a validação inicial
     """
 
     allowed_types = ['Audio', 'Video', 'Image', 'Subtitle', 'Data', 'Attachment']
@@ -127,18 +127,34 @@ class MediaFile:
         try:
             if len(kwargs) > 0:
                 assert os.access(kwargs.get('filename'), os.R_OK)
+            if len(kwargs) > 1:
+                if not kwargs.get('duration') or not kwargs.get('start time') or\
+                        not kwargs.get('bitrate') or not kwargs.get('type'):
+                    raise AttributeError('MediaFile - ERRO - Lista de parâmetros incompleta')
             return super(MediaFile, cls).__new__(cls)
         except AssertionError as e:
-            print('Não foi possível acessar o arquivo {}. Erro {}'.format(args[0], e))
+            print('Erro. Não foi possível acessar o arquivo {}.'.format(kwargs.get('filename')))
             return None
+        except AttributeError as e:
+            print(e)
+            return None
+
+    @staticmethod
+    def parse_file(filename):
+        return p.FFprobeParser.probe_and_parse_media_file(filename)
 
     def __init__(self, **kwargs):
         self.filename = kwargs.get('filename')
+        if len(kwargs) == 1:  # Caso só haja o filename
+            kwargs.update(MediaFile.parse_file(self.filename))
+
+        # Se houver os outros parâmetros
         self.duration = kwargs.get('duration')
         self.start_time = kwargs.get('start time')
         self.bitrate = kwargs.get('bitrate')
         self.metadata = kwargs.get('metadata')
         self.type = kwargs.get('type')
+
         self.streams = []
         for stream in sorted_list(kwargs.get('streams').keys()):
             self.streams.append(MediaStream(**kwargs.get('streams').get(stream)))

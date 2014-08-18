@@ -63,7 +63,7 @@ class FFprobeParser():
 
     @staticmethod
     def probe_and_parse_media_file(filename, path=ffprobe_path):
-        FFprobeParser.parse_probe_output(FFprobeParser.probe_media_file(filename, path))
+        return FFprobeParser.parse_probe_output(FFprobeParser.probe_media_file(filename, path))
 
     @staticmethod
     def parse_probe_output(input):
@@ -278,7 +278,6 @@ class FFprobeParser():
 
                                 else:
                                     state = [None, None, None, None]
-
 
                     elif re.search(FFprobeParser.RE_METADATA_INPUT, line) or state[1] == 'metadata':
                         if re.search(FFprobeParser.RE_METADATA_INPUT, line):  # Neste caso está na linha metadata

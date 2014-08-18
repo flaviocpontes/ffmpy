@@ -7,7 +7,7 @@ __Version__ = '0.1a'
 from media import *
 import unittest
 
-class TestMediaStream(unittest.TestCase):
+class TestMediaStreamCreation(unittest.TestCase):
     """
     Testes de criação dos objetos de fluxo de mídia
     """
@@ -61,7 +61,7 @@ class TestMediaStream(unittest.TestCase):
         self.assertEqual(repr(MediaStream(**{'type': 'Attachment'})), "MediaStream(**{'type': 'Attachment'})")
 
 
-class TestMediaStreamTemplate(unittest.TestCase):
+class TestMediaStreamTemplateCreation(unittest.TestCase):
     """
     Testes de criação dos objetos template de fluxo de mídia
     """
@@ -160,3 +160,21 @@ class TestMediaStreamTemplateAnalysis(unittest.TestCase):
                                                'profile': 'Main', 'codec': 'mpeg2video', 'height': '1080'}).
                         difference(MediaStream(**{'sample_format': 'yuv420p', 'width': '1280', 'type': 'Video',
                                                   'profile': 'Main', 'codec': 'mpeg2video', 'height': '720'})))
+
+
+class TestMediaFileCreation(unittest.TestCase):
+    """
+    Testes das funcionalidades da classe MediaFile
+    """
+    def setUp(self):
+        self.TEST_FILE = '/home/Compartilhado/Arquivos de testes/AULA PROFISSOES.mov'
+
+    def test_nonexistente_file(self):
+        self.assertIsNone(MediaFile(**{'filename': 'NAOEXISTE'}))
+
+    def test_insufficient_parameters(self):
+        file_params = p.FFprobeParser.probe_and_parse_media_file(self.TEST_FILE)
+        file_params.__delitem__('duration')
+        self.assertIsNone(MediaFile(**file_params))
+
+    
