@@ -55,18 +55,24 @@ class FFprobeParser():
 
     @staticmethod
     def probe_media_file(filename, path=ffprobe_path):
-
-        logging.info('Iniciando parsing do arquivo {}'.format(filename))
-
+        logging.info('Iniciando probing do arquivo {}'.format(filename))
         comando = [path, filename]
         saida = subprocess.check_output(comando, stderr=subprocess.STDOUT).decode()
-        #print(saida)
+
+        return saida
+
+    @staticmethod
+    def probe_and_parse_media_file(filename, path=ffprobe_path):
+        FFprobeParser.parse_probe_output(FFprobeParser.probe_media_file(filename, path))
+
+    @staticmethod
+    def parse_probe_output(input):
 
         state = [None, None, None, None]
         resultado = {}
         root = None
         meta = {}
-        for line in io.StringIO(saida):
+        for line in io.StringIO(input):
             if re.search(FFprobeParser.RE_INPUT, line) or state[0] == 'input':
                 if re.search(FFprobeParser.RE_INPUT, line):  # Neste caso a linha é o descritor do Input
                     fields = ['type', 'filename']

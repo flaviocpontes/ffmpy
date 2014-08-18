@@ -5,6 +5,7 @@ __author__ = 'Flávio Pontes <flaviopontes@acerp.org.br>'
 __Version__ = '0.1a'
 
 import os
+import logging
 import ffparser as p
 from pprint import pprint
 
@@ -18,7 +19,7 @@ class MediaAnalyser:
 
     @staticmethod
     def media_file_difference(media_file_path, media_file_template):
-        descriptor = p.FFprobeParser.probe_media_file(media_file_path)
+        descriptor = p.FFprobeParser.probe_and_parse_media_file(media_file_path)
         media_file = MediaFile(**descriptor)
         if isinstance(media_file_template, MediaFileTemplate):
             pass
@@ -32,12 +33,27 @@ class MediaAnalyser:
 
     @staticmethod
     def validate_media_file(media_file_path, media_file_template):
-        descriptor = p.FFprobeParser.probe_media_file(media_file_path)
+        descriptor = p.FFprobeParser.probe_and_parse_media_file(media_file_path)
         media_file = MediaFile(**descriptor)
         return media_file_template == media_file
 
 
-class MediaStream():
+class FFMPEGStream():
+    """
+    Classe abstrata
+    """
+
+    allowed_types = ['Audio', 'Video', 'Image', 'Subtitle', 'Data', 'Attachment']
+
+    def __new__(cls, *args, **kwargs):
+        try:
+            assert kwargs.get('type') in MediaStream.allowed_types
+            return super(FFMPEGStream, cls).__new__(cls)
+        except AssertionError as e:
+            logging.error('Invalid media stream type: {}'.format(kwargs.get('type')))
+
+
+class MediaStream(FFMPEGStream):
     """
     Representa um fluxo de mídia
     """
@@ -50,11 +66,11 @@ class MediaStream():
         return result
 
     def __repr__(self):
-        return str(self.__dict__)
+        return 'MediaStream(**'+str(self.__dict__)+')'
 
 
 #Classes representando os gabaritos dos fluxos de midia
-class MediaStreamTemplate():
+class MediaStreamTemplate(FFMPEGStream):
     """
     Representa o gabarito de um fluxo de mídia
     """
@@ -66,7 +82,7 @@ class MediaStreamTemplate():
         return '{} Stream Template: {}'.format(self.__dict__.get('type'), self.__dict__)
 
     def __repr__(self):
-        return 'StreamTemplate(**'+str(self.__dict__)+')'
+        return 'MediaStreamTemplate(**'+str(self.__dict__)+')'
 
     def __eq__(self, other):
         for key in self.__dict__.keys():
@@ -109,7 +125,7 @@ class MediaFile:
         :return: MediaFile
         """
         try:
-            if len(args) > 0:
+            if len(kwargs) > 0:
                 assert os.access(kwargs.get('filename'), os.R_OK)
             return super(MediaFile, cls).__new__(cls)
         except AssertionError as e:
