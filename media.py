@@ -1,18 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-__author__ = 'Flávio Pontes <flaviopontes@acerp.org.br>'
-__Version__ = '0.1a'
+__author__ = 'Flávio Cardoso Pontes <flaviopontes@acerp.org.br>'
+__copyright__ = 'Copyright © 2012, 2014 Associação de Comunicação Educativa Roquette Pinto - ACERP'
+__version__ = '0.1a'
+__package__ = 'FFMPY'
+
 
 import os
 import logging
 import ffparser as p
 from pprint import pprint
-
-def sorted_list(lista):
-    lista = list(lista)
-    lista.sort()
-    return lista
 
 
 class MediaAnalyser:
@@ -156,7 +154,7 @@ class MediaFile:
         self.type = kwargs.get('type')
 
         self.streams = []
-        for stream in sorted_list(kwargs.get('streams').keys()):
+        for stream in sorted(kwargs.get('streams').keys()):
             self.streams.append(MediaStream(**kwargs.get('streams').get(stream)))
 
     def __str__(self):
