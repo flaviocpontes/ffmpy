@@ -4,7 +4,7 @@
 __author__ = 'Flávio Cardoso Pontes <flaviopontes@acerp.org.br>'
 __copyright__ = 'Copyright © 2012, 2014 Associação de Comunicação Educativa Roquette Pinto - ACERP'
 __version__ = '0.1a'
-__package__ = 'FFMPY'
+__package__ = 'ffmpy'
 
 
 import os
@@ -36,7 +36,7 @@ class MediaAnalyser:
         return media_file_template == media_file
 
 
-class FFMPEGStream():
+class _FFMPEGStream():
     """
     Classe abstrata ancestral dos MediaStreams que faz a validação inicial
     """
@@ -46,12 +46,12 @@ class FFMPEGStream():
     def __new__(cls, *args, **kwargs):
         try:
             assert kwargs.get('type') in MediaStream.allowed_types
-            return super(FFMPEGStream, cls).__new__(cls)
+            return super(_FFMPEGStream, cls).__new__(cls)
         except AssertionError as e:
             logging.error('Invalid media stream type: {}'.format(kwargs.get('type')))
 
 
-class MediaStream(FFMPEGStream):
+class MediaStream(_FFMPEGStream):
     """
     Representa um fluxo de mídia
     """
@@ -68,7 +68,7 @@ class MediaStream(FFMPEGStream):
 
 
 #Classes representando os gabaritos dos fluxos de midia
-class MediaStreamTemplate(FFMPEGStream):
+class MediaStreamTemplate(_FFMPEGStream):
     """
     Representa o gabarito de um fluxo de mídia
     """
@@ -131,10 +131,10 @@ class MediaFile:
                     raise AttributeError('MediaFile - ERRO - Lista de parâmetros incompleta')
             return super(MediaFile, cls).__new__(cls)
         except AssertionError as e:
-            print('Erro. Não foi possível acessar o arquivo {}.'.format(kwargs.get('filename')))
+            logging.error('Erro. Não foi possível acessar o arquivo {}.'.format(kwargs.get('filename')))
             return None
         except AttributeError as e:
-            print(e)
+            logging.error(e)
             return None
 
     @staticmethod

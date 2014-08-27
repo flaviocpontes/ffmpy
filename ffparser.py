@@ -4,7 +4,7 @@
 __author__ = 'Flávio Cardoso Pontes <flaviopontes@acerp.org.br>'
 __copyright__ = 'Copyright © 2012, 2014 Associação de Comunicação Educativa Roquette Pinto - ACERP'
 __version__ = '0.1a'
-__package__ = 'FFMPY'
+__package__ = 'ffmpy'
 
 import os
 import subprocess
@@ -111,7 +111,7 @@ class FFprobeParser():
                                     state[2], state[3] = 'stream', None
 
                                 if re.search(FFprobeParser.RE_PROFILED_VIDEO_STREAM, line):
-                                    print('Profiled Video Stream')
+                                    logging.debug('FFprobeParser:parse_probe_output - Profiled Video Stream')
                                     fields = ['lang', 'codec', 'profile', 'codec_spec', 'sample_format', 'sample_spec', 'colorspace',
                                               'width', 'height', 'bitrate', 'fps', 'framerate', 'tb_container', 'tb_codec']
                                     values = list(re.search(FFprobeParser.RE_PROFILED_VIDEO_STREAM, line).groups())
@@ -122,7 +122,7 @@ class FFprobeParser():
                                     stream['metadata'] = {}
                                     meta_input = stream['metadata']
                                 elif re.search(FFprobeParser.RE_VIDEO_STREAM, line):
-                                    print('Video Stream')
+                                    logging.debug('FFprobeParser:parse_probe_output - Video Stream')
                                     fields = ['lang', 'codec', 'codec_spec', 'sample_format', 'sample_spec', 'width', 'height', 'bitrate',
                                               'fps', 'framerate', 'tb_container', 'tb_codec']
                                     values = list(re.search(FFprobeParser.RE_VIDEO_STREAM, line).groups())
@@ -133,7 +133,7 @@ class FFprobeParser():
                                     stream['metadata'] = {}
                                     meta_input = stream['metadata']
                                 elif re.search(FFprobeParser.RE_DEFAULT_VIDEO_STREAM, line):
-                                    print('Default Video Stream')
+                                    logging.debug('FFprobeParser:parse_probe_output - Default Video Stream')
                                     fields = ['lang', 'codec', 'codec_spec', 'sample_format', 'width', 'height', 'fps', 'framerate',
                                               'tb_container', 'tb_codec']
                                     values = list(re.search(FFprobeParser.RE_DEFAULT_VIDEO_STREAM, line).groups())
@@ -144,7 +144,7 @@ class FFprobeParser():
                                     stream['metadata'] = {}
                                     meta_input = stream['metadata']
                                 elif re.search(FFprobeParser.RE_VP8_VIDEO_STREAM, line):
-                                    print('VP8 Video Stream')
+                                    logging.debug('FFprobeParser:parse_probe_output - VP8 Video Stream')
                                     fields = ['lang', 'codec', 'sample_format', 'width', 'height', 'fps', 'framerate',
                                               'tb_container', 'tb_codec']
                                     values = list(re.search(FFprobeParser.RE_VP8_VIDEO_STREAM, line).groups())
@@ -155,7 +155,7 @@ class FFprobeParser():
                                     stream['metadata'] = {}
                                     meta_input = stream['metadata']
                                 elif re.search(FFprobeParser.RE_IMAGE_STREAM, line):
-                                    print('Image Video Stream')
+                                    logging.debug('FFprobeParser:parse_probe_output - Image Video Stream')
                                     fields = ['codec', 'sample_format', 'width', 'height', 'framerate', 'tb_container', 'tb_codec']
                                     values = list(re.search(FFprobeParser.RE_IMAGE_STREAM, line).groups())
                                     num = values.pop(0)
@@ -165,7 +165,7 @@ class FFprobeParser():
                                     stream['metadata'] = {}
                                     meta_input = stream['metadata']
                                 elif re.search(FFprobeParser.RE_OUTPUT_STREAM_H264, line):
-                                    print('h.264 Output Video Stream')
+                                    logging.debug('FFprobeParser:parse_probe_output - h.264 Output Video Stream')
                                     fields = ['codec', 'encoder', 'encoding_specs', 'sample_format', 'width', 'height', 'bitrate']
                                     values = list(re.search(FFprobeParser.RE_OUTPUT_STREAM_H264, line).groups())
                                     num = values.pop(0)
@@ -177,7 +177,7 @@ class FFprobeParser():
 
                                 #Detecção das trilhas de audio
                                 elif re.search(FFprobeParser.RE_AUDIO_STREAM, line):
-                                    print('Audio Stream')
+                                    logging.debug('FFprobeParser:parse_probe_output - Audio Stream')
                                     fields = ['lang', 'codec', 'codec spec', 'sampling_rate', 'spaciality', 'sample_format', 'bitrate']
                                     values = list(re.search(FFprobeParser.RE_AUDIO_STREAM, line).groups())
                                     num = values.pop(0)
@@ -187,7 +187,7 @@ class FFprobeParser():
                                     stream['metadata'] = {}
                                     meta_input = stream['metadata']
                                 elif re.search(FFprobeParser.RE_AUDIO_STREAM_SIMPLE, line):
-                                    print('Audio Stream Simple')
+                                    logging.debug('FFprobeParser:parse_probe_output - Audio Stream Simple')
                                     fields = ['codec', 'sampling_rate', 'spaciality', 'sample_format', 'bitrate']
                                     values = list(re.search(FFprobeParser.RE_AUDIO_STREAM_SIMPLE, line).groups())
                                     num = values.pop(0)
@@ -197,7 +197,7 @@ class FFprobeParser():
                                     stream['metadata'] = {}
                                     meta_input = stream['metadata']
                                 elif re.search(FFprobeParser.RE_AUDIO_STREAM_LANG_SIMPLE, line):
-                                    print('Audio Stream Lang Simple')
+                                    logging.debug('FFprobeParser:parse_probe_output - Audio Stream Lang Simple')
                                     fields = ['lang', 'codec', 'sampling_rate', 'spaciality', 'sample_format', 'bitrate']
                                     values = list(re.search(FFprobeParser.RE_AUDIO_STREAM_LANG_SIMPLE, line).groups())
                                     num = values.pop(0)
@@ -207,7 +207,7 @@ class FFprobeParser():
                                     stream['metadata'] = {}
                                     meta_input = stream['metadata']
                                 elif re.search(FFprobeParser.RE_AUDIO_VORBIS_WEBM, line):
-                                    print('Audio Vorbis WEBM Simple')
+                                    logging.debug('FFprobeParser:parse_probe_output - Audio Vorbis WEBM Simple')
                                     fields = ['lang', 'codec', 'sampling_rate', 'spaciality', 'sample_format']
                                     values = list(re.search(FFprobeParser.RE_AUDIO_VORBIS_WEBM, line).groups())
                                     num = values.pop(0)
@@ -219,7 +219,7 @@ class FFprobeParser():
 
                                 #Detecção das trilhas de legendas
                                 elif re.search(FFprobeParser.RE_SUBTITLE_SSA, line):
-                                    print('Subtitle Stream')
+                                    logging.debug('FFprobeParser:parse_probe_output - Subtitle Stream')
                                     fields = ['lang', 'codec']
                                     values = list(re.search(FFprobeParser.RE_SUBTITLE_SSA, line).groups())
                                     num = values.pop(0)
@@ -231,7 +231,7 @@ class FFprobeParser():
 
                                 #Detecção das trilhas de dados
                                 elif re.search(FFprobeParser.RE_DATA_STREAM, line):
-                                    print('Data Stream')
+                                    logging.debug('FFprobeParser:parse_probe_output - Data Stream')
                                     fields = ['lang', 'codec', 'codec_spec', 'bitrate']
                                     values = list(re.search(FFprobeParser.RE_DATA_STREAM, line).groups())
                                     num = values.pop(0)
@@ -241,7 +241,7 @@ class FFprobeParser():
                                     stream['metadata'] = {}
                                     meta_input = stream['metadata']
                                 elif re.search(FFprobeParser.RE_DATA_DEFAULT_STREAM, line):
-                                    print('Data Default Stream')
+                                    logging.debug('FFprobeParser:parse_probe_output - Data Default Stream')
                                     fields = ['lang', 'codec', 'codec_spec']
                                     values = list(re.search(FFprobeParser.RE_DATA_DEFAULT_STREAM, line).groups())
                                     num = values.pop(0)
@@ -253,7 +253,7 @@ class FFprobeParser():
 
                                 #Detecção de anexos
                                 elif re.search(FFprobeParser.RE_ATTACH, line):
-                                    print('Attachment')
+                                    logging.debug('FFprobeParser:parse_probe_output - Attachment')
                                     fields = ['codec', ]
                                     values = list(re.search(FFprobeParser.RE_ATTACH, line).groups())
                                     num = values.pop(0)
