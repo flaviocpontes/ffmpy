@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='ffmpy',
-    version='0.1a',
+    version='0.1.5',
     packages=[''],
     url='',
     license='',
