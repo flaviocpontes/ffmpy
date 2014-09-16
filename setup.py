@@ -6,7 +6,7 @@ setup(
     packages=[''],
     url='',
     license='',
-    author='flaviopontes',
+    author='Flávio Cardoso Pontes',
     author_email='flaviopontes@acerp.org.br',
-    description=''
+    description='Wrapper around the FFMPEG utility'
 )
