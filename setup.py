@@ -1,9 +1,12 @@
-from distutils.core import setup
+from setuptools import setup
+
+
+
 
 setup(
     name='ffmpy',
     version='0.1.5',
-    packages=[''],
+    packages=['ffmpy.'],
     url='',
     license='',
     author='Flávio Cardoso Pontes',
