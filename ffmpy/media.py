@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+from ffmpy import ffparser as p
 
 __author__ = 'Flávio Cardoso Pontes <flaviopontes@acerp.org.br>'
 __copyright__ = 'Copyright © 2012, 2014 Associação de Comunicação Educativa Roquette Pinto - ACERP'
@@ -9,8 +10,6 @@ __package__ = 'ffmpy'
 
 import os
 import logging
-import ffparser as p
-from pprint import pprint
 
 
 class MediaAnalyser:

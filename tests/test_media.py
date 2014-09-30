@@ -6,8 +6,10 @@ __copyright__ = 'Copyright © 2012, 2014 Associação de Comunicação Educativa
 __version__ = '0.1.5'
 __package__ = 'FFMPY'
 
-from media import *
 import unittest
+
+from ffmpy.media import *
+
 
 class TestMediaStreamCreation(unittest.TestCase):
     """
