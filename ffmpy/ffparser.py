@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-__author__ = 'Flávio Cardoso Pontes <flaviopontes@acerp.org.br>'
-__copyright__ = 'Copyright © 2012, 2014 Associação de Comunicação Educativa Roquette Pinto - ACERP'
-__version__ = '0.1.5'
-__package__ = 'ffmpy'
+from __init__ import __author__, __version__, __version_info__, __copyright__, __package__
 
 import os
 import subprocess

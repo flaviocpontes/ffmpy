@@ -1,13 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+from __init__ import __author__, __version__, __version_info__, __copyright__, __package__
+
 from ffmpy import ffparser as p
-
-__author__ = 'Flávio Cardoso Pontes <flaviopontes@acerp.org.br>'
-__copyright__ = 'Copyright © 2012, 2014 Associação de Comunicação Educativa Roquette Pinto - ACERP'
-__version__ = '0.1.5'
-__package__ = 'ffmpy'
-
-
 import os
 import logging
 
@@ -59,7 +54,7 @@ class MediaStream(_FFMPEGStream):
         self.__dict__ = kwargs
 
     def __str__(self):
-        result = self.__dict__.get('type') + ' Stream: {}'.format(self.__dict__)
+        result = self.__dict__.get('type') + ' Stream: {}'.format(', '.join(['{}: {}'.format(k, v) for k, v in sorted(self.__dict__.items())]))
         return result
 
     def __repr__(self):
@@ -76,7 +71,8 @@ class MediaStreamTemplate(_FFMPEGStream):
         self.__dict__ = kwargs
 
     def __str__(self):
-        return '{} Stream Template: {}'.format(self.__dict__.get('type'), self.__dict__)
+        return '{} Stream Template: {}'.format(self.__dict__.get('type'),
+                                               ', '.join(['{}: {}'.format(k, v) for k, v in sorted(self.__dict__.items())]))
 
     def __repr__(self):
         return 'MediaStreamTemplate(**'+str(self.__dict__)+')'
@@ -107,6 +103,14 @@ class MediaStreamTemplate(_FFMPEGStream):
                 if key in other.__dict__.keys():
                     if self.__dict__[key] != other.__dict__[key]:
                         difference[key] = (other.__dict__[key], self.__dict__[key])
+            else:
+                if difference.get('metadata') == None:
+                    difference['metadata'] = {}
+                for meta_key in self.__dict__.get('metadata').keys():
+                    if meta_key in other.__dict__.get('metadata').keys():
+                        if self.__dict__.get('metadata')[meta_key] != other.__dict__.get('metadata')[meta_key]:
+                            difference.get('metadata')[meta_key] = (other.__dict__.get('metadata')[meta_key],
+                                                                    self.__dict__.get('metadata')[meta_key])
         return difference
 
 
