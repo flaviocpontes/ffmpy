@@ -1,6 +1,7 @@
 from setuptools import setup, find_packages  # Always prefer setuptools over distutils
 from codecs import open  # To use a consistent encoding
 from os import path
+from ffmpy import __version__
 
 here = path.abspath(path.dirname(__file__))
 
@@ -14,7 +15,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # http://packaging.python.org/en/latest/tutorial.html#version
-    version='0.1.5',
+    version=__version__,
 
     description='Wrapper around the FFMPEG utility',
     long_description=long_description,

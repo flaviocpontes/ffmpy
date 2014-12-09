@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from __init__ import __author__, __version__, __version_info__, __copyright__, __package__
+from __init__ import __author__, __version__, __copyright__, __package__
 
 import unittest
 
@@ -27,9 +27,10 @@ class TestMediaStreamCreation(unittest.TestCase):
 
     def test_video_stream_repr2(self):
         self.assertDictEqual({'sample_format': 'yuv420p', 'width': '1920', 'type': 'Video', 'profile': 'Main',
-                              'codec': 'mpeg2video', 'height': '1080'},
+                              'codec': 'mpeg2video', 'height': '1080', 'metadata': {'encoder': 'FFMPEG'}},
                              MediaStream(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'Video',
-                                            'profile': 'Main', 'codec': 'mpeg2video', 'height': '1080'}).__dict__)
+                                            'profile': 'Main', 'codec': 'mpeg2video', 'height': '1080',
+                                            'metadata': {'encoder': 'FFMPEG'}}).__dict__)
 
     def test_video_stream_str(self):
         self.assertEqual(str(MediaStream(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'Video',
