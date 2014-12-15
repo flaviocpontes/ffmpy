@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from __init__ import __author__, __version__, __copyright__, __package__
-
 import os
 import subprocess
 import logging
