@@ -8,6 +8,5 @@ __version__ = '.'.join(map(str, __version_info__))
 __package__ = 'ffmpy'
 
 from ffmpy.media import MediaAnalyser, MediaStream, MediaStreamTemplate, MediaFile, MediaFileTemplate
-from ffmpy.ffparser import FFprobeParser
 
-__all__ = ['FFprobeParser', 'MediaAnalyser', 'MediaStream', 'MediaStreamTemplate', 'MediaFile', 'MediaFileTemplate']
+__all__ = ['MediaAnalyser', 'MediaStream', 'MediaStreamTemplate', 'MediaFile', 'MediaFileTemplate']

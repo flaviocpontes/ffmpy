@@ -63,7 +63,7 @@ class MediaStream(_FFMPEGStream):
 #Classes representando os gabaritos dos fluxos de midia
 class MediaStreamTemplate(_FFMPEGStream):
     """
-    Representa o gabarito de um fluxo de mídia
+    Representa o modelo de um fluxo de mídia
     """
 
     def __init__(self, **kwargs):
