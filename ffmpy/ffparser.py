@@ -3,10 +3,10 @@
 
 import subprocess
 import logging
-from stateful_parser import ProbeContext
+from ffmpy.stateful_parser import ProbeContext
 
 
-class FFprobeParser():
+class FFProbeParser():
 
     ffprobe_path = '/opt/ffmpeg/bin/ffprobe'
 
@@ -26,7 +26,7 @@ class FFprobeParser():
         """
         Encapsula do parser já com a saida do ffprobe como parâmetro
         """
-        return FFprobeParser.parse_probe_output(FFprobeParser.probe_media_file(filename, path))
+        return FFProbeParser.parse_probe_output(FFProbeParser.probe_media_file(filename, path))
 
     @staticmethod
     def parse_output(input):
@@ -41,5 +41,5 @@ class FFprobeParser():
         """
         Retorna os parâmetros do arquivo de entrada do ffprobe, desprezando o resto da saída
         """
-        resultado = FFprobeParser.parse_output(input)
+        resultado = FFProbeParser.parse_output(input)
         return resultado.get('Input 0')

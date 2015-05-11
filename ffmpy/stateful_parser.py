@@ -42,6 +42,7 @@ class Context:
         self.result = {}
         self.subcontext = None
         self.current_line = None
+        reset_class_counters()
 
     def next_line(self):
         raise NotImplementedError
@@ -120,12 +121,9 @@ class InputStreamSubContext(SubContext):
     """
     Faz a interpretação da linha de descrição dos Fluxos.
     """
-    def __init__(self):
-        super().__init__()
-        self.state = StreamIndex()
-
     def process(self, parser):
         if parser.context.current_line.startswith('    Stream '):
+            self.state = StreamIndex()
             self.remaining = parser.context.current_line
             while self.remaining:
                 self.state.process(self)
@@ -333,10 +331,17 @@ class StreamType(State):
         values = re.match(':\s(\S*):\s', parser.remaining)
         parser.root.update({'type': values.groups()[0]})
         parser.remaining = parser.remaining[values.end():]
-        parser.state = StreamCodec()
+        if values.groups()[0] == 'Video':
+            parser.state = VideoStreamCodec()
+        elif values.groups()[0] == 'Audio':
+            parser.state = VideoStreamCodec()
+        elif values.groups()[0] == 'Data':
+            parser.state = VideoStreamCodec()
+        else:
+            parser.remaining = ''
 
 
-class StreamCodec(State):
+class VideoStreamCodec(State):
     """
     Codec do fluxo.
     """
@@ -347,8 +352,9 @@ class StreamCodec(State):
             values = re.match('(\S*)\s', parser.remaining)
         parser.root.update({'codec': values.groups()[0]})
         parser.remaining = parser.remaining[values.end():]
+        parser.state = VideoStreamCodecProfile()
         if re.match('\(\S*\)\s\(\S*\s/\s\S*\),', parser.remaining):
-            parser.state = StreamCodecProfile()
+            pass
         elif re.match('\(\S*\s/\s\S*\),', parser.remaining):
             parser.state = StreamCodecSpec()
         elif re.match('\(\S*\s/\s\S*\) \(', parser.remaining):
@@ -357,7 +363,51 @@ class StreamCodec(State):
             parser.state = VideoStreamPixelFormat()
 
 
-class StreamCodecProfile(State):
+class AudioStreamCodec(State):
+    """
+    Codec do fluxo.
+    """
+    def process(self, parser):
+        if re.match('\S*,\s', parser.remaining):
+            values = re.match('(\S*),\s', parser.remaining)
+        elif re.match('\S*\s', parser.remaining):
+            values = re.match('(\S*)\s', parser.remaining)
+        parser.root.update({'codec': values.groups()[0]})
+        parser.remaining = parser.remaining[values.end():]
+        parser.state = VideoStreamCodecProfile()
+        if re.match('\(\S*\)\s\(\S*\s/\s\S*\),', parser.remaining):
+            pass
+        elif re.match('\(\S*\s/\s\S*\),', parser.remaining):
+            parser.state = StreamCodecSpec()
+        elif re.match('\(\S*\s/\s\S*\) \(', parser.remaining):
+            parser.state = DataStreamCodecSpec()
+        else:
+            parser.state = VideoStreamPixelFormat()
+
+
+class DataStreamCodec(State):
+    """
+    Codec do fluxo.
+    """
+    def process(self, parser):
+        if re.match('\S*,\s', parser.remaining):
+            values = re.match('(\S*),\s', parser.remaining)
+        elif re.match('\S*\s', parser.remaining):
+            values = re.match('(\S*)\s', parser.remaining)
+        parser.root.update({'codec': values.groups()[0]})
+        parser.remaining = parser.remaining[values.end():]
+        parser.state = VideoStreamCodecProfile()
+        if re.match('\(\S*\)\s\(\S*\s/\s\S*\),', parser.remaining):
+            pass
+        elif re.match('\(\S*\s/\s\S*\),', parser.remaining):
+            parser.state = StreamCodecSpec()
+        elif re.match('\(\S*\s/\s\S*\) \(', parser.remaining):
+            parser.state = DataStreamCodecSpec()
+        else:
+            parser.state = VideoStreamPixelFormat()
+
+
+class VideoStreamCodecProfile(State):
     """
     Perfil do codec.
     """
@@ -463,7 +513,7 @@ class VideoStreamResolution(State):
     Largura, altura, e razões de aspecto.
     """
     def process(self, parser):
-        values = re.match('(\d*)x(\d*)\s\[SAR\s(\d*:\d*)\sDAR\s(\d*:\d*)\], ', parser.remaining)
+        values = re.match('(\d*)x(\d*),?\s\[?SAR\s(\d*:\d*)\sDAR\s(\d*:\d*)\]?, ', parser.remaining)
         parser.root.update({'width': values.groups()[0],
                             'height': values.groups()[1],
                             'sample_aspect_ratio': values.groups()[2],
@@ -471,6 +521,8 @@ class VideoStreamResolution(State):
         parser.remaining = parser.remaining[values.end():]
         if re.match('(\d*) tbr, (\d*) tbn, (\d*) tbc', parser.remaining):
             parser.state = PNGStreamTimeBase()
+        elif re.match('(\d*.\d*) fps, (\d*.\d*) tbr, (\S*?) tbn, (\S*?) tbc', parser.remaining):
+            parser.state = StreamTimeBase()
         else:
             parser.state = StreamBitrate()
 
@@ -495,7 +547,7 @@ class StreamTimeBase(State):
     fps, tbr, tbn, tbc.
     """
     def process(self, parser):
-        values = re.match('(\d*.\d*) fps, (\d*.\d*) tbr, (\d*) tbn, (\d*.\d*) tbc ', parser.remaining)
+        values = re.match('(\d*.\d*) fps, (\d*.\d*) tbr, (\S*?) tbn, (\S*?) tbc ', parser.remaining)
         parser.root.update({'reported_frame_rate': values.groups()[0],
                             'average_frame_rate': values.groups()[1],
                             'container_time_base': values.groups()[2],

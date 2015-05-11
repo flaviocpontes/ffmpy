@@ -196,13 +196,13 @@ class TestMediaFileCreation(unittest.TestCase):
     Testes das funcionalidades da classe MediaFile
     """
     def setUp(self):
-        self.TEST_FILE = '/home/Compartilhado/Arquivos de testes/AULA PROFISSOES.mov'
+        self.TEST_FILE = '/home/Compartilhado/Arquivos de testes/Fork/AULA PROFISSOES.mov'
 
     def test_nonexistente_file(self):
         self.assertIsNone(MediaFile(**{'filename': 'NAOEXISTE'}))
 
     def test_insufficient_parameters(self):
-        file_params = p.FFprobeParser.probe_and_parse_media_file(self.TEST_FILE)
+        file_params = p.FFProbeParser.probe_and_parse_media_file(self.TEST_FILE)
         file_params.__delitem__('duration')
         self.assertIsNone(MediaFile(**file_params))
 

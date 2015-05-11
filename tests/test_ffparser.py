@@ -18,15 +18,20 @@ class TestParseProbeOutput(unittest.TestCase):
         stateful_parser.InputStreamSubContext.reset_count()
         stateful_parser.Output.reset_count()
 
+    def tearDown(self):
+        stateful_parser.Input.reset_count()
+        stateful_parser.InputStreamSubContext.reset_count()
+        stateful_parser.Output.reset_count()
+
     def test_empty(self):
-        self.assertIsNone(FFprobeParser.parse_probe_output(''))
+        self.assertIsNone(FFProbeParser.parse_probe_output(''))
 
     def test_invalid_input(self):
-        self.assertRaises(AttributeError, FFprobeParser.parse_probe_output, 'INVALID INPUT!!!!!')
+        self.assertRaises(AttributeError, FFProbeParser.parse_probe_output, 'INVALID INPUT!!!!!')
 
     def test_ffprobe_outfile1(self):
         file = os.path.join(test_file_path, 'AULA PROFISSOES.ffprobe')
-        self.assertEqual(FFprobeParser.parse_probe_output(open(file, 'r')),
+        self.assertEqual(FFProbeParser.parse_probe_output(open(file, 'r')),
                          {'duration': '00:15:46.41',
                           'filename': 'AULA PROFISSOES.mov',
                           'streams': {'0': {'display_aspect_ratio': '16:9', 'color_range': 'tv',
@@ -53,26 +58,41 @@ class TestParseProbeOutput(unittest.TestCase):
 
     def test_ffprobe_outfile2(self):
         file = os.path.join(test_file_path, 'AULA PROFISSOES_alta.ffprobe')
-        self.assertEqual(FFprobeParser.parse_probe_output(open(file, 'r')),
-                         {'filename': 'AULA PROFISSOES_alta.mp4',
-                          'duration': '00:15:46.46',
-                          'streams': {'0': {'container_time_base': '11988', 'average_frame_rate': '29.97',
-                                            'type': 'Video', 'language': 'und', 'pixel_format': 'yuv420p',
-                                            'bitrate': '1940', 'height': '720', 'codec': 'h264', 'width': '1280',
-                                            'codec_time_base': '59.94', 'codec_tag': '0x31637661',
-                                            'sample_aspect_ratio': '1:1', 'profile': 'High',
-                                            'codec_tag_string': 'avc1', 'reported_frame_rate': '29.97',
-                                            'display_aspect_ratio': '16:9'},
-                                      '1': {'codec': 'aac', 'sampling_rate': '48000', 'sample_format': 'fltp',
-                                            'codec_tag': '0x6134706D', 'type': 'Audio', 'language': 'eng',
-                                            'spaciality': 'mono', 'profile': 'LC', 'codec_tag_string': 'mp4a',
-                                            'bitrate': '96'}},
-                          'type': 'mov,mp4,m4a,3gp,3g2,mj2',
-                          'metadata': {'handler_name': 'SoundHandler'}})
+        self.assertEqual(FFProbeParser.parse_probe_output(open(file, 'r')),
+                         {'duration': '00:15:46.46',
+                          'filename': 'AULA PROFISSOES_alta.mp4',
+                          'metadata': {'handler_name': 'SoundHandler'},
+                          'streams': {'0': {'average_frame_rate': '29.97',
+                                            'bitrate': '1940',
+                                            'codec': 'h264',
+                                            'codec_tag': '0x31637661',
+                                            'codec_tag_string': 'avc1',
+                                            'codec_time_base': '59.94',
+                                            'container_time_base': '11988',
+                                            'display_aspect_ratio': '16:9',
+                                            'height': '720',
+                                            'language': 'und',
+                                            'pixel_format': 'yuv420p',
+                                            'profile': 'High',
+                                            'reported_frame_rate': '29.97',
+                                            'sample_aspect_ratio': '1:1',
+                                            'type': 'Video',
+                                            'width': '1280'},
+                                      '1': {'bitrate': '96',
+                                            'codec': 'aac',
+                                            'codec_tag': '0x6134706D',
+                                            'codec_tag_string': 'mp4a',
+                                            'language': 'eng',
+                                            'profile': 'LC',
+                                            'sample_format': 'fltp',
+                                            'sampling_rate': '48000',
+                                            'spaciality': 'mono',
+                                            'type': 'Audio'}},
+                          'type': 'mov,mp4,m4a,3gp,3g2,mj2'})
 
     def test_ffprobe_outfile3(self):
         file = os.path.join(test_file_path, 'AULA PROFISSOES_media.mp4.ffprobe')
-        self.assertEqual(FFprobeParser.parse_probe_output(open(file, 'r')),
+        self.assertEqual(FFProbeParser.parse_probe_output(open(file, 'r')),
                          {'type': 'mov,mp4,m4a,3gp,3g2,mj2',
                           'duration': '00:15:46.46',
                           'streams': {'0': {'language': 'und', 'codec': 'h264', 'bitrate': '618',
@@ -91,7 +111,8 @@ class TestParseProbeOutput(unittest.TestCase):
 
     def test_ffprobe_outfile4(self):
         file = os.path.join(test_file_path, 'AULA PROFISSOES_media.webm.ffprobe')
-        self.assertEqual(FFprobeParser.parse_probe_output(open(file, 'r')),
+        print(FFProbeParser.parse_probe_output(open(file, 'r')))
+        self.assertEqual(FFProbeParser.parse_probe_output(open(file, 'r')),
                          {'type': 'mov,mp4,m4a,3gp,3g2,mj2',
                           'duration': '00:15:46.46',
                           'streams': {'0': {'language': 'und', 'codec': 'h264', 'bitrate': '618',

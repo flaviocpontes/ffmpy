@@ -10,7 +10,7 @@ class MediaAnalyser:
 
     @staticmethod
     def media_file_difference(media_file_path, media_file_template):
-        descriptor = p.FFprobeParser.probe_and_parse_media_file(media_file_path)
+        descriptor = p.FFProbeParser.probe_and_parse_media_file(media_file_path)
         media_file = MediaFile(**descriptor)
         if isinstance(media_file_template, MediaFileTemplate):
             pass
@@ -24,7 +24,7 @@ class MediaAnalyser:
 
     @staticmethod
     def validate_media_file(media_file_path, media_file_template):
-        descriptor = p.FFprobeParser.probe_and_parse_media_file(media_file_path)
+        descriptor = p.FFProbeParser.probe_and_parse_media_file(media_file_path)
         media_file = MediaFile(**descriptor)
         return media_file_template == media_file
 
@@ -141,7 +141,7 @@ class MediaFile:
 
     @staticmethod
     def parse_file(filename):
-        return p.FFprobeParser.probe_and_parse_media_file(filename)
+        return p.FFProbeParser.probe_and_parse_media_file(filename)
 
     def __init__(self, **kwargs):
         self.filename = kwargs.get('filename')
