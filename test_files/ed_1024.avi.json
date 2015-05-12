@@ -1,0 +1,108 @@
+{
+    "programs": [
+
+    ],
+    "streams": [
+        {
+            "index": 0,
+            "codec_name": "mpeg4",
+            "codec_long_name": "MPEG-4 part 2",
+            "profile": "Simple Profile",
+            "codec_type": "video",
+            "codec_time_base": "1/24",
+            "codec_tag_string": "DIVX",
+            "codec_tag": "0x58564944",
+            "width": 1024,
+            "height": 576,
+            "has_b_frames": 0,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 1,
+            "chroma_location": "left",
+            "refs": 1,
+            "quarter_sample": "0",
+            "divx_packed": "0",
+            "r_frame_rate": "24/1",
+            "avg_frame_rate": "5000000/208333",
+            "time_base": "208333/5000000",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 15691,
+            "duration": "653.790621",
+            "bit_rate": "5001557",
+            "nb_frames": "15691",
+            "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0
+            }
+        },
+        {
+            "index": 1,
+            "codec_name": "ac3",
+            "codec_long_name": "ATSC A/52A (AC-3)",
+            "codec_type": "audio",
+            "codec_time_base": "1/48000",
+            "codec_tag_string": "[0] [0][0]",
+            "codec_tag": "0x2000",
+            "sample_fmt": "fltp",
+            "sample_rate": "48000",
+            "channels": 6,
+            "channel_layout": "5.1(side)",
+            "bits_per_sample": 0,
+            "dmix_mode": "-1",
+            "ltrt_cmixlev": "-1.000000",
+            "ltrt_surmixlev": "-1.000000",
+            "loro_cmixlev": "-1.000000",
+            "loro_surmixlev": "-1.000000",
+            "r_frame_rate": "0/0",
+            "avg_frame_rate": "0/0",
+            "time_base": "1/56000",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "bit_rate": "448000",
+            "nb_frames": "36614144",
+            "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0
+            },
+            "tags": {
+                "title": "ED-CM-5.1-DVD-Final2"
+            }
+        }
+    ],
+    "format": {
+        "filename": "ed_1024.avi",
+        "nb_streams": 2,
+        "nb_programs": 0,
+        "format_name": "avi",
+        "format_long_name": "AVI (Audio Video Interleaved)",
+        "start_time": "0.000000",
+        "duration": "653.790621",
+        "size": "445866736",
+        "bit_rate": "5455774",
+        "probe_score": 100,
+        "tags": {
+            "encoder": "AVI-Mux GUI 1.17.5, Apr  5 2006  18:41:17",
+            "JUNK": ""
+        }
+    }
+}

@@ -1,0 +1,23 @@
+ffprobe version n2.6.1 Copyright (c) 2007-2015 the FFmpeg developers
+  built with gcc 4.8 (Ubuntu 4.8.2-19ubuntu1)
+  configuration: --prefix=/opt/ffmpeg --extra-cflags=-I/opt/ffmpeg/include --extra-ldflags=-L/opt/ffmpeg/lib --extra-libs=-ldl --enable-gpl --enable-libass --enable-libfdk-aac --enable-libfreetype --enable-libmp3lame --enable-libtheora --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libx265 --enable-nonfree
+  libavutil      54. 20.100 / 54. 20.100
+  libavcodec     56. 26.100 / 56. 26.100
+  libavformat    56. 25.101 / 56. 25.101
+  libavdevice    56.  4.100 / 56.  4.100
+  libavfilter     5. 11.102 /  5. 11.102
+  libswscale      3.  1.101 /  3.  1.101
+  libswresample   1.  1.100 /  1.  1.100
+  libpostproc    53.  3.100 / 53.  3.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'Fire 69 - 45s - 4k res.mp4':
+  Metadata:
+    major_brand     : mp42
+    minor_version   : 0
+    compatible_brands: mp42mp41
+    creation_time   : 2013-11-18 05:22:21
+  Duration: 00:00:55.47, start: 0.041708, bitrate: 12015 kb/s
+    Stream #0:0(eng): Video: h264 (Main) (avc1 / 0x31637661), yuv420p(tv), 4096x2160 [SAR 1:1 DAR 256:135], 12012 kb/s, 23.98 fps, 23.98 tbr, 48k tbn, 47.95 tbc (default)
+    Metadata:
+      creation_time   : 2013-11-18 05:22:21
+      handler_name    : Alias Data Handler
+      encoder         : AVC Coding

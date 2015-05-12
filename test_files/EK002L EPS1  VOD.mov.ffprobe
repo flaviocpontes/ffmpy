@@ -1,0 +1,46 @@
+ffprobe version n2.6.1 Copyright (c) 2007-2015 the FFmpeg developers
+  built with gcc 4.8 (Ubuntu 4.8.2-19ubuntu1)
+  configuration: --prefix=/opt/ffmpeg --extra-cflags=-I/opt/ffmpeg/include --extra-ldflags=-L/opt/ffmpeg/lib --extra-libs=-ldl --enable-gpl --enable-libass --enable-libfdk-aac --enable-libfreetype --enable-libmp3lame --enable-libtheora --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libx265 --enable-nonfree
+  libavutil      54. 20.100 / 54. 20.100
+  libavcodec     56. 26.100 / 56. 26.100
+  libavformat    56. 25.101 / 56. 25.101
+  libavdevice    56.  4.100 / 56.  4.100
+  libavfilter     5. 11.102 /  5. 11.102
+  libswscale      3.  1.101 /  3.  1.101
+  libswresample   1.  1.100 /  1.  1.100
+  libpostproc    53.  3.100 / 53.  3.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'EK002L EPS1  VOD.mov':
+  Metadata:
+    major_brand     : qt  
+    minor_version   : 537199360
+    compatible_brands: qt  
+    creation_time   : 2014-07-07 21:18:58
+  Duration: 00:26:48.98, start: 0.000000, bitrate: 35371 kb/s
+    Stream #0:0(eng): Video: mpeg2video (Main) (xdvb / 0x62766478), yuv420p(tv, bt709), 1920x1080 [SAR 1:1 DAR 16:9], 32296 kb/s, 29.97 fps, 29.97 tbr, 2997 tbn, 59.94 tbc (default)
+    Metadata:
+      creation_time   : 2014-07-07 21:18:58
+      handler_name    : Apple Alias Data Handler
+      encoder         : XDCAM EX 1080i60 (35 Mb/s VBR)
+      timecode        : 00:09:34;04
+    Stream #0:1(eng): Audio: pcm_s16le (sowt / 0x74776F73), 48000 Hz, 1 channels, s16, 768 kb/s (default)
+    Metadata:
+      creation_time   : 2014-07-07 21:18:58
+      handler_name    : Apple Alias Data Handler
+    Stream #0:2(eng): Audio: pcm_s16le (sowt / 0x74776F73), 48000 Hz, 1 channels, s16, 768 kb/s (default)
+    Metadata:
+      creation_time   : 2014-07-07 21:18:58
+      handler_name    : Apple Alias Data Handler
+    Stream #0:3(eng): Audio: pcm_s16le (sowt / 0x74776F73), 48000 Hz, 1 channels, s16, 768 kb/s (default)
+    Metadata:
+      creation_time   : 2014-07-07 21:18:58
+      handler_name    : Apple Alias Data Handler
+    Stream #0:4(eng): Audio: pcm_s16le (sowt / 0x74776F73), 48000 Hz, 1 channels, s16, 768 kb/s (default)
+    Metadata:
+      creation_time   : 2014-07-07 21:18:58
+      handler_name    : Apple Alias Data Handler
+    Stream #0:5(eng): Data: none (tmcd / 0x64636D74) (default)
+    Metadata:
+      creation_time   : 2014-07-07 21:18:58
+      handler_name    : Apple Alias Data Handler
+      timecode        : 00:09:34;04
+Unsupported codec with id 0 for input stream 5

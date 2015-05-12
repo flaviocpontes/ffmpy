@@ -9,16 +9,19 @@ ffprobe version n2.6.1 Copyright (c) 2007-2015 the FFmpeg developers
   libswscale      3.  1.101 /  3.  1.101
   libswresample   1.  1.100 /  1.  1.100
   libpostproc    53.  3.100 / 53.  3.100
-Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'AULA PROFISSOES_media.mp4':
-  Metadata:
-    major_brand     : isom
-    minor_version   : 512
-    compatible_brands: isomiso2avc1mp41
-    encoder         : Lavf56.25.101
-  Duration: 00:15:46.46, start: 0.042667, bitrate: 699 kb/s
-    Stream #0:0(und): Video: h264 (Main) (avc1 / 0x31637661), yuv420p, 852x480 [SAR 640:639 DAR 16:9], 618 kb/s, 29.97 fps, 29.97 tbr, 11988 tbn, 59.94 tbc (default)
+[theora @ 0x2dce7e0] 7 bits left in packet 82
+[ogg @ 0x2dcdc60] Broken file, keyframe not correctly marked.
+    Last message repeated 1 times
+Input #0, ogg, from 'sintel-2048-stereo.ogv':
+  Duration: 00:14:48.06, start: 0.000000, bitrate: 629 kb/s
+    Stream #0:0: Video: theora, yuv420p, 704x300, 24 fps, 24 tbr, 24 tbn, 24 tbc
+    Stream #0:1: Audio: vorbis, 44100 Hz, stereo, fltp, 128 kb/s
     Metadata:
-      handler_name    : VideoHandler
-    Stream #0:1(eng): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, mono, fltp, 72 kb/s (default)
-    Metadata:
-      handler_name    : SoundHandler
+      ENCODER         : Lavc52.79.1
+      TITLE           : Sintel (stereo)
+      ARTIST          : Colin Levy
+      LICENSE         : http://creativecommons.org/licenses/by/3.0/
+      DATE            : 2010-09-30
+      ORGANIZATION    : Blender Foundation
+      LOCATION        : http://www.archive.org/details/Sintel
+[theora @ 0x2dd1000] 7 bits left in packet 82
