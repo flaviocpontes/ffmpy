@@ -59,7 +59,7 @@ class TesteProbeContext(unittest.TestCase):
 
     def test_br_eleitor(self):
         self.maxDiff = None
-        file = open('test_files/BRASIL ELEITOR 547 VOD.ffprobe', 'r')
+        file = open('test_files/ACDM001 ESTRANHO COMILAO.mov.ffprobe', 'r')
         resultado_esperado = {'header': {'libavcodec': '56.26.100',
                                          'libavdevice': '56.4.100',
                                          'libavfilter': '5.11.102',
@@ -70,9 +70,10 @@ class TesteProbeContext(unittest.TestCase):
                                          'libswscale': '3.1.101',
                                          'util': 'ffprobe',
                                          'version': 'n2.6.1'},
-                              'Input 0': {'filename': 'BRASIL ELEITOR 547 VOD.mov',
-                                          'duration': ('00:26:21.25',),
-                                          'type': 'mov,mp4,m4a,3gp,3g2,mj2',
+                              'Input 0': {'filename': 'ACDM001 ESTRANHO COMILAO.mov',
+                                          'duration': '00:26:21.25',
+                                          'format_name': 'mov,mp4,m4a,3gp,3g2,mj2',
+                                          'format_long_name': 'QuickTime / MOV',
                                           'metadata': {'creation_time': datetime.datetime(2014, 12, 10, 21, 51, 18),
                                                        'handler_name': 'Apple Alias Data Handler',
                                                        'timecode': '01:00:00;00'},

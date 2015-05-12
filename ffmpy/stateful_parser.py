@@ -6,6 +6,42 @@ import re
 import datetime
 
 
+def get_codec_long_name(codec_name):
+    video_codecs = {'mpeg2video': 'MPEG-2 video',
+                    'h264': 'H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10',
+                    'vp8': 'On2 VP8',
+                    'mpeg4': 'MPEG-4 part 2',
+                    'theora': 'Theora',
+                    'msmpeg4v2': 'MPEG-4 part 2 Microsoft variant version 2', }
+    audio_codecs = {'flac': 'FLAC (Free Lossless Audio Codec)',
+                    'mp3': 'MP3 (MPEG audio layer 3)',
+                    'vorbis': 'Vorbis',
+                    'aac': 'AAC (Advanced Audio Coding)',
+                    'mp2': 'MP2 (MPEG audio layer 2)',
+                    'pcm_s16le': 'PCM signed 16-bit little-endian'}
+    image_codecs = {'png': 'PNG (Portable Network Graphics) image', }
+    conversion_table = dict(list(video_codecs.items()) +
+                            list(audio_codecs.items()) +
+                            list(image_codecs.items()))
+    return conversion_table.get(codec_name, '')
+
+
+def get_format_long_name(format_name):
+    video_formats = {'mov,mp4,m4a,3gp,3g2,mj2': 'QuickTime / MOV',
+                     'matroska,webm': 'Matroska / WebM',
+                     'avi': 'AVI (Audio Video Interleaved)',
+                     'ogg': 'Ogg', }
+    audio_formats = {'flac': 'raw FLAC',
+                     'mp3': 'MP2/3 (MPEG audio layer 2/3)',
+                     'ogg': 'Ogg',}
+    image_formats = {'png_pipe': 'piped png sequence',
+                     'mpeg': 'MPEG-PS (MPEG-2 Program Stream)'}
+    conversion_table = dict(list(video_formats.items()) +
+                            list(audio_formats.items()) +
+                            list(image_formats.items()))
+    return conversion_table.get(format_name, '')
+
+
 def decodedatetime(datestring):
     """
     Faz a decodificação das representações de datas da saída do ffmpeg para o objeto nativo datetime.
