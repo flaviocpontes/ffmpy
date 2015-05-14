@@ -1,0 +1,109 @@
+{
+    "programs": [
+
+    ],
+    "streams": [
+        {
+            "index": 0,
+            "codec_name": "vc1",
+            "codec_long_name": "SMPTE VC-1",
+            "profile": "Advanced",
+            "codec_type": "video",
+            "codec_time_base": "1/1000",
+            "codec_tag_string": "WVC1",
+            "codec_tag": "0x31435657",
+            "width": 1024,
+            "height": 576,
+            "has_b_frames": 1,
+            "sample_aspect_ratio": "0:1",
+            "display_aspect_ratio": "0:1",
+            "pix_fmt": "yuv420p",
+            "level": 3,
+            "chroma_location": "left",
+            "refs": 1,
+            "r_frame_rate": "10/1",
+            "avg_frame_rate": "10/1",
+            "time_base": "1/1000",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 7263808,
+            "duration": "7263.808000",
+            "bit_rate": "155572",
+            "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0
+            },
+            "tags": {
+                "language": "eng"
+            }
+        },
+        {
+            "index": 1,
+            "codec_name": "wmav2",
+            "codec_long_name": "Windows Media Audio 2",
+            "codec_type": "audio",
+            "codec_time_base": "1/16000",
+            "codec_tag_string": "a[1][0][0]",
+            "codec_tag": "0x0161",
+            "sample_fmt": "fltp",
+            "sample_rate": "16000",
+            "channels": 1,
+            "bits_per_sample": 0,
+            "r_frame_rate": "0/0",
+            "avg_frame_rate": "0/0",
+            "time_base": "1/1000",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 7263808,
+            "duration": "7263.808000",
+            "bit_rate": "16000",
+            "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0
+            },
+            "tags": {
+                "language": "por"
+            }
+        }
+    ],
+    "format": {
+        "filename": "Aula 01 - 13 de Junho de 2012 - jun 13 2012 08.38.45.wmv",
+        "nb_streams": 2,
+        "nb_programs": 0,
+        "format_name": "asf",
+        "format_long_name": "ASF (Advanced / Active Streaming Format)",
+        "start_time": "0.000000",
+        "duration": "7263.808000",
+        "size": "158414692",
+        "bit_rate": "174470",
+        "probe_score": 100,
+        "tags": {
+            "WMFSDKNeeded": "0.0.0.0000",
+            "DeviceConformanceTemplate": "L2",
+            "WMFSDKVersion": "12.0.7601.17514",
+            "IsVBR": "1",
+            "VBR Peak": "224560",
+            "Buffer Average": "385434",
+            "title": "Aula 01 - 13 de Junho de 2012",
+            "comment": "Hora de início: 20:38:45 ‎13/‎06/‎2012; Duração: 02:01:00; Participantes: ALEXANDRE BORDIGNON, Daniel Pedro da Silva, leila"
+        }
+    }
+}

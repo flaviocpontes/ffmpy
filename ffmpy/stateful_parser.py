@@ -12,17 +12,23 @@ def get_codec_long_name(codec_name):
                     'vp8': 'On2 VP8',
                     'mpeg4': 'MPEG-4 part 2',
                     'theora': 'Theora',
-                    'msmpeg4v2': 'MPEG-4 part 2 Microsoft variant version 2', }
+                    'msmpeg4v2': 'MPEG-4 part 2 Microsoft variant version 2',
+                    'vc1': 'SMPTE VC-1'}
+
     audio_codecs = {'flac': 'FLAC (Free Lossless Audio Codec)',
                     'mp3': 'MP3 (MPEG audio layer 3)',
                     'vorbis': 'Vorbis',
                     'aac': 'AAC (Advanced Audio Coding)',
                     'mp2': 'MP2 (MPEG audio layer 2)',
-                    'pcm_s16le': 'PCM signed 16-bit little-endian'}
+                    'pcm_s16le': 'PCM signed 16-bit little-endian',
+                    'wmav2': 'Windows Media Audio 2'}
+
     image_codecs = {'png': 'PNG (Portable Network Graphics) image', }
+
     conversion_table = dict(list(video_codecs.items()) +
                             list(audio_codecs.items()) +
                             list(image_codecs.items()))
+
     return conversion_table.get(codec_name, '')
 
 
@@ -30,7 +36,8 @@ def get_format_long_name(format_name):
     video_formats = {'mov,mp4,m4a,3gp,3g2,mj2': 'QuickTime / MOV',
                      'matroska,webm': 'Matroska / WebM',
                      'avi': 'AVI (Audio Video Interleaved)',
-                     'ogg': 'Ogg', }
+                     'ogg': 'Ogg',
+                     'asf': 'ASF (Advanced / Active Streaming Format)'}
     audio_formats = {'flac': 'raw FLAC',
                      'mp3': 'MP2/3 (MPEG audio layer 2/3)',
                      'ogg': 'Ogg',}
@@ -52,6 +59,10 @@ def decodedatetime(datestring):
         return datetime.datetime.strptime(datestring, '%b %d %Y %H:%M:%S')
     else:
         raise ValueError('date string "{}" does not match any supported date format.'.format(datestring))
+
+
+def timecode_to_seconds(timecode):
+    return str((int(timecode[0:2]*3600))+(int(timecode[3:5])*60)+(int(timecode[6:8]))+(int(timecode[9:])/100))
 
 
 def reset_class_counters():
@@ -153,6 +164,19 @@ class ProbeContext(Context):
 #################################
 # SubContext Classes Definition #
 #################################
+class InputDurationSubContext(SubContext):
+    """
+    Faz a interpretação da linha de duração dos Inputs.
+    """
+    def process(self, parser):
+        self.state = InputDuration()
+        self.remaining = parser.context.current_line
+        while self.remaining:
+            self.state.process(self)
+        parser.root.update(self.root)
+        parser.state = InputStreamSubContext()
+
+
 class InputStreamSubContext(SubContext):
     """
     Faz a interpretação da linha de descrição dos Fluxos.
@@ -164,8 +188,8 @@ class InputStreamSubContext(SubContext):
             while self.remaining:
                 self.state.process(self)
             if not parser.root.get('streams'):
-                parser.root['streams'] = {}
-            parser.root['streams']['{}'.format(InputStreamSubContext.count)] = self.root
+                parser.root['streams'] = []
+            parser.root['streams'].append(self.root)
             InputStreamSubContext.count += 1
         elif parser.context.current_line.startswith('    Metadata:'):
             parser.state = StreamMetadata()
@@ -297,7 +321,9 @@ class InputLine(State):
     """
     def process(self, parser):
         values = re.match('Input #\d*,\s(.*),\sfrom\s\'(.*)\':', parser.context.current_line)
-        parser.root.update(dict(zip(['type', 'filename'], list(values.groups()))))
+        parser.root.update({'format_name': values.groups()[0],
+                            'format_long_name': get_format_long_name(values.groups()[0]),
+                            'filename': values.groups()[1]})
         InputStreamSubContext.reset_count()
         parser.state = InputMetadata()
 
@@ -311,27 +337,51 @@ class InputMetadata(State):
 
     def process(self, parser):
         if re.match('^  Duration:', parser.context.current_line):
-            parser.state = InputDuration()
+            parser.state = InputDurationSubContext()
             parser.state.process(parser)
         elif re.match('^  Metadata:', parser.context.current_line):
-            self.root = parser.root['metadata'] = {}
+            self.root = parser.root['tags'] = {}
         elif re.match('^    \S*\s*: \S*', parser.context.current_line):
             values = re.match('^    (\S*)\s*: (.*?)\s*$', parser.context.current_line).groups()
-            if values[0] == 'creation_time':
-                self.root.update({values[0]: decodedatetime(values[1])})
-            else:
-                self.root.update({values[0]: values[1]})
+            self.root.update({values[0]: values[1]})
 
 
 class InputDuration(State):
     """
-    Faz a interpretação das linhas de descrição dos Fluxos
+    Recupera a duração do container, convertidas para segundos.
     """
     def process(self, parser):
-        if re.match('^  Duration: ([0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{2})', parser.context.current_line):
-            values = re.match('^  Duration: ([0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{2})', parser.context.current_line)
-            parser.root.update({'duration': values.groups()[0]})
-        parser.state = InputStreamSubContext()
+        values = re.match('^  Duration: ([0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{2})', parser.remaining)
+        parser.root.update({'duration': timecode_to_seconds(values.groups()[0])})
+        parser.remaining = parser.remaining[values.end():]
+        if re.match(', start', parser.remaining):
+            parser.state = InputStartTime()
+        elif re.match(', bitrate: (\d*) kb/s', parser.remaining):
+            parser.state = InputBitrate()
+
+
+class InputStartTime(State):
+    """
+    Busca o tempo de início do container
+    """
+    def process(self, parser):
+        values = re.match(', start: (\d*\.\d*)', parser.remaining)
+        parser.root.update({'start_time': values.groups()[0]})
+        parser.remaining = parser.remaining[values.end():]
+        if re.match(', bitrate: (\d*) kb/s', parser.remaining):
+            parser.state = InputBitrate()
+        else:
+            parser.remaining = ''
+
+
+class InputBitrate(State):
+    """
+    Busca o bitrate do container
+    """
+    def process(self, parser):
+        values = re.match(', bitrate: (\d*) kb/s', parser.remaining)
+        parser.root.update({'bit_rate': values.groups()[0]})
+        parser.remaining = ''
 
 
 class StreamIndex(State):
@@ -340,7 +390,7 @@ class StreamIndex(State):
     """
     def process(self, parser):
         values = re.match('^    Stream #\d:(\d)', parser.remaining)
-        # parser.root.update({'index': values.groups()[0]})
+        parser.root.update({'index': values.groups()[0]})
         parser.remaining = parser.remaining[values.end():]
         if parser.remaining.startswith('('):
             parser.state = StreamLanguage()
@@ -365,7 +415,7 @@ class StreamType(State):
     """
     def process(self, parser):
         values = re.match(':\s(\S*):\s', parser.remaining)
-        parser.root.update({'type': values.groups()[0]})
+        parser.root.update({'type': values.groups()[0].lower()})
         parser.remaining = parser.remaining[values.end():]
         if values.groups()[0] == 'Video':
             parser.state = VideoStreamCodec()
@@ -393,8 +443,6 @@ class VideoStreamCodec(State):
             pass
         elif re.match('\(\S*\s/\s\S*\),', parser.remaining):
             parser.state = StreamCodecSpec()
-        elif re.match('\(\S*\s/\s\S*\) \(', parser.remaining):
-            parser.state = DataStreamCodecSpec()
         else:
             parser.state = VideoStreamPixelFormat()
 
@@ -432,15 +480,7 @@ class DataStreamCodec(State):
             values = re.match('(\S*)\s', parser.remaining)
         parser.root.update({'codec': values.groups()[0]})
         parser.remaining = parser.remaining[values.end():]
-        parser.state = VideoStreamCodecProfile()
-        if re.match('\(\S*\)\s\(\S*\s/\s\S*\),', parser.remaining):
-            pass
-        elif re.match('\(\S*\s/\s\S*\),', parser.remaining):
-            parser.state = StreamCodecSpec()
-        elif re.match('\(\S*\s/\s\S*\) \(', parser.remaining):
-            parser.state = DataStreamCodecSpec()
-        else:
-            parser.state = VideoStreamPixelFormat()
+        parser.state = DataStreamCodecSpec()
 
 
 class VideoStreamCodecProfile(State):

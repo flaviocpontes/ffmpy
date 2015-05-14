@@ -30,7 +30,7 @@ class TestParseProbeOutput(unittest.TestCase):
         self.assertRaises(AttributeError, FFProbeParser.parse_probe_output, 'INVALID INPUT!!!!!')
 
     def test_ffprobe_outfile1(self):
-        file = os.path.join(test_file_path, 'AULA PROFISSOES.ffprobe')
+        file = os.path.join(test_file_path, 'AULA PROFISSOES.mov.ffprobe')
         self.assertEqual(FFProbeParser.parse_probe_output(open(file, 'r')),
                          {'duration': '00:15:46.41',
                           'filename': 'AULA PROFISSOES.mov',
@@ -57,7 +57,7 @@ class TestParseProbeOutput(unittest.TestCase):
                           'type': 'mov,mp4,m4a,3gp,3g2,mj2'})
 
     def test_ffprobe_outfile2(self):
-        file = os.path.join(test_file_path, 'AULA PROFISSOES_alta.ffprobe')
+        file = os.path.join(test_file_path, 'AULA PROFISSOES_alta.mp4.ffprobe')
         self.assertEqual(FFProbeParser.parse_probe_output(open(file, 'r')),
                          {'duration': '00:15:46.46',
                           'filename': 'AULA PROFISSOES_alta.mp4',
@@ -110,8 +110,8 @@ class TestParseProbeOutput(unittest.TestCase):
                           'metadata': {'handler_name': 'SoundHandler'}})
 
     def test_ffprobe_outfile4(self):
-        file = os.path.join(test_file_path, 'AULA PROFISSOES_media.webm.ffprobe')
-        print(FFProbeParser.parse_probe_output(open(file, 'r')))
+        file = '/home/flaviopontes/PycharmProjects/FFMPY/test_files/AULA PROFISSOES_media.webm.ffprobe'
+        #file = os.path.join(test_file_path, 'AULA PROFISSOES_media.webm.ffprobe')
         self.assertEqual(FFProbeParser.parse_probe_output(open(file, 'r')),
                          {'type': 'mov,mp4,m4a,3gp,3g2,mj2',
                           'duration': '00:15:46.46',
