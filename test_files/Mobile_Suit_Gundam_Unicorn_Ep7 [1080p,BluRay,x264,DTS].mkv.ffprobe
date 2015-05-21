@@ -1,0 +1,21 @@
+ffprobe version n2.6.1 Copyright (c) 2007-2015 the FFmpeg developers
+  built with gcc 4.8 (Ubuntu 4.8.2-19ubuntu1)
+  configuration: --prefix=/opt/ffmpeg --extra-cflags=-I/opt/ffmpeg/include --extra-ldflags=-L/opt/ffmpeg/lib --extra-libs=-ldl --enable-gpl --enable-libass --enable-libfdk-aac --enable-libfreetype --enable-libmp3lame --enable-libtheora --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libx265 --enable-nonfree
+  libavutil      54. 20.100 / 54. 20.100
+  libavcodec     56. 26.100 / 56. 26.100
+  libavformat    56. 25.101 / 56. 25.101
+  libavdevice    56.  4.100 / 56.  4.100
+  libavfilter     5. 11.102 /  5. 11.102
+  libswscale      3.  1.101 /  3.  1.101
+  libswresample   1.  1.100 /  1.  1.100
+  libpostproc    53.  3.100 / 53.  3.100
+[matroska,webm @ 0x1e86c60] Could not find codec parameters for stream 0 (Subtitle: hdmv_pgs_subtitle): unspecified size
+Consider increasing the value for the 'analyzeduration' and 'probesize' options
+Input #0, matroska,webm, from '/media/flaviopontes/Gigante/Filmes/Anime/Gundam unicorn/Mobile_Suit_Gundam_Unicorn_Ep7 [1080p,BluRay,x264,DTS].mkv':
+  Metadata:
+    encoder         : libebml v1.3.0 + libmatroska v1.4.1
+    creation_time   : 2014-05-19 03:46:33
+  Duration: 01:30:10.41, start: 0.000000, bitrate: 33706 kb/s
+    Stream #0:0(eng): Subtitle: hdmv_pgs_subtitle (default) (forced)
+    Stream #0:1(jpn): Video: h264 (High), yuv420p, 1920x1080 [SAR 1:1 DAR 16:9], 23.98 fps, 23.98 tbr, 1k tbn, 47.95 tbc (default) (forced)
+    Stream #0:2(jpn): Audio: ac3, 48000 Hz, stereo, fltp, 640 kb/s (default) (forced)

@@ -1,0 +1,44 @@
+{
+    "programs": [
+
+    ],
+    "streams": [
+        {
+            "index": 0,
+            "codec_name": "srt",
+            "codec_long_name": "SubRip subtitle",
+            "codec_type": "subtitle",
+            "codec_time_base": "1/1000",
+            "codec_tag_string": "[0][0][0][0]",
+            "codec_tag": "0x0000",
+            "r_frame_rate": "0/0",
+            "avg_frame_rate": "0/0",
+            "time_base": "1/1000",
+            "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0
+            }
+        }
+    ],
+    "chapters": [
+
+    ],
+    "format": {
+        "filename": "/media/flaviopontes/Gigante/Filmes/Anime/Studio Ghibli/My Neighbour Totoro/My Neighbour Totoro (twin audio).srt",
+        "nb_streams": 1,
+        "nb_programs": 0,
+        "format_name": "srt",
+        "format_long_name": "SubRip subtitle",
+        "size": "62500",
+        "probe_score": 100
+    }
+}

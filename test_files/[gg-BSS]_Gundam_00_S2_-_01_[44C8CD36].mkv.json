@@ -1,0 +1,330 @@
+{
+    "programs": [
+
+    ],
+    "streams": [
+        {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_time_base": "1001/48000",
+            "codec_tag_string": "[0][0][0][0]",
+            "codec_tag": "0x0000",
+            "width": 1280,
+            "height": 720,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 50,
+            "chroma_location": "left",
+            "refs": 10,
+            "is_avc": "1",
+            "nal_length_size": "4",
+            "r_frame_rate": "24000/1001",
+            "avg_frame_rate": "24000/1001",
+            "time_base": "1/1000",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "bits_per_raw_sample": "8",
+            "disposition": {
+                "default": 1,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0
+            },
+            "tags": {
+                "language": "jpn",
+                "title": "Gundam 00 Second Season - 01: Angel's Advent"
+            }
+        },
+        {
+            "index": 1,
+            "codec_name": "aac",
+            "codec_long_name": "AAC (Advanced Audio Coding)",
+            "profile": "LC",
+            "codec_type": "audio",
+            "codec_time_base": "1/48000",
+            "codec_tag_string": "[0][0][0][0]",
+            "codec_tag": "0x0000",
+            "sample_fmt": "fltp",
+            "sample_rate": "48000",
+            "channels": 2,
+            "channel_layout": "stereo",
+            "bits_per_sample": 0,
+            "r_frame_rate": "0/0",
+            "avg_frame_rate": "0/0",
+            "time_base": "1/1000",
+            "start_pts": 14,
+            "start_time": "0.014000",
+            "disposition": {
+                "default": 1,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0
+            },
+            "tags": {
+                "language": "jpn",
+                "title": "AAC 2.0"
+            }
+        },
+        {
+            "index": 2,
+            "codec_name": "ass",
+            "codec_long_name": "ASS (Advanced SubStation Alpha) subtitle",
+            "codec_type": "subtitle",
+            "codec_time_base": "1/1000",
+            "codec_tag_string": "[0][0][0][0]",
+            "codec_tag": "0x0000",
+            "r_frame_rate": "0/0",
+            "avg_frame_rate": "0/0",
+            "time_base": "1/1000",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 1452576,
+            "duration": "1452.576000",
+            "disposition": {
+                "default": 1,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0
+            },
+            "tags": {
+                "language": "eng",
+                "title": "Styled Subtitles"
+            }
+        },
+        {
+            "index": 3,
+            "codec_type": "attachment",
+            "codec_time_base": "0/1",
+            "codec_tag_string": "[0][0][0][0]",
+            "codec_tag": "0x0000",
+            "r_frame_rate": "0/0",
+            "avg_frame_rate": "0/0",
+            "time_base": "1/90000",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 130731840,
+            "duration": "1452.576000",
+            "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0
+            },
+            "tags": {
+                "filename": "Commerce_Black_Condensed_SSi_Bold_Condensed.ttf",
+                "mimetype": "application/x-truetype-font"
+            }
+        },
+        {
+            "index": 4,
+            "codec_type": "attachment",
+            "codec_time_base": "0/1",
+            "codec_tag_string": "[0][0][0][0]",
+            "codec_tag": "0x0000",
+            "r_frame_rate": "0/0",
+            "avg_frame_rate": "0/0",
+            "time_base": "1/90000",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 130731840,
+            "duration": "1452.576000",
+            "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0
+            },
+            "tags": {
+                "filename": "Essai.ttf",
+                "mimetype": "application/x-truetype-font"
+            }
+        },
+        {
+            "index": 5,
+            "codec_type": "attachment",
+            "codec_time_base": "0/1",
+            "codec_tag_string": "[0][0][0][0]",
+            "codec_tag": "0x0000",
+            "r_frame_rate": "0/0",
+            "avg_frame_rate": "0/0",
+            "time_base": "1/90000",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 130731840,
+            "duration": "1452.576000",
+            "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0
+            },
+            "tags": {
+                "filename": "kochi-mincho-subst.ttf",
+                "mimetype": "application/x-truetype-font"
+            }
+        },
+        {
+            "index": 6,
+            "codec_type": "attachment",
+            "codec_time_base": "0/1",
+            "codec_tag_string": "[0][0][0][0]",
+            "codec_tag": "0x0000",
+            "r_frame_rate": "0/0",
+            "avg_frame_rate": "0/0",
+            "time_base": "1/90000",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 130731840,
+            "duration": "1452.576000",
+            "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0
+            },
+            "tags": {
+                "filename": "KozMinPro-Medium.ttf",
+                "mimetype": "application/x-truetype-font"
+            }
+        }
+    ],
+    "chapters": [
+        {
+            "id": -1185386573,
+            "time_base": "1/1000000000",
+            "start": 0,
+            "start_time": "0.000000",
+            "end": 129755000000,
+            "end_time": "129.755000",
+            "tags": {
+                "title": "Prologue"
+            }
+        },
+        {
+            "id": 822514081,
+            "time_base": "1/1000000000",
+            "start": 129755000000,
+            "start_time": "129.755000",
+            "end": 706311000000,
+            "end_time": "706.311000",
+            "tags": {
+                "title": "Part One"
+            }
+        },
+        {
+            "id": 1620582069,
+            "time_base": "1/1000000000",
+            "start": 706311000000,
+            "start_time": "706.311000",
+            "end": 1260259000000,
+            "end_time": "1260.259000",
+            "tags": {
+                "title": "Part Two"
+            }
+        },
+        {
+            "id": -1909424249,
+            "time_base": "1/1000000000",
+            "start": 1260259000000,
+            "start_time": "1260.259000",
+            "end": 1351308000000,
+            "end_time": "1351.308000",
+            "tags": {
+                "title": "\"OP\""
+            }
+        },
+        {
+            "id": -827318864,
+            "time_base": "1/1000000000",
+            "start": 1351308000000,
+            "start_time": "1351.308000",
+            "end": 1436101000000,
+            "end_time": "1436.101000",
+            "tags": {
+                "title": "lol not quite done"
+            }
+        },
+        {
+            "id": -870199144,
+            "time_base": "1/1000000000",
+            "start": 1436101000000,
+            "start_time": "1436.101000",
+            "end": 1452576000000,
+            "end_time": "1452.576000",
+            "tags": {
+                "title": "Preview"
+            }
+        }
+    ],
+    "format": {
+        "filename": "/media/flaviopontes/Gigante/Filmes/Anime/Gundam 00/[gg-BSS]_Gundam_00_S2_-_01_[44C8CD36].mkv",
+        "nb_streams": 7,
+        "nb_programs": 0,
+        "format_name": "matroska,webm",
+        "format_long_name": "Matroska / WebM",
+        "start_time": "0.000000",
+        "duration": "1452.576000",
+        "size": "410432694",
+        "bit_rate": "2260440",
+        "probe_score": 100,
+        "tags": {
+            "title": "[gg-BSS] Gundam 00 Second Season - 01: Angel's Advent",
+            "encoder": "libebml v0.7.8 + libmatroska v0.8.1",
+            "creation_time": "2008-10-05 18:00:56"
+        }
+    }
+}

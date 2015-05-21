@@ -1,0 +1,59 @@
+ffprobe version n2.6.1 Copyright (c) 2007-2015 the FFmpeg developers
+  built with gcc 4.8 (Ubuntu 4.8.2-19ubuntu1)
+  configuration: --prefix=/opt/ffmpeg --extra-cflags=-I/opt/ffmpeg/include --extra-ldflags=-L/opt/ffmpeg/lib --extra-libs=-ldl --enable-gpl --enable-libass --enable-libfdk-aac --enable-libfreetype --enable-libmp3lame --enable-libtheora --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libx265 --enable-nonfree
+  libavutil      54. 20.100 / 54. 20.100
+  libavcodec     56. 26.100 / 56. 26.100
+  libavformat    56. 25.101 / 56. 25.101
+  libavdevice    56.  4.100 / 56.  4.100
+  libavfilter     5. 11.102 /  5. 11.102
+  libswscale      3.  1.101 /  3.  1.101
+  libswresample   1.  1.100 /  1.  1.100
+  libpostproc    53.  3.100 / 53.  3.100
+[matroska,webm @ 0x2f9ec60] Could not find codec parameters for stream 5 (Attachment: none): unknown codec
+Consider increasing the value for the 'analyzeduration' and 'probesize' options
+[matroska,webm @ 0x2f9ec60] Could not find codec parameters for stream 6 (Attachment: none): unknown codec
+Consider increasing the value for the 'analyzeduration' and 'probesize' options
+Input #0, matroska,webm, from '/media/flaviopontes/Gigante/Filmes/Anime/Berserk_Golden_Age_Arc_I_Egg_of_the_Supreme_Ruler_(2012)_[1080p,BluRay,flac,x264]_-_Taka-THORA/Berserk_Golden_Age_Arc_I_Egg_of_the_Supreme_Ruler_(2012)_[1080p,BluRay,flac,x264]_-_Taka-THORA.mkv':
+  Metadata:
+    title           : Berserk Golden Age Arc I: Egg of the Supreme Ruler (2012)
+    encoder         : libebml v1.2.3 + libmatroska v1.3.0
+    creation_time   : 2012-06-10 09:30:16
+  Duration: 01:16:50.03, start: 0.000000, bitrate: 7102 kb/s
+    Stream #0:0(jpn): Video: h264 (High 10), yuv420p10le, 1920x816 [SAR 1:1 DAR 40:17], 23.98 fps, 23.98 tbr, 1k tbn, 47.95 tbc (default)
+    Stream #0:1(jpn): Audio: flac, 48000 Hz, 5.1(side), s32 (24 bit) (default)
+    Stream #0:2(eng): Subtitle: ass (default)
+    Stream #0:3: Attachment: otf
+    Metadata:
+      filename        : A-OTF-Reisho101Std-Medium.otf
+      mimetype        : application/vnd.ms-opentype
+    Stream #0:4: Attachment: ttf
+    Metadata:
+      filename        : calibri.ttf
+      mimetype        : application/x-truetype-font
+    Stream #0:5: Attachment: none
+    Metadata:
+      filename        : DFKaiC.ttc
+      mimetype        : application/octet-stream
+    Stream #0:6: Attachment: none
+    Metadata:
+      filename        : DFKyks4.ttc
+      mimetype        : application/octet-stream
+    Stream #0:7: Attachment: otf
+    Metadata:
+      filename        : ElysiumStd-Medium.otf
+      mimetype        : application/vnd.ms-opentype
+    Stream #0:8: Attachment: ttf
+    Metadata:
+      filename        : fansubBlock.ttf
+      mimetype        : application/x-truetype-font
+    Stream #0:9: Attachment: otf
+    Metadata:
+      filename        : SyndorITCStd-Medium.otf
+      mimetype        : application/vnd.ms-opentype
+Unsupported codec with id 5198918 for input stream 3
+Unsupported codec with id 98304 for input stream 4
+Unsupported codec with id 0 for input stream 5
+Unsupported codec with id 0 for input stream 6
+Unsupported codec with id 5198918 for input stream 7
+Unsupported codec with id 98304 for input stream 8
+Unsupported codec with id 5198918 for input stream 9

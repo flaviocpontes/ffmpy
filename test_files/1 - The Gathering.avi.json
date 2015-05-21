@@ -1,0 +1,102 @@
+{
+    "programs": [
+
+    ],
+    "streams": [
+        {
+            "index": 0,
+            "codec_name": "mpeg4",
+            "codec_long_name": "MPEG-4 part 2",
+            "codec_type": "video",
+            "codec_time_base": "1/30000",
+            "codec_tag_string": "DX50",
+            "codec_tag": "0x30355844",
+            "width": 640,
+            "height": 496,
+            "has_b_frames": 1,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "40:31",
+            "pix_fmt": "yuv420p",
+            "level": -99,
+            "chroma_location": "left",
+            "refs": 1,
+            "quarter_sample": "0",
+            "divx_packed": "0",
+            "r_frame_rate": "24000/1001",
+            "avg_frame_rate": "2997/125",
+            "time_base": "125/2997",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 136232,
+            "duration": "5682.015349",
+            "bit_rate": "883830",
+            "nb_frames": "136232",
+            "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0
+            }
+        },
+        {
+            "index": 1,
+            "codec_name": "mp3",
+            "codec_long_name": "MP3 (MPEG audio layer 3)",
+            "codec_type": "audio",
+            "codec_time_base": "1/48000",
+            "codec_tag_string": "U[0][0][0]",
+            "codec_tag": "0x0055",
+            "sample_fmt": "s16p",
+            "sample_rate": "48000",
+            "channels": 2,
+            "channel_layout": "stereo",
+            "bits_per_sample": 0,
+            "r_frame_rate": "0/0",
+            "avg_frame_rate": "0/0",
+            "time_base": "3/125",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "bit_rate": "128000",
+            "nb_frames": "236751",
+            "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0
+            }
+        }
+    ],
+    "chapters": [
+
+    ],
+    "format": {
+        "filename": "/media/flaviopontes/Gigante/Babylon 5/B5 Movies/1 - The Gathering.avi",
+        "nb_streams": 2,
+        "nb_programs": 0,
+        "format_name": "avi",
+        "format_long_name": "AVI (Audio Video Interleaved)",
+        "start_time": "0.000000",
+        "duration": "5682.015349",
+        "size": "723605504",
+        "bit_rate": "1018801",
+        "probe_score": 100,
+        "tags": {
+            "encoder": "VirtualDubMod 1.5.4.1 (build 2178/release)",
+            "IAS1": "English"
+        }
+    }
+}

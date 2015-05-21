@@ -1,0 +1,106 @@
+ffprobe version n2.6.1 Copyright (c) 2007-2015 the FFmpeg developers
+  built with gcc 4.8 (Ubuntu 4.8.2-19ubuntu1)
+  configuration: --prefix=/opt/ffmpeg --extra-cflags=-I/opt/ffmpeg/include --extra-ldflags=-L/opt/ffmpeg/lib --extra-libs=-ldl --enable-gpl --enable-libass --enable-libfdk-aac --enable-libfreetype --enable-libmp3lame --enable-libtheora --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libx265 --enable-nonfree
+  libavutil      54. 20.100 / 54. 20.100
+  libavcodec     56. 26.100 / 56. 26.100
+  libavformat    56. 25.101 / 56. 25.101
+  libavdevice    56.  4.100 / 56.  4.100
+  libavfilter     5. 11.102 /  5. 11.102
+  libswscale      3.  1.101 /  3.  1.101
+  libswresample   1.  1.100 /  1.  1.100
+  libpostproc    53.  3.100 / 53.  3.100
+Input #0, matroska,webm, from '/media/flaviopontes/Gigante/Filmes/Anime/Studio Ghibli/The_Borrowers_Arrietty_(2010)_[1080p,BluRay,x264,DTS]_-_THORA-UTW/The_Borrowers_Arrietty_(2010)_[1080p,BluRay,x264,DTS]_-_THORA-UTW.mkv':
+  Metadata:
+    title           : Karigurashi no Arrietty BD
+    encoder         : libebml v1.2.0 + libmatroska v1.1.0
+    creation_time   : 2011-06-26 01:56:28
+  Duration: 01:34:07.64, start: 0.000000, bitrate: 10683 kb/s
+    Chapter #0:0: start 0.000000, end 564.981000
+    Metadata:
+      title           : Chapter 1
+    Chapter #0:1: start 564.981000, end 1065.481000
+    Metadata:
+      title           : Chapter 2
+    Chapter #0:2: start 1065.481000, end 1506.880000
+    Metadata:
+      title           : Chapter 3
+    Chapter #0:3: start 1506.880000, end 2055.095000
+    Metadata:
+      title           : Chapter 4
+    Chapter #0:4: start 2055.095000, end 2479.852000
+    Metadata:
+      title           : Chapter 5
+    Chapter #0:5: start 2479.852000, end 2791.622000
+    Metadata:
+      title           : Chapter 6
+    Chapter #0:6: start 2791.622000, end 3167.456000
+    Metadata:
+      title           : Chapter 7
+    Chapter #0:7: start 3167.456000, end 3755.377000
+    Metadata:
+      title           : Chapter 8
+    Chapter #0:8: start 3755.377000, end 4128.249000
+    Metadata:
+      title           : Chapter 9
+    Chapter #0:9: start 4128.249000, end 4635.005000
+    Metadata:
+      title           : Chapter 10
+    Chapter #0:10: start 4635.005000, end 5054.132000
+    Metadata:
+      title           : Chapter 11
+    Chapter #0:11: start 5054.132000, end 5646.641000
+    Metadata:
+      title           : Chapter 12
+    Chapter #0:12: start 5646.641000, end 5647.642000
+    Metadata:
+      title           : Chapter 13
+    Stream #0:0(jpn): Video: h264 (High), yuv420p(tv, bt709), 1920x1038 [SAR 1:1 DAR 320:173], 23.98 fps, 23.98 tbr, 1k tbn, 47.95 tbc (default)
+    Metadata:
+      title           : x264
+    Stream #0:1(jpn): Audio: dts (DTS), 48000 Hz, 5.1(side), fltp, 1536 kb/s (default)
+    Metadata:
+      title           : Japanese Audio
+    Stream #0:2(fre): Audio: dts (DTS), 48000 Hz, 5.1(side), fltp, 768 kb/s
+    Metadata:
+      title           : French Audio
+    Stream #0:3(eng): Subtitle: ass (default)
+    Metadata:
+      title           : English Subs
+    Stream #0:4(fre): Subtitle: ass
+    Metadata:
+      title           : Sous-Titres Français
+    Stream #0:5: Attachment: ttf
+    Metadata:
+      filename        : DFGKyks4-Arrietty.ttf
+      mimetype        : application/x-truetype-font
+    Stream #0:6: Attachment: ttf
+    Metadata:
+      filename        : DFPGothUW5-Arrietty.ttf
+      mimetype        : application/x-truetype-font
+    Stream #0:7: Attachment: ttf
+    Metadata:
+      filename        : FOT-MatisseMinoriProB-En.otf
+      mimetype        : application/x-truetype-font
+    Stream #0:8: Attachment: ttf
+    Metadata:
+      filename        : LTe53507.ttf
+      mimetype        : application/x-truetype-font
+    Stream #0:9: Attachment: ttf
+    Metadata:
+      filename        : Memo-Condensed Italic.ttf
+      mimetype        : application/x-truetype-font
+    Stream #0:10: Attachment: ttf
+    Metadata:
+      filename        : Memo-Condensed Normal.ttf
+      mimetype        : application/x-truetype-font
+    Stream #0:11: Attachment: ttf
+    Metadata:
+      filename        : PPETRIAL.otf
+      mimetype        : application/x-truetype-font
+Unsupported codec with id 98304 for input stream 5
+Unsupported codec with id 98304 for input stream 6
+Unsupported codec with id 98304 for input stream 7
+Unsupported codec with id 98304 for input stream 8
+Unsupported codec with id 98304 for input stream 9
+Unsupported codec with id 98304 for input stream 10
+Unsupported codec with id 98304 for input stream 11
