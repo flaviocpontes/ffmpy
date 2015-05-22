@@ -15,12 +15,12 @@ class TestParseProbeOutput(unittest.TestCase):
 
     def setUp(self):
         stateful_parser.Input.reset_count()
-        stateful_parser.InputStreamSubContext.reset_count()
+        stateful_parser.InputStreamLineParser.reset_count()
         stateful_parser.Output.reset_count()
 
     def tearDown(self):
         stateful_parser.Input.reset_count()
-        stateful_parser.InputStreamSubContext.reset_count()
+        stateful_parser.InputStreamLineParser.reset_count()
         stateful_parser.Output.reset_count()
 
     def test_empty(self):

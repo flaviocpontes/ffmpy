@@ -82,7 +82,7 @@ def timecode_to_seconds(timecode):
 
 def reset_class_counters():
     Input.reset_count()
-    InputStreamSubContext.reset_count()
+    InputStreamLineParser.reset_count()
     Output.reset_count()
 
 
@@ -135,7 +135,7 @@ class State:
         raise NotImplementedError
 
 
-class SubContext:
+class LineParser:
     """
     Classe abstrata que define a assinatura dos SubContextos
     """
@@ -177,18 +177,18 @@ class ProbeContext(Context):
 
 
 #################################
-# SubContext Classes Definition #
+# LineParser Classes Definition #
 #################################
-class InputDurationSubContext(SubContext):
+class InputDurationLineParser(LineParser):
     """
     Faz a interpretação da linha de duração dos Inputs.
     """
     def process(self, parser):
         if re.match('^    Stream ', parser.context.current_line):
-            parser.state = InputStreamSubContext()
+            parser.state = InputStreamLineParser()
             parser.state.process(parser)
         elif re.match('^    Chapter ', parser.context.current_line):
-            parser.state = InputChapterSubContext()
+            parser.state = InputChapterLineParser()
             parser.state.process(parser)
         else:
             self.state = InputDuration()
@@ -198,12 +198,18 @@ class InputDurationSubContext(SubContext):
             parser.root.update(self.root)
 
 
-class InputStreamSubContext(SubContext):
+class InputStreamLineParser(LineParser):
     """
     Faz a interpretação da linha de descrição dos Fluxos.
     """
     def process(self, parser):
-        if re.match('^    Stream ', parser.context.current_line):
+        if re.match('^    Chapter ', parser.context.current_line):
+            parser.state = InputChapterLineParser()
+            parser.state.process(parser)
+        elif re.match('^    Metadata:', parser.context.current_line):
+            self.root['metadata'] = {}
+            parser.state = StreamMetadata(self)
+        elif re.match('^    Stream ', parser.context.current_line):
             self.root = {}
             self.root['disposition'] = {"default": 0,
                                         "dub": 0,
@@ -225,24 +231,20 @@ class InputStreamSubContext(SubContext):
             if not parser.root.get('streams'):
                 parser.root['streams'] = []
             parser.root['streams'].append(self.root)
-            InputStreamSubContext.count += 1
-        elif re.match('^    Metadata:', parser.context.current_line):
-            parser.state = StreamMetadata()
-            parser.state.process(parser)
+            InputStreamLineParser.count += 1
 
 
-class InputChapterSubContext(SubContext):
+class InputChapterLineParser(LineParser):
     """
     Faz a interpretação da linha de descrição dos Fluxos.
     """
     def process(self, parser):
         if re.match('^    Stream ', parser.context.current_line):
-            parser.state = InputStreamSubContext()
+            parser.state = InputStreamLineParser()
             parser.state.process(parser)
         elif re.match('^    Metadata:', parser.context.current_line):
-            self.root['metadata']
+            self.root['metadata'] = {}
             parser.state = ChapterMetadata(self)
-            parser.state.process(parser)
         elif re.match('^    Chapter ', parser.context.current_line):
             # Should be default.
             self.root = {}
@@ -253,7 +255,7 @@ class InputChapterSubContext(SubContext):
             if not parser.root.get('chapters'):
                 parser.root['chapters'] = []
             parser.root['chapters'].append(self.root)
-            InputChapterSubContext.count += 1
+            InputChapterLineParser.count += 1
 
 #############################
 # Parser Classes Definition #
@@ -399,7 +401,7 @@ class InputLine(State):
         parser.root.update({'format_name': values.groups()[0],
                             'format_long_name': get_format_long_name(values.groups()[0]),
                             'filename': values.groups()[1]})
-        InputStreamSubContext.reset_count()
+        InputStreamLineParser.reset_count()
         parser.state = InputMetadata()
 
 
@@ -412,7 +414,7 @@ class InputMetadata(State):
 
     def process(self, parser):
         if re.match('^  Duration:', parser.context.current_line):
-            parser.state = InputDurationSubContext()
+            parser.state = InputDurationLineParser()
             parser.state.process(parser)
         elif re.match('^  Metadata:', parser.context.current_line):
             self.root = parser.root['tags'] = {}
@@ -499,21 +501,22 @@ class ChapterMetadata(State):
     Metadados do capitulo
     """
     def __init__(self, sub_context):
-        self.root = sub_context.root
+        self.root = sub_context.root['metadata']
 
     def process(self, parser):
         if re.match('^    Chapter ', parser.context.current_line):
-            parser.state = InputChapterSubContext()
+            # If Chapter line is detected
+            parser.state = InputChapterLineParser()
             parser.state.process(parser)
         elif re.match('^    Stream ', parser.context.current_line):
-            parser.state = InputStreamSubContext()
+            # If Stream line is detected
+            parser.state = InputStreamLineParser()
             parser.state.process(parser)
-        elif re.match('^    Metadata:', parser.context.current_line):
-            self.root = parser.root['metadata'] = {}
         elif re.match('^Input', parser.context.current_line):
+            # If Input line is detected
             parser.context.subcontext = Input(parser.context)
             parser.context.subcontext.process()
-        else:  # Default
+        elif re.match('^      \S*\s*: .*?\s*$', parser.context.current_line):  # Default
             values = re.match('^      (\S*)\s*: (.*?)\s*$', parser.context.current_line).groups()
             if values[0] == 'creation_time':
                 self.root.update({values[0]: decodedatetime(values[1])})
@@ -561,6 +564,10 @@ class StreamType(State):
             parser.state = AudioStreamCodec()
         elif values.groups()[0] == 'Data':
             parser.state = DataStreamCodec()
+        elif values.groups()[0] == 'Subtitle':
+            parser.state = SubtitleStreamCodec()
+        elif values.groups()[0] == 'Attachment':
+            parser.state = AttachmentStreamCodec()
         else:
             parser.remaining = ''
 
@@ -610,17 +617,18 @@ class StreamMetadata(State):
     """
     Metadados do fluxo.
     """
-    def __init__(self):
-        self.root = {}
+    def __init__(self, sub_context):
+        self.root = sub_context.root['metadata']
 
     def process(self, parser):
         if re.match('^    Stream ', parser.context.current_line):
             # If stream line is detected
-            parser.state = InputStreamSubContext()
+            parser.state = InputStreamLineParser()
             parser.state.process(parser)
-        elif re.match('^    Metadata:', parser.context.current_line):
-            # If Metadata header line is detected
-            self.root = parser.root['metadata'] = {}
+        elif re.match('^    Chapter ', parser.context.current_line):
+            # If Chapter line is detected
+            parser.state = InputChapterLineParser()
+            parser.state.process(parser)
         elif re.match('^Input', parser.context.current_line):
             # If Input line is detected
             parser.context.subcontext = Input(parser.context)
@@ -649,8 +657,8 @@ class VideoStreamCodec(State):
             values = re.match('(\S*)\s', parser.remaining)
         parser.root.update({'codec': values.groups()[0]})
         parser.remaining = parser.remaining[values.end():]
-        if re.match('\(\S*\)\s\(\S*\s/\s\S*\),', parser.remaining):
-            parser.state = VideoStreamCodecProfile() # When theres a profile
+        if re.match('\(\S*\)\s\(\S*\s/\s\S*\),', parser.remaining) or re.match('\(\S*\),', parser.remaining):
+            parser.state = VideoStreamCodecProfile() # When theres a profile and spec
         elif re.match('\(\S*\s/\s\S*\),', parser.remaining):
             parser.state = VideoStreamCodecSpec() # When theres only the codec spec
 
@@ -660,10 +668,13 @@ class VideoStreamCodecProfile(State):
     Perfil do codec.
     """
     def process(self, parser):
-        values = re.match('\((\S*?)\)\s', parser.remaining)
+        values = re.match('\((\S*?)\),?\s', parser.remaining)
         parser.root.update({'profile': values.groups()[0]})
         parser.remaining = parser.remaining[values.end():]
-        parser.state = VideoStreamCodecSpec()
+        if re.match('\(\S*\s/\s\S*\),', parser.remaining):
+            parser.state = VideoStreamCodecSpec()
+        else:
+            parser.state = VideoStreamPixelFormat()
 
 
 class VideoStreamCodecSpec(State):
@@ -760,7 +771,24 @@ class AudioStreamCodec(State):
             values = re.match('(\S*)\s', parser.remaining)
         parser.root.update({'codec': values.groups()[0]})
         parser.remaining = parser.remaining[values.end():]
-        parser.state = AudioStreamCodecSpec()
+        if re.match('\(\S*\)\s\(\S*\s/\s\S*\),', parser.remaining) or re.match('\(\S*\),', parser.remaining):
+            parser.state = AudioStreamCodecProfile() # When theres a profile and spec
+        elif re.match('\(\S*\s/\s\S*\),', parser.remaining):
+            parser.state = AudioStreamCodecSpec() # When theres only the codec spec
+
+
+class AudioStreamCodecProfile(State):
+    """
+    Perfil do codec.
+    """
+    def process(self, parser):
+        values = re.match('\((\S*?)\),?\s', parser.remaining)
+        parser.root.update({'profile': values.groups()[0]})
+        parser.remaining = parser.remaining[values.end():]
+        if re.match('\(\S*\s/\s\S*\),', parser.remaining):
+            parser.state = AudioStreamCodecSpec()
+        else:
+            parser.state = AudioStreamSamplingRate()
 
 
 class AudioStreamCodecSpec(State):
@@ -804,7 +832,7 @@ class AudioStreamSampleFormat(State):
     Taxa de amostragem do audio
     """
     def process(self, parser):
-        values = re.match('(\S*?), ', parser.remaining)
+        values = re.match('(\S*),?\s?', parser.remaining)
         parser.root.update({'sample_fmt': values.groups()[0]})
         parser.remaining = parser.remaining[values.end():]
         parser.state = AudioStreamBitrate()
@@ -843,6 +871,28 @@ class DataStreamCodecSpec(State):
         values = re.match('\((\S*)\s/\s(\S*?)\)', parser.remaining)
         parser.root.update({'codec_tag_string': values.groups()[0],
                             'codec_tag': values.groups()[1]})
+        parser.remaining = parser.remaining[values.end():]
+
+
+class SubtitleStreamCodec(State):
+    """
+    Codec das legendas.
+    """
+    def process(self, parser):
+        # Codec without profile or tag
+        values = re.match('(\S*),?\s?', parser.remaining)
+        parser.root.update({'codec': values.groups()[0]})
+        parser.remaining = parser.remaining[values.end():]
+
+
+class AttachmentStreamCodec(State):
+    """
+    Codec do Anexo.
+    """
+    def process(self, parser):
+        # Codec without profile or tag
+        values = re.match('(\S*),?\s?', parser.remaining)
+        parser.root.update({'codec': values.groups()[0]})
         parser.remaining = parser.remaining[values.end():]
 
 
