@@ -240,9 +240,11 @@ class InputChapterSubContext(SubContext):
             parser.state = InputStreamSubContext()
             parser.state.process(parser)
         elif re.match('^    Metadata:', parser.context.current_line):
-            parser.state = ChapterMetadata()
+            self.root['metadata']
+            parser.state = ChapterMetadata(self)
             parser.state.process(parser)
-        else:
+        elif re.match('^    Chapter ', parser.context.current_line):
+            # Should be default.
             self.root = {}
             self.state = ChapterIndex()
             self.remaining = parser.context.current_line.strip('\n')
@@ -490,15 +492,14 @@ class ChapterEnd(State):
         parser.root.update({'end': int(float(values.groups()[0])),
                             'end_time': values.groups()[0]})
         parser.remaining = parser.remaining[values.end():]
-        parser.state = ChapterEnd()
 
 
 class ChapterMetadata(State):
     """
     Metadados do capitulo
     """
-    def __init__(self):
-        self.root = {}
+    def __init__(self, sub_context):
+        self.root = sub_context.root
 
     def process(self, parser):
         if re.match('^    Chapter ', parser.context.current_line):
