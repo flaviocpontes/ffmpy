@@ -5,35 +5,52 @@ import io
 import re
 import datetime
 
+video_codecs = {'mpeg2video': 'MPEG-2 video',
+                'h264': 'H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10',
+                'vp8': 'On2 VP8',
+                'mpeg4': 'MPEG-4 part 2',
+                'theora': 'Theora',
+                'msmpeg4v2': 'MPEG-4 part 2 Microsoft variant version 2',
+                'vc1': 'SMPTE VC-1'}
+
+audio_codecs = {'flac': 'FLAC (Free Lossless Audio Codec)',
+                'mp3': 'MP3 (MPEG audio layer 3)',
+                'vorbis': 'Vorbis',
+                'aac': 'AAC (Advanced Audio Coding)',
+                'mp2': 'MP2 (MPEG audio layer 2)',
+                'pcm_s16le': 'PCM signed 16-bit little-endian',
+                'wmav2': 'Windows Media Audio 2'}
+
+image_codecs = {'png': 'PNG (Portable Network Graphics) image',
+                'bmp': 'BMP (Windows and OS/2 bitmap)',
+                'gif': 'GIF (Graphics Interchange Format)',
+                'alias_pix': 'Alias/Wavefront PIX image',
+                'pgm': 'PGM (Portable GrayMap) image',
+                'tiff': 'TIFF image',
+                'targa': 'Truevision Targa image',
+                }
+
+subtitle_codecs = {'ass': 'ASS (Advanced SubStation Alpha) subtitle'}
+
+video_formats = {'mov,mp4,m4a,3gp,3g2,mj2': 'QuickTime / MOV',
+                 'matroska,webm': 'Matroska / WebM',
+                 'avi': 'AVI (Audio Video Interleaved)',
+                 'ogg': 'Ogg',
+                 'asf': 'ASF (Advanced / Active Streaming Format)'}
+
+audio_formats = {'flac': 'raw FLAC',
+                 'mp3': 'MP2/3 (MPEG audio layer 2/3)',
+                 'ogg': 'Ogg',}
+
+image_formats = {'png_pipe': 'piped png sequence',
+                 'bmp_pipe': 'piped bmp sequence',
+                 'gif': 'CompuServe Graphics Interchange Format (GIF)',
+                 'alias_pix': 'Alias/Wavefront PIX image',
+                 'tiff_pipe': 'piped tiff sequence',
+                 'mpeg': 'MPEG-PS (MPEG-2 Program Stream)',
+                 'image2': 'image2 sequence'}
 
 def get_codec_long_name(codec_name):
-    video_codecs = {'mpeg2video': 'MPEG-2 video',
-                    'h264': 'H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10',
-                    'vp8': 'On2 VP8',
-                    'mpeg4': 'MPEG-4 part 2',
-                    'theora': 'Theora',
-                    'msmpeg4v2': 'MPEG-4 part 2 Microsoft variant version 2',
-                    'vc1': 'SMPTE VC-1'}
-
-    audio_codecs = {'flac': 'FLAC (Free Lossless Audio Codec)',
-                    'mp3': 'MP3 (MPEG audio layer 3)',
-                    'vorbis': 'Vorbis',
-                    'aac': 'AAC (Advanced Audio Coding)',
-                    'mp2': 'MP2 (MPEG audio layer 2)',
-                    'pcm_s16le': 'PCM signed 16-bit little-endian',
-                    'wmav2': 'Windows Media Audio 2'}
-
-    image_codecs = {'png': 'PNG (Portable Network Graphics) image',
-                    'bmp': 'BMP (Windows and OS/2 bitmap)',
-                    'gif': 'GIF (Graphics Interchange Format)',
-                    'alias_pix': 'Alias/Wavefront PIX image',
-                    'pgm': 'PGM (Portable GrayMap) image',
-                    'tiff': 'TIFF image',
-                    'targa': 'Truevision Targa image',
-                    }
-
-    subtitle_codecs = {'ass': 'ASS (Advanced SubStation Alpha) subtitle'}
-
     conversion_table = dict(list(video_codecs.items()) +
                             list(audio_codecs.items()) +
                             list(image_codecs.items()) +
@@ -43,21 +60,6 @@ def get_codec_long_name(codec_name):
 
 
 def get_format_long_name(format_name):
-    video_formats = {'mov,mp4,m4a,3gp,3g2,mj2': 'QuickTime / MOV',
-                     'matroska,webm': 'Matroska / WebM',
-                     'avi': 'AVI (Audio Video Interleaved)',
-                     'ogg': 'Ogg',
-                     'asf': 'ASF (Advanced / Active Streaming Format)'}
-    audio_formats = {'flac': 'raw FLAC',
-                     'mp3': 'MP2/3 (MPEG audio layer 2/3)',
-                     'ogg': 'Ogg',}
-    image_formats = {'png_pipe': 'piped png sequence',
-                     'bmp_pipe': 'piped bmp sequence',
-                     'gif': 'CompuServe Graphics Interchange Format (GIF)',
-                     'alias_pix': 'Alias/Wavefront PIX image',
-                     'tiff_pipe': 'piped tiff sequence',
-                     'mpeg': 'MPEG-PS (MPEG-2 Program Stream)',
-                     'image2': 'image2 sequence'}
     conversion_table = dict(list(video_formats.items()) +
                             list(audio_formats.items()) +
                             list(image_formats.items()))
@@ -78,6 +80,12 @@ def decodedatetime(datestring):
 
 def timecode_to_seconds(timecode):
     return str((int(timecode[0:2])*3600)+(int(timecode[3:5])*60)+(int(timecode[6:8]))+(int(timecode[9:])/100))
+
+
+def prepare_remaining(remaining, keys):
+    for key in keys:
+        remaining = remaining.replace('({})'.format(key), '')
+    return remaining.strip('\n').rstrip()
 
 
 def reset_class_counters():
@@ -202,6 +210,13 @@ class InputStreamLineParser(LineParser):
     """
     Faz a interpretação da linha de descrição dos Fluxos.
     """
+    format = None
+
+    @classmethod
+    def reset(cls):
+        cls.format = None
+        cls.reset_count()
+
     def process(self, parser):
         if re.match('^    Chapter ', parser.context.current_line):
             parser.state = InputChapterLineParser()
@@ -211,21 +226,22 @@ class InputStreamLineParser(LineParser):
             parser.state = StreamMetadata(self)
         elif re.match('^    Stream ', parser.context.current_line):
             self.root = {}
-            self.root['disposition'] = {"default": 0,
+            self.root['disposition'] = {"default": 1 if '(default)' in parser.context.current_line else 0,
                                         "dub": 0,
                                         "original": 0,
                                         "comment": 0,
                                         "lyrics": 0,
                                         "karaoke": 0,
-                                        "forced": 0,
+                                        "forced": 1 if '(forced)' in parser.context.current_line else 0,
                                         "hearing_impaired": 0,
                                         "visual_impaired": 0,
                                         "clean_effects": 0,
                                         "attached_pic": 0}
-            if '(default)' in parser.context.current_line:
-                self.root['disposition']['default'] = 1
+
             self.state = StreamIndex()
-            self.remaining = parser.context.current_line.strip('\n').strip('(default)').rstrip()
+            self.remaining = prepare_remaining(parser.context.current_line,
+                                               self.root.get('disposition').keys())
+
             while self.remaining:
                 self.state.process(self)
             if not parser.root.get('streams'):
@@ -401,7 +417,11 @@ class InputLine(State):
         parser.root.update({'format_name': values.groups()[0],
                             'format_long_name': get_format_long_name(values.groups()[0]),
                             'filename': values.groups()[1]})
-        InputStreamLineParser.reset_count()
+
+        #Resets input parametares and defines input format
+        InputStreamLineParser.reset()
+        InputStreamLineParser.format = values.groups()[0]
+
         parser.state = InputMetadata()
 
 
@@ -428,12 +448,16 @@ class InputDuration(State):
     Recupera a duração do container, convertidas para segundos.
     """
     def process(self, parser):
-        values = re.match('^  Duration: ([0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{2})', parser.remaining)
-        parser.root.update({'duration': timecode_to_seconds(values.groups()[0])})
+        if re.match('^  Duration: N/A', parser.remaining):
+            values = re.match('^  Duration: (N/A)', parser.remaining)
+            parser.root.update({'duration': 0})
+        elif re.match('^  Duration: [0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{2}', parser.remaining):
+            values = re.match('^  Duration: ([0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{2})', parser.remaining)
+            parser.root.update({'duration': timecode_to_seconds(values.groups()[0])})
         parser.remaining = parser.remaining[values.end():]
         if re.match(', start', parser.remaining):
             parser.state = InputStartTime()
-        elif re.match(', bitrate: (\d*) kb/s', parser.remaining):
+        elif re.match(', bitrate: (\d*) kb/s', parser.remaining) or re.match(', bitrate: (\S*)', parser.remaining):
             parser.state = InputBitrate()
 
 
@@ -445,7 +469,7 @@ class InputStartTime(State):
         values = re.match(', start: (\d*\.\d*)', parser.remaining)
         parser.root.update({'start_time': values.groups()[0]})
         parser.remaining = parser.remaining[values.end():]
-        if re.match(', bitrate: (\d*) kb/s', parser.remaining):
+        if re.match(', bitrate: (\d*) kb/s', parser.remaining) or re.match(', bitrate: (\S*)', parser.remaining):
             parser.state = InputBitrate()
         else:
             parser.remaining = ''
@@ -456,8 +480,11 @@ class InputBitrate(State):
     Busca o bitrate do container
     """
     def process(self, parser):
-        values = re.match(', bitrate: (\d*) kb/s', parser.remaining)
-        parser.root.update({'bit_rate': str(int(values.groups()[0])*1000)})
+        if re.match(', bitrate: (\d*) kb/s', parser.remaining):
+            values = re.match(', bitrate: (\d*) kb/s', parser.remaining)
+            parser.root.update({'bit_rate': str(int(values.groups()[0])*1000)})
+        elif re.match(', bitrate: (\S*)', parser.remaining):
+            parser.root.update({'bit_rate': 0})
         parser.remaining = ''
 
 
@@ -559,7 +586,10 @@ class StreamType(State):
         parser.root.update({'type': values.groups()[0].lower()})
         parser.remaining = parser.remaining[values.end():]
         if values.groups()[0] == 'Video':
-            parser.state = VideoStreamCodec()
+            if InputStreamLineParser.format in image_formats.keys():
+                parser.state = StillImageStreamCodec()
+            else:
+                parser.state = VideoStreamCodec()
         elif values.groups()[0] == 'Audio':
             parser.state = AudioStreamCodec()
         elif values.groups()[0] == 'Data':
@@ -651,16 +681,21 @@ class VideoStreamCodec(State):
         if re.match('\S*,\s', parser.remaining):
             # Codec without profile or tag
             values = re.match('(\S*),\s', parser.remaining)
-            parser.state = VideoStreamPixelFormat()
         elif re.match('\S*\s', parser.remaining):
             # Codec with profile or tag
             values = re.match('(\S*)\s', parser.remaining)
+
         parser.root.update({'codec': values.groups()[0]})
         parser.remaining = parser.remaining[values.end():]
-        if re.match('\(\S*\)\s\(\S*\s/\s\S*\),', parser.remaining) or re.match('\(\S*\),', parser.remaining):
-            parser.state = VideoStreamCodecProfile() # When theres a profile and spec
-        elif re.match('\(\S*\s/\s\S*\),', parser.remaining):
-            parser.state = VideoStreamCodecSpec() # When theres only the codec spec
+
+        if values.groups()[0] in image_codecs.keys():
+            if re.match('\S*, ', parser.remaining):
+                parser.state = StillImagePixelFormat()
+        else:
+            if re.match('\(\S*\s/\s\S*\),', parser.remaining):
+                parser.state = VideoStreamCodecSpec() # When theres only the codec spec
+            elif re.match('\(\S*\)\s\(\S*\s/\s\S*\),', parser.remaining) or re.match('\(.*?\),', parser.remaining):
+                parser.state = VideoStreamCodecProfile() # When theres a profile and spec
 
 
 class VideoStreamCodecProfile(State):
@@ -668,7 +703,7 @@ class VideoStreamCodecProfile(State):
     Perfil do codec.
     """
     def process(self, parser):
-        values = re.match('\((\S*?)\),?\s', parser.remaining)
+        values = re.match('\((.*?)\),?\s', parser.remaining)
         parser.root.update({'profile': values.groups()[0]})
         parser.remaining = parser.remaining[values.end():]
         if re.match('\(\S*\s/\s\S*\),', parser.remaining):
@@ -727,7 +762,7 @@ class VideoStreamResolution(State):
                             'sample_aspect_ratio': values.groups()[2],
                             'display_aspect_ratio': values.groups()[3]})
         parser.remaining = parser.remaining[values.end():]
-        if re.match('(\d*.\d*) fps, (\d*.\d*) tbr, (\S*?) tbn, (\S*?) tbc', parser.remaining):
+        if re.match('(\d*.?\d*) fps, (\d*.?\d*) tbr, (\S*?) tbn, (\S*?) tbc', parser.remaining):
             parser.state = VideoStreamTimeBase()
         else:
             parser.state = VideoStreamBitrate()
@@ -759,6 +794,85 @@ class VideoStreamBitrate(State):
         parser.state = VideoStreamTimeBase()
 
 
+# Image Stream States
+class StillImageStreamCodec(State):
+    """
+    Codec do fluxo.
+    """
+    def process(self, parser):
+        if re.match('\S*,\s', parser.remaining):
+            # Codec without profile or tag
+            values = re.match('(\S*),\s', parser.remaining)
+        elif re.match('\S*\s', parser.remaining):
+            # Codec with profile or tag
+            values = re.match('(\S*)\s', parser.remaining)
+
+        parser.root.update({'codec': values.groups()[0]})
+        parser.remaining = parser.remaining[values.end():]
+
+        parser.state = StillImagePixelFormat()
+
+class StillImageStreamCodecSpec(State):
+    """
+    """
+    def process(self, parser):
+        pass
+
+
+class StillImagePixelFormat(State):
+    """
+    """
+    def process(self, parser):
+        if re.match('\S*?\(', parser.remaining):
+            values = re.match('(\S*?)\(', parser.remaining)
+        elif re.match('\S*, ', parser.remaining):
+            values = re.match('(\S*), .', parser.remaining)
+        parser.root.update({'pixel_format': values.groups()[0]})
+        parser.remaining = parser.remaining[values.end()-1:]
+        if re.match('\(\S*?,\s\S*\), ', parser.remaining):
+            parser.state = StillImageColorSpec()
+        else:
+            parser.state = StillImageResolution()
+
+class StillImageColorSpec(State):
+    """
+    """
+    def process(self, parser):
+        values = re.match('\((\S*?),\s(\S*)\), ', parser.remaining)
+        parser.root.update({'color_range': values.groups()[0],
+                            'color_space': values.groups()[1]})
+        parser.remaining = parser.remaining[values.end():]
+        parser.state = StillImageResolution()
+
+
+class StillImageResolution(State):
+    def process(self, parser):
+        if re.match('\d*x\d*,?\s\[?SAR\s\d*:\d*\sDAR\s\d*:\d*\]?, ', parser.remaining):
+            values = re.match('(\d*)x(\d*),?\s\[?SAR\s(\d*:\d*)\sDAR\s(\d*:\d*)\]?, ', parser.remaining)
+            parser.root.update({'width': values.groups()[0],
+                                'height': values.groups()[1],
+                                'sample_aspect_ratio': values.groups()[2],
+                                'display_aspect_ratio': values.groups()[3]})
+        elif re.match('\d*x\d*, ', parser.remaining):
+            values = re.match('(\d*)x(\d*), ', parser.remaining)
+            parser.root.update({'width': values.groups()[0],
+                                'height': values.groups()[1]})
+        parser.remaining = parser.remaining[values.end():]
+        parser.state = StillImageStreamTimeBase()
+
+
+class StillImageStreamTimeBase(State):
+    """
+    tbr, tbn, tbc.
+    """
+    def process(self, parser):
+        values = re.match('(\d*.?\d*) tbr, (\S*?) tbn, (\S*?) tbc', parser.remaining)
+        parser.root.update({'average_frame_rate': values.groups()[0],
+                            'container_time_base': values.groups()[1],
+                            'codec_time_base': values.groups()[2]})
+        parser.remaining = parser.remaining[values.end():]
+
+
 # Audio Stream States
 class AudioStreamCodec(State):
     """
@@ -775,6 +889,8 @@ class AudioStreamCodec(State):
             parser.state = AudioStreamCodecProfile() # When theres a profile and spec
         elif re.match('\(\S*\s/\s\S*\),', parser.remaining):
             parser.state = AudioStreamCodecSpec() # When theres only the codec spec
+        elif re.match('\d*\sHz,', parser.remaining):
+            parser.state = AudioStreamSamplingRate() # When theres the Sampling Rate
 
 
 class AudioStreamCodecProfile(State):
@@ -823,6 +939,8 @@ class AudioStreamLayout(State):
         parser.root.update({'channel_layout': values.groups()[0]})
         if values.groups()[0] == 'stereo':
             parser.root.update({'channels': 2})
+        elif '5.1' in values.groups()[0]:
+            parser.root.update({'channels': 6})
         parser.remaining = parser.remaining[values.end():]
         parser.state = AudioStreamSampleFormat()
 
@@ -832,8 +950,13 @@ class AudioStreamSampleFormat(State):
     Taxa de amostragem do audio
     """
     def process(self, parser):
-        values = re.match('(\S*),?\s?', parser.remaining)
-        parser.root.update({'sample_fmt': values.groups()[0]})
+        if re.match('\S*\s\(\d*\s\S*\)', parser.remaining):
+            values = re.match('(\S*)\s\((\d*)\s\S*\)', parser.remaining)
+            parser.root.update({'sample_fmt': values.groups()[0],
+                                'bits_per_raw_sample': values.groups()[1]})
+        elif re.match('\S*,?\s?', parser.remaining):
+            values = re.match('(\S*),?\s?', parser.remaining)
+            parser.root.update({'sample_fmt': values.groups()[0]})
         parser.remaining = parser.remaining[values.end():]
         parser.state = AudioStreamBitrate()
 
