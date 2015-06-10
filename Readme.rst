@@ -6,6 +6,7 @@ FFMPY is a wrapper library around FFMPEG.
 It interfaces with ffmpeg through the shell and interprets the program stdout/stderr to generate it's internal structures.
 It implements the following functionalities:
 
+
 Media Analysis
 --------------
 
@@ -16,4 +17,4 @@ It also exposes the **MediaAnalyser.validate_media_file()** which determines if 
 Future Functionality
 --------------------
 
-It is planned to implement wrappers around the ffmpeg utility for media transcoding and streaming and arounf ffserver for media stream serving and aggregation.
+It is planned to implement wrappers around the ffmpeg utility for media transcoding and streaming and around ffserver for media stream serving and aggregation.

@@ -6,7 +6,7 @@ from __init__ import __author__, __version__, __copyright__, __package__
 import os.path
 import datetime
 import unittest
-from stateful_parser import *
+from parser import *
 
 
 class TestDecodeDateString(unittest.TestCase):

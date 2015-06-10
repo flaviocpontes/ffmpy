@@ -6,32 +6,32 @@ from __init__ import __author__, __version__, __copyright__, __package__
 import os.path
 import datetime
 import unittest
-from ffmpy.ffparser import *
-import stateful_parser
+from ffmpy.probe import *
+import parser
 
 test_file_path = 'test_files'
 
 class TestParseProbeOutput(unittest.TestCase):
 
     def setUp(self):
-        stateful_parser.Input.reset_count()
-        stateful_parser.InputStreamLineParser.reset_count()
-        stateful_parser.Output.reset_count()
+        parser.Input.reset_count()
+        parser.InputStreamLineParser.reset_count()
+        parser.Output.reset_count()
 
     def tearDown(self):
-        stateful_parser.Input.reset_count()
-        stateful_parser.InputStreamLineParser.reset_count()
-        stateful_parser.Output.reset_count()
+        parser.Input.reset_count()
+        parser.InputStreamLineParser.reset_count()
+        parser.Output.reset_count()
 
     def test_empty(self):
-        self.assertIsNone(FFProbeParser.parse_probe_output(''))
+        self.assertIsNone(MediaProbe.get_input_media_params(''))
 
     def test_invalid_input(self):
-        self.assertRaises(AttributeError, FFProbeParser.parse_probe_output, 'INVALID INPUT!!!!!')
+        self.assertRaises(AttributeError, MediaProbe.get_input_media_params, 'INVALID INPUT!!!!!')
 
     def test_ffprobe_video01(self):
         file = os.path.join(test_file_path, '1 - The Gathering.avi.ffprobe')
-        self.assertEqual(FFProbeParser.parse_probe_output(open(file, 'r')),
+        self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'format_name': 'avi',
                           'format_long_name': 'AVI (Audio Video Interleaved)',
                           'filename': '1 - The Gathering.avi',
@@ -43,6 +43,7 @@ class TestParseProbeOutput(unittest.TestCase):
                           'streams': [{'average_frame_rate': '23.98',
                                        'bitrate': '883',
                                        'codec': 'mpeg4',
+                                       'codec_long_name': 'MPEG-4 part 2',
                                        'codec_tag': '0x30355844',
                                        'codec_tag_string': 'DX50',
                                        'codec_time_base': '30k',
@@ -70,6 +71,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                        'channel_layout': 'stereo',
                                        'channels': 2,
                                        'codec': 'mp3',
+                                       'codec_long_name': 'MP3 (MPEG audio layer 3)',
                                        'codec_tag': '0x0055',
                                        'codec_tag_string': 'U[0][0][0]',
                                        'disposition': {'attached_pic': 0,
@@ -90,7 +92,7 @@ class TestParseProbeOutput(unittest.TestCase):
 
     def test_ffprobe_video02(self):
         file = os.path.join(test_file_path, '[gg-BSS]_Gundam_00_S2_-_01_[44C8CD36].mkv.ffprobe')
-        self.assertEqual(FFProbeParser.parse_probe_output(open(file, 'r')),
+        self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'format_name': 'matroska,webm',
                           'format_long_name': 'Matroska / WebM',
                           'filename': '/media/flaviopontes/Gigante/Filmes/Anime/Gundam '
@@ -145,6 +147,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                         'time_base': '1/1000000000'}],
                           'streams': [{'average_frame_rate': '23.98',
                                        'codec': 'h264',
+                                       'codec_long_name': 'H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10',
                                        'codec_time_base': '47.95',
                                        'container_time_base': '1k',
                                        'display_aspect_ratio': '16:9',
@@ -173,6 +176,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                       {'channel_layout': 'stereo',
                                        'channels': 2,
                                        'codec': 'aac',
+                                       'codec_long_name': 'AAC (Advanced Audio Coding)',
                                        'disposition': {'attached_pic': 0,
                                                        'clean_effects': 0,
                                                        'comment': 0,
@@ -192,6 +196,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                        'sample_rate': '48000',
                                        'type': 'audio'},
                                       {'codec': 'ass',
+                                       'codec_long_name': 'ASS (Advanced SubStation Alpha) subtitle',
                                        'disposition': {'attached_pic': 0,
                                                        'clean_effects': 0,
                                                        'comment': 0,
@@ -274,7 +279,7 @@ class TestParseProbeOutput(unittest.TestCase):
 
     def test_ffprobe_video03(self):
         file = os.path.join(test_file_path, '[HorribleSubs] Fairy Tail S2 - 52 [720p].mkv.ffprobe')
-        self.assertEqual(FFProbeParser.parse_probe_output(open(file, 'r')),
+        self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': '1902000',
                           'duration': '1464.97',
                           'filename': '/media/flaviopontes/Gigante/Filmes/Anime/Fairy '
@@ -284,6 +289,7 @@ class TestParseProbeOutput(unittest.TestCase):
                           'start_time': '0.000000',
                           'streams': [{'average_frame_rate': '23.81',
                                        'codec': 'h264',
+                                       'codec_long_name': 'H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10',
                                        'codec_time_base': '47.95',
                                        'container_time_base': '1k',
                                        'display_aspect_ratio': '16:9',
@@ -309,6 +315,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                       {'channel_layout': 'stereo',
                                        'channels': 2,
                                        'codec': 'aac',
+                                       'codec_long_name': 'AAC (Advanced Audio Coding)',
                                        'disposition': {'attached_pic': 0,
                                                        'clean_effects': 0,
                                                        'comment': 0,
@@ -326,6 +333,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                        'sample_rate': '44100',
                                        'type': 'audio'},
                                       {'codec': 'ass',
+                                       'codec_long_name': 'ASS (Advanced SubStation Alpha) subtitle',
                                        'disposition': {'attached_pic': 0,
                                                        'clean_effects': 0,
                                                        'comment': 0,
@@ -360,7 +368,7 @@ class TestParseProbeOutput(unittest.TestCase):
 
     def test_ffprobe_video04(self):
         file = os.path.join(test_file_path, 'Akira - 1988 [eng] dvdrip xvid [Honeyko].avi.ffprobe')
-        self.assertEqual(FFProbeParser.parse_probe_output(open(file, 'r')),
+        self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': '780000',
                           'duration': '7527.86',
                           'filename': '/media/flaviopontes/Gigante/Filmes/Anime/Akira - 1988 [eng] '
@@ -372,6 +380,7 @@ class TestParseProbeOutput(unittest.TestCase):
                           'streams': [{'average_frame_rate': '23.98',
                                        'bitrate': '652',
                                        'codec': 'mpeg4',
+                                       'codec_long_name': 'MPEG-4 part 2',
                                        'codec_tag': '0x44495658',
                                        'codec_tag_string': 'XVID',
                                        'codec_time_base': '23.98',
@@ -400,6 +409,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                        'channel_layout': 'stereo',
                                        'channels': 2,
                                        'codec': 'mp3',
+                                       'codec_long_name': 'MP3 (MPEG audio layer 3)',
                                        'codec_tag': '0x0055',
                                        'codec_tag_string': 'U[0][0][0]',
                                        'disposition': {'attached_pic': 0,
@@ -422,7 +432,7 @@ class TestParseProbeOutput(unittest.TestCase):
 
     def test_ffprobe_video05(self):
         file = os.path.join(test_file_path, 'AULA PROFISSOES.mov.ffprobe')
-        self.assertEqual(FFProbeParser.parse_probe_output(open(file, 'r')),
+        self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': '34926000',
                           'duration': '946.41',
                           'filename': 'AULA PROFISSOES.mov',
@@ -432,6 +442,7 @@ class TestParseProbeOutput(unittest.TestCase):
                           'streams': [{'average_frame_rate': '29.97',
                                        'bitrate': '33386',
                                        'codec': 'mpeg2video',
+                                       'codec_long_name': 'MPEG-2 video',
                                        'codec_tag': '0x62766478',
                                        'codec_tag_string': 'xdvb',
                                        'codec_time_base': '59.94',
@@ -466,6 +477,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                       {'bitrate': '768000',
                                        'channel_layout': '1 channels',
                                        'codec': 'pcm_s16le',
+                                       'codec_long_name': 'PCM signed 16-bit little-endian',
                                        'codec_tag': '0x74776F73',
                                        'codec_tag_string': 'sowt',
                                        'disposition': {'attached_pic': 0,
@@ -489,6 +501,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                       {'bitrate': '768000',
                                        'channel_layout': '1 channels',
                                        'codec': 'pcm_s16le',
+                                       'codec_long_name': 'PCM signed 16-bit little-endian',
                                        'codec_tag': '0x74776F73',
                                        'codec_tag_string': 'sowt',
                                        'disposition': {'attached_pic': 0,
@@ -536,7 +549,7 @@ class TestParseProbeOutput(unittest.TestCase):
 
     def test_ffprobe_video06(self):
         file = os.path.join(test_file_path, 'b5c.s01e01.war_zone.dvdrip_xvid-medieval.avi.ffprobe')
-        self.assertEqual(FFProbeParser.parse_probe_output(open(file, 'r')),
+        self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': '1100000',
                           'duration': '2655.66',
                           'filename': '/media/flaviopontes/Gigante/Babylon 5/B5 Crusade '
@@ -547,6 +560,7 @@ class TestParseProbeOutput(unittest.TestCase):
                           'streams': [{'average_frame_rate': '23.98',
                                        'bitrate': '958',
                                        'codec': 'mpeg4',
+                                       'codec_long_name': 'MPEG-4 part 2',
                                        'codec_tag': '0x44495658',
                                        'codec_tag_string': 'XVID',
                                        'codec_time_base': '23.98',
@@ -575,6 +589,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                        'channel_layout': 'stereo',
                                        'channels': 2,
                                        'codec': 'mp3',
+                                       'codec_long_name': 'MP3 (MPEG audio layer 3)',
                                        'codec_tag': '0x0055',
                                        'codec_tag_string': 'U[0][0][0]',
                                        'disposition': {'attached_pic': 0,
@@ -596,7 +611,7 @@ class TestParseProbeOutput(unittest.TestCase):
 
     def test_ffprobe_video07(self):
         file = os.path.join(test_file_path, 'Berserk_Golden_Age_Arc_I_Egg_of_the_Supreme_Ruler_(2012)_[1080p,BluRay,flac,x264]_-_Taka-THORA.mkv.ffprobe')
-        self.assertEqual(FFProbeParser.parse_probe_output(open(file, 'r')),
+        self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': '7102000',
                           'duration': '4610.03',
                           'filename': '/media/flaviopontes/Gigante/Filmes/Anime/Berserk_Golden_Age_Arc_I_Egg_of_the_Supreme_Ruler_(2012)_[1080p,BluRay,flac,x264]_-_Taka-THORA/Berserk_Golden_Age_Arc_I_Egg_of_the_Supreme_Ruler_(2012)_[1080p,BluRay,flac,x264]_-_Taka-THORA.mkv',
@@ -605,6 +620,7 @@ class TestParseProbeOutput(unittest.TestCase):
                           'start_time': '0.000000',
                           'streams': [{'average_frame_rate': '23.98',
                                        'codec': 'h264',
+                                       'codec_long_name': 'H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10',
                                        'codec_time_base': '47.95',
                                        'container_time_base': '1k',
                                        'display_aspect_ratio': '40:17',
@@ -632,6 +648,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                        'channel_layout': '5.1(side)',
                                        'channels': 6,
                                        'codec': 'flac',
+                                       'codec_long_name': 'FLAC (Free Lossless Audio Codec)',
                                        'disposition': {'attached_pic': 0,
                                                        'clean_effects': 0,
                                                        'comment': 0,
@@ -649,6 +666,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                        'sample_rate': '48000',
                                        'type': 'audio'},
                                       {'codec': 'ass',
+                                       'codec_long_name': 'ASS (Advanced SubStation Alpha) subtitle',
                                        'disposition': {'attached_pic': 0,
                                                        'clean_effects': 0,
                                                        'comment': 0,
@@ -782,7 +800,7 @@ class TestParseProbeOutput(unittest.TestCase):
 
     def test_ffprobe_video08(self):
         file = os.path.join(test_file_path, 'Ghost_in_the_Shell_Arise_Ep_1_[1080p,BluRay,aac,x264]_-_THORA.mkv.ffprobe')
-        self.assertEqual(FFProbeParser.parse_probe_output(open(file, 'r')),
+        self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': '10726000',
                           'duration': '3502.55',
                           'filename': 'Ghost_in_the_Shell_Arise_Ep_1_[1080p,BluRay,aac,x264]_-_THORA.mkv',
@@ -791,6 +809,7 @@ class TestParseProbeOutput(unittest.TestCase):
                           'start_time': '0.000000',
                           'streams': [{'average_frame_rate': '23.98',
                                        'codec': 'h264',
+                                       'codec_long_name': 'H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10',
                                        'codec_time_base': '47.95',
                                        'color_range': 'tv',
                                        'color_space': 'bt709/unknown/unknown',
@@ -819,6 +838,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                       {'channel_layout': '5.1',
                                        'channels': 6,
                                        'codec': 'aac',
+                                       'codec_long_name': 'AAC (Advanced Audio Coding)',
                                        'disposition': {'attached_pic': 0,
                                                        'clean_effects': 0,
                                                        'comment': 0,
@@ -837,6 +857,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                        'sample_rate': '48000',
                                        'type': 'audio'},
                                       {'codec': 'ass',
+                                       'codec_long_name': 'ASS (Advanced SubStation Alpha) subtitle',
                                        'disposition': {'attached_pic': 0,
                                                        'clean_effects': 0,
                                                        'comment': 0,
@@ -852,6 +873,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                        'language': 'eng',
                                        'type': 'subtitle'},
                                       {'codec': 'hdmv_pgs_subtitle',
+                                       'codec_long_name': 'HDMV Presentation Graphic Stream subtitles',
                                        'disposition': {'attached_pic': 0,
                                                        'clean_effects': 0,
                                                        'comment': 0,
@@ -952,7 +974,7 @@ class TestParseProbeOutput(unittest.TestCase):
 
     def test_ffprobe_imagem01(self):
         file = os.path.join(test_file_path, 'Cover-akira.jpg.ffprobe')
-        self.assertEqual(FFProbeParser.parse_probe_output(open(file, 'r')),
+        self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': '11211000',
                           'duration': '0.04',
                           'filename': '/media/flaviopontes/Gigante/Filmes/Anime/Akira - 1988 [eng] '
@@ -962,6 +984,7 @@ class TestParseProbeOutput(unittest.TestCase):
                           'start_time': '0.000000',
                           'streams': [{'average_frame_rate': '25',
                                        'codec': 'mjpeg',
+                                       'codec_long_name': 'MJPEG (Motion JPEG)',
                                        'codec_time_base': '25',
                                        'color_range': 'pc',
                                        'color_space': 'bt470bg/unknown/unknown',
@@ -987,7 +1010,7 @@ class TestParseProbeOutput(unittest.TestCase):
 
     def test_ffprobe_imagem02(self):
         file = os.path.join(test_file_path, 'teste.bmp.ffprobe')
-        self.assertEqual(FFProbeParser.parse_probe_output(open(file, 'r')),
+        self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': 0,
                           'duration': 0,
                           'filename': 'teste.bmp',
@@ -995,6 +1018,7 @@ class TestParseProbeOutput(unittest.TestCase):
                           'format_name': 'bmp_pipe',
                           'streams': [{'average_frame_rate': '25',
                                        'codec': 'bmp',
+                                       'codec_long_name': 'BMP (Windows and OS/2 bitmap)',
                                        'codec_time_base': '25',
                                        'container_time_base': '25',
                                        'disposition': {'attached_pic': 0,
@@ -1016,7 +1040,7 @@ class TestParseProbeOutput(unittest.TestCase):
 
     def test_ffprobe_imagem03(self):
         file = os.path.join(test_file_path, 'teste.gif.ffprobe')
-        self.assertEqual(FFProbeParser.parse_probe_output(open(file, 'r')),
+        self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': 0,
                           'duration': 0,
                           'filename': 'teste.gif',
@@ -1024,6 +1048,7 @@ class TestParseProbeOutput(unittest.TestCase):
                           'format_name': 'gif',
                           'streams': [{'average_frame_rate': '100',
                                        'codec': 'gif',
+                                       'codec_long_name': 'GIF (Graphics Interchange Format)',
                                        'codec_time_base': '100',
                                        'container_time_base': '100',
                                        'disposition': {'attached_pic': 0,
@@ -1045,7 +1070,7 @@ class TestParseProbeOutput(unittest.TestCase):
 
     def test_ffprobe_imagem04(self):
         file = os.path.join(test_file_path, 'teste.pgm.ffprobe')
-        self.assertEqual(FFProbeParser.parse_probe_output(open(file, 'r')),
+        self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': '140036000',
                           'duration': '0.04',
                           'filename': 'teste.pgm',
@@ -1054,6 +1079,7 @@ class TestParseProbeOutput(unittest.TestCase):
                           'start_time': '0.000000',
                           'streams': [{'average_frame_rate': '25',
                                        'codec': 'pgm',
+                                       'codec_long_name': 'PGM (Portable GrayMap) image',
                                        'codec_time_base': '25',
                                        'container_time_base': '25',
                                        'disposition': {'attached_pic': 0,
@@ -1075,7 +1101,7 @@ class TestParseProbeOutput(unittest.TestCase):
 
     def test_ffprobe_imagem05(self):
         file = os.path.join(test_file_path, 'teste.pix.ffprobe')
-        self.assertEqual(FFProbeParser.parse_probe_output(open(file, 'r')),
+        self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': 0,
                           'duration': 0,
                           'filename': 'teste.pix',
@@ -1083,6 +1109,7 @@ class TestParseProbeOutput(unittest.TestCase):
                           'format_name': 'alias_pix',
                           'streams': [{'average_frame_rate': '25',
                                        'codec': 'alias_pix',
+                                       'codec_long_name': 'Alias/Wavefront PIX image',
                                        'codec_time_base': '25',
                                        'container_time_base': '25',
                                        'disposition': {'attached_pic': 0,
@@ -1104,7 +1131,7 @@ class TestParseProbeOutput(unittest.TestCase):
 
     def test_ffprobe_imagem06(self):
         file = os.path.join(test_file_path, 'teste.png.ffprobe')
-        self.assertEqual(FFProbeParser.parse_probe_output(open(file, 'r')),
+        self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': 0,
                           'duration': 0,
                           'filename': 'teste.png',
@@ -1112,6 +1139,7 @@ class TestParseProbeOutput(unittest.TestCase):
                           'format_name': 'png_pipe',
                           'streams': [{'average_frame_rate': '25',
                                        'codec': 'png',
+                                       'codec_long_name': 'PNG (Portable Network Graphics) image',
                                        'codec_time_base': '25',
                                        'container_time_base': '25',
                                        'display_aspect_ratio': '221:352',
@@ -1135,7 +1163,7 @@ class TestParseProbeOutput(unittest.TestCase):
 
     def test_ffprobe_imagem07(self):
         file = os.path.join(test_file_path, 'teste.tga.ffprobe')
-        self.assertEqual(FFProbeParser.parse_probe_output(open(file, 'r')),
+        self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': '80418000',
                           'duration': '0.04',
                           'filename': 'teste.tga',
@@ -1144,6 +1172,7 @@ class TestParseProbeOutput(unittest.TestCase):
                           'start_time': '0.000000',
                           'streams': [{'average_frame_rate': '25',
                                        'codec': 'targa',
+                                       'codec_long_name': 'Truevision Targa image',
                                        'codec_time_base': '25',
                                        'container_time_base': '25',
                                        'disposition': {'attached_pic': 0,
@@ -1165,7 +1194,7 @@ class TestParseProbeOutput(unittest.TestCase):
 
     def test_ffprobe_imagem08(self):
         file = os.path.join(test_file_path, 'teste.tiff.ffprobe')
-        self.assertEqual(FFProbeParser.parse_probe_output(open(file, 'r')),
+        self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': 0,
                           'duration': 0,
                           'filename': 'teste.tiff',
@@ -1173,6 +1202,7 @@ class TestParseProbeOutput(unittest.TestCase):
                           'format_name': 'tiff_pipe',
                           'streams': [{'average_frame_rate': '25',
                                        'codec': 'tiff',
+                                       'codec_long_name': 'TIFF image',
                                        'codec_time_base': '25',
                                        'container_time_base': '25',
                                        'display_aspect_ratio': '221:352',
@@ -1196,7 +1226,7 @@ class TestParseProbeOutput(unittest.TestCase):
 
     def test_ffprobe_subtitle01(self):
         file = os.path.join(test_file_path, 'My Neighbour Totoro (twin audio).srt.ffprobe')
-        self.assertEqual(FFProbeParser.parse_probe_output(open(file, 'r')),
+        self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': 0,
                           'duration': 0,
                           'filename': '/media/flaviopontes/Gigante/Filmes/Anime/Studio Ghibli/My '
@@ -1204,6 +1234,7 @@ class TestParseProbeOutput(unittest.TestCase):
                           'format_long_name': '',
                           'format_name': 'srt',
                           'streams': [{'codec': 'subrip',
+                                       'codec_long_name': 'SubRip subtitle',
                                        'disposition': {'attached_pic': 0,
                                                        'clean_effects': 0,
                                                        'comment': 0,

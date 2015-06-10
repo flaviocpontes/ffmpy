@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages  # Always prefer setuptools over distutils
 from codecs import open  # To use a consistent encoding
 from os import path
-from ffmpy import __version__
+from ffmpy import __version__, __author__, __copyright__
 
 here = path.abspath(path.dirname(__file__))
 
@@ -20,7 +20,7 @@ setup(
     description='Wrapper around the FFMPEG utility',
     long_description=long_description,
 
-    packages=['ffmpy.'],
+    packages=['ffmpy'],
 
     # The project's main homepage.
     url='https://bitbucket.org/acerpinnovacao/ffmpy',

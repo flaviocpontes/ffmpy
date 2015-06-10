@@ -1,20 +1,27 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from ffmpy import ffparser as p
+"""
+Módulo que centraliza as classes para abstração das estruturas de mídia.
+"""
+
+from ffmpy import __author__, __version__, __version_info__, __copyright__
+from ffmpy import probe
 import os
 import logging
 
 
 class MediaAnalyser:
+    """
+    Classe estática que agrupa os métodos expostos para a análise de arquivos de mídia
+    """
 
     @staticmethod
-    def media_file_difference(media_file_path, media_file_template):
-        descriptor = p.FFProbeParser.probe_and_parse_media_file(media_file_path)
+    def compare_with_template(media_file, media_file_template):
+        descriptor = probe.MediaProbe.get_input_media_params(media_file)
         media_file = MediaFile(**descriptor)
-        if isinstance(media_file_template, MediaFileTemplate):
-            pass
-        elif isinstance(media_file_template, dict):
+        assert isinstance(media_file_template, MediaFileTemplate)
+        if isinstance(media_file_template, dict):
             media_file_template = MediaFileTemplate(**media_file_template)
         else:
             raise ValueError('media_file_template must be a MediaFileTemplate instance or a dict')
@@ -23,10 +30,14 @@ class MediaAnalyser:
             return media_file_template.difference(media_file)
 
     @staticmethod
-    def validate_media_file(media_file_path, media_file_template):
-        descriptor = p.FFProbeParser.probe_and_parse_media_file(media_file_path)
+    def validate_with_template(media_file, media_file_template):
+        descriptor = probe.MediaProbe.get_input_media_params(media_file)
         media_file = MediaFile(**descriptor)
         return media_file_template == media_file
+
+    @staticmethod
+    def get_media_file_difference(filename1, filename2):
+        return MediaFile.parse_file(filename1)
 
 
 class _FFMPEGStream():
@@ -42,6 +53,70 @@ class _FFMPEGStream():
             return super(_FFMPEGStream, cls).__new__(cls)
         except AssertionError as e:
             logging.error('Invalid media stream type: {}'.format(kwargs.get('type')))
+
+    def __eq__(self, other):
+        """
+        Compares the layout of the MediaStreamTemplate with another MediaStreamTemplate or a MediaStream.
+        Doesn't take stream metadata into account.
+        :param other:
+        :return:
+        """
+        for key in self.__dict__.keys():
+            if key != 'metadata':
+                if key in other.__dict__.keys():
+                    if self.__dict__[key] != other.__dict__[key]:
+                        return False
+                else:
+                    return False
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def difference(self, other, include_metadata=False):
+        """
+        Retorna as diferenças entre o template do fluxo e o fluxo. Cada campo é retornado com uma dupla
+        {campo: (valor encontrado, valor esperado)}
+        :param other: VideoStream
+        :return: dict
+        """
+        difference = {}
+        for key in self.__dict__.keys():
+            if key == 'metadata':
+                if include_metadata:
+                    if key in other.__dict__.keys():
+                        for meta_key in self.__dict__.get('metadata').keys():
+                            if meta_key in other.__dict__.get('metadata').keys():
+                                if self.__dict__.get('metadata')[meta_key] != other.__dict__.get('metadata')[meta_key]:
+                                    if difference.get('metadata') == None:
+                                        difference['metadata'] = {}
+                                    difference.get('metadata')[meta_key] = (other.__dict__.get('metadata')[meta_key],
+                                                                            self.__dict__.get('metadata')[meta_key])
+                            else:
+                                difference.get('metadata')[meta_key] = (None, self.__dict__.get('metadata')[meta_key])
+                    else:  # if metadata is only present in the template
+                        if difference.get('metadata') == None:
+                            difference['metadata'] = {}
+                        difference['metadata'] = self.__dict__.get('metadata')
+            elif key == 'disposition':
+                if key in other.__dict__.keys():
+                    for meta_key in self.__dict__.get('disposition').keys():
+                        if meta_key in other.__dict__.get('disposition').keys():
+                            if self.__dict__.get('disposition')[meta_key] != other.__dict__.get('disposition')[meta_key]:
+                                if difference.get('disposition') == None:
+                                    difference['disposition'] = {}
+                                difference.get('disposition')[meta_key] = (other.__dict__.get('disposition')[meta_key],
+                                                                           self.__dict__.get('disposition')[meta_key])
+                        else:
+                            difference.get('disposition')[meta_key] = (None, self.__dict__.get('disposition')[meta_key])
+                else:  # if dispositions is only present in the template
+                    difference['dispositions'] = self.__dict__.get('dispositions')
+            else:
+                if key in other.__dict__.keys():
+                    if self.__dict__[key] != other.__dict__[key]:
+                        difference[key] = (other.__dict__[key], self.__dict__[key])
+
+        return difference
 
 
 class MediaStream(_FFMPEGStream):
@@ -76,42 +151,6 @@ class MediaStreamTemplate(_FFMPEGStream):
     def __repr__(self):
         return 'MediaStreamTemplate(**'+str(self.__dict__)+')'
 
-    def __eq__(self, other):
-        for key in self.__dict__.keys():
-            if key != 'metadata':
-                if key in other.__dict__.keys():
-                    if self.__dict__[key] != other.__dict__[key]:
-                        return False
-                else:
-                    return False
-        return True
-
-    def __ne__(self, other):
-        return not self.__eq__(other)
-
-    def difference(self, other):
-        """
-        Retorna as diferenças entre o template do fluxo e o fluxo. Cada campo é retornado com uma dupla
-        {campo: (valor encontrado, valor esperado)}
-        :param other: VideoStream
-        :return: dict
-        """
-        difference = {}
-        for key in self.__dict__.keys():
-            if key != 'metadata':
-                if key in other.__dict__.keys():
-                    if self.__dict__[key] != other.__dict__[key]:
-                        difference[key] = (other.__dict__[key], self.__dict__[key])
-            else:
-                if difference.get('metadata') == None:
-                    difference['metadata'] = {}
-                for meta_key in self.__dict__.get('metadata').keys():
-                    if meta_key in other.__dict__.get('metadata').keys():
-                        if self.__dict__.get('metadata')[meta_key] != other.__dict__.get('metadata')[meta_key]:
-                            difference.get('metadata')[meta_key] = (other.__dict__.get('metadata')[meta_key],
-                                                                    self.__dict__.get('metadata')[meta_key])
-        return difference
-
 
 class MediaFile:
     """
@@ -141,7 +180,7 @@ class MediaFile:
 
     @staticmethod
     def parse_file(filename):
-        return p.FFProbeParser.probe_and_parse_media_file(filename)
+        return probe.MediaProbe.get_media_file_input_params(filename)
 
     def __init__(self, **kwargs):
         self.filename = kwargs.get('filename')
@@ -239,7 +278,7 @@ class MediaFileTemplate():
                     return False
         return True
 
-    def difference(self, other):
+    def difference(self, other, include_metadata=False):
         """
         Retorna as diferenças entre o template do fluxo e o fluxo. Cada campo é retornado com uma dupla
         {campo: (valor encontrado, valor esperado)}
@@ -258,24 +297,19 @@ class MediaFileTemplate():
                 elif key in other.__dict__.keys():
                     if self.__dict__[key] != other.__dict__[key]:
                         difference[key] = (other.__dict__[key], self.__dict__[key])
+            elif include_metadata and key == 'metadata':
+                if key in other.__dict__.keys():
+                    for meta_key in self.__dict__.get('metadata').keys():
+                        if meta_key in other.__dict__.get('metadata').keys():
+                            if self.__dict__.get('metadata')[meta_key] != other.__dict__.get('metadata')[meta_key]:
+                                if difference.get('metadata') == None:
+                                    difference['metadata'] = {}
+                                difference.get('metadata')[meta_key] = (other.__dict__.get('metadata')[meta_key],
+                                                                        self.__dict__.get('metadata')[meta_key])
+                        else:
+                            difference.get('metadata')[meta_key] = (None, self.__dict__.get('metadata')[meta_key])
+                else:  # if metadata is only present in the template
+                    if difference.get('metadata') == None:
+                        difference['metadata'] = {}
+                    difference['metadata'] = self.__dict__.get('metadata')
         return difference
-
-
-if __name__ == '__main__':
-    #Para fins de teste
-    template = MediaFileTemplate(**{'type': 'mov,mp4,m4a,3gp,3g2,mj2',
-                                    'start_time': '0.000000',
-                                    'streams': [{'sample_format': 'yuv420p',
-                                                 'width': '1920',
-                                                 'type': 'Video',
-                                                 'profile': 'Main',
-                                                 'codec': 'mpeg2video',
-                                                 'height': '1080'},
-                                                {'sampling_rate': '48000',
-                                                 'type': 'Audio',
-                                                 'codec': 'pcm_s16le'},
-                                                ]})
-    os.chdir('/mnt/fork/EXPT_VOD_INES')
-    for file in os.listdir():
-        if file[-3:] == 'mov':
-            print(MediaAnalyser.media_file_difference(file, template))
