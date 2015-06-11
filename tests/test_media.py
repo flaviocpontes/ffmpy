@@ -19,53 +19,53 @@ class TestMediaStream(unittest.TestCase):
         self.assertIsNone(MediaStream(**{'type': 'Invalid'}))
 
     def test_video_stream_creation(self):
-        self.assertIsInstance(MediaStream(**{'type': 'Video'}), MediaStream)
+        self.assertIsInstance(MediaStream(**{'type': 'video'}), MediaStream)
 
     def test_video_stream_type_repr(self):
-        self.assertEqual(repr(MediaStream(**{'type': 'Video'})), "MediaStream(**{'type': 'Video'})")
+        self.assertEqual(repr(MediaStream(**{'type': 'video'})), "MediaStream(**{'type': 'video'})")
 
     def test_video_stream_repr2(self):
-        self.assertDictEqual({'sample_format': 'yuv420p', 'width': '1920', 'type': 'Video', 'profile': 'Main',
+        self.assertDictEqual({'sample_format': 'yuv420p', 'width': '1920', 'type': 'video', 'profile': 'Main',
                               'codec': 'mpeg2video', 'height': '1080', 'metadata': {'encoder': 'FFMPEG'}},
-                             MediaStream(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'Video',
+                             MediaStream(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'video',
                                             'profile': 'Main', 'codec': 'mpeg2video', 'height': '1080',
                                             'metadata': {'encoder': 'FFMPEG'}}).__dict__)
 
     def test_video_stream_str(self):
-        self.assertEqual(str(MediaStream(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'Video',
+        self.assertEqual(str(MediaStream(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'video',
                                             'profile': 'Main', 'codec': 'mpeg2video', 'height': '1080'})),
-                         "Video Stream: codec: mpeg2video, height: 1080, profile: Main, sample_format: yuv420p, "
-                         "type: Video, width: 1920")
+                         "video Stream: codec: mpeg2video, height: 1080, profile: Main, sample_format: yuv420p, "
+                         "type: video, width: 1920")
 
     def test_audio_stream_creation(self):
-        self.assertIsInstance(MediaStream(**{'type': 'Audio'}), MediaStream)
+        self.assertIsInstance(MediaStream(**{'type': 'audio'}), MediaStream)
 
     def test_audio_stream_type_repr(self):
-        self.assertEqual(repr(MediaStream(**{'type': 'Audio'})), "MediaStream(**{'type': 'Audio'})")
+        self.assertEqual(repr(MediaStream(**{'type': 'audio'})), "MediaStream(**{'type': 'audio'})")
 
     def test_image_stream_creation(self):
-        self.assertIsInstance(MediaStream(**{'type': 'Image'}), MediaStream)
+        self.assertIsInstance(MediaStream(**{'type': 'image'}), MediaStream)
 
     def test_image_stream_type_repr(self):
-        self.assertEqual(repr(MediaStream(**{'type': 'Image'})), "MediaStream(**{'type': 'Image'})")
+        self.assertEqual(repr(MediaStream(**{'type': 'image'})), "MediaStream(**{'type': 'image'})")
 
     def test_subtitle_stream_creation(self):
-        self.assertIsInstance(MediaStream(**{'type': 'Subtitle'}), MediaStream)
+        self.assertIsInstance(MediaStream(**{'type': 'subtitle'}), MediaStream)
 
     def test_subtitle_type_repr(self):
-        self.assertEqual(repr(MediaStream(**{'type': 'Subtitle'})), "MediaStream(**{'type': 'Subtitle'})")
+        self.assertEqual(repr(MediaStream(**{'type': 'subtitle'})), "MediaStream(**{'type': 'subtitle'})")
 
     def test_data_stream_creation(self):
-        self.assertIsInstance(MediaStream(**{'type': 'Data'}), MediaStream)
+        self.assertIsInstance(MediaStream(**{'type': 'data'}), MediaStream)
 
     def test_data_type_repr(self):
-        self.assertEqual(repr(MediaStream(**{'type': 'Data'})), "MediaStream(**{'type': 'Data'})")
+        self.assertEqual(repr(MediaStream(**{'type': 'data'})), "MediaStream(**{'type': 'data'})")
 
     def test_attachment_stream_creation(self):
-        self.assertIsInstance(MediaStream(**{'type': 'Attachment'}), MediaStream)
+        self.assertIsInstance(MediaStream(**{'type': 'attachment'}), MediaStream)
 
     def test_attachment_type_repr(self):
-        self.assertEqual(repr(MediaStream(**{'type': 'Attachment'})), "MediaStream(**{'type': 'Attachment'})")
+        self.assertEqual(repr(MediaStream(**{'type': 'attachment'})), "MediaStream(**{'type': 'attachment'})")
 
 
 class TestMediaStreamTemplate(unittest.TestCase):
@@ -80,55 +80,55 @@ class TestMediaStreamTemplate(unittest.TestCase):
         self.assertIsNone(MediaStream(**{'type': 'Invalid'}))
 
     def test_video_stream_template_creation(self):
-        self.assertIsInstance(MediaStreamTemplate(**{'type': 'Video'}), MediaStreamTemplate)
+        self.assertIsInstance(MediaStreamTemplate(**{'type': 'video'}), MediaStreamTemplate)
 
     def test_video_stream_template_type_repr(self):
-        self.assertEqual(repr(MediaStreamTemplate(**{'type': 'Video'})), "MediaStreamTemplate(**{'type': 'Video'})")
+        self.assertEqual(repr(MediaStreamTemplate(**{'type': 'video'})), "MediaStreamTemplate(**{'type': 'video'})")
 
     def test_video_stream_template_repr2(self):
-        self.assertDictEqual({'sample_format': 'yuv420p', 'width': '1920', 'type': 'Video', 'profile': 'Main',
+        self.assertDictEqual({'sample_format': 'yuv420p', 'width': '1920', 'type': 'video', 'profile': 'Main',
                               'codec': 'mpeg2video', 'height': '1080'},
-                             MediaStreamTemplate(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'Video',
+                             MediaStreamTemplate(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'video',
                                                     'profile': 'Main', 'codec': 'mpeg2video',
                                                     'height': '1080'}).__dict__)
 
     def test_audio_stream_template_creation(self):
-        self.assertIsInstance(MediaStreamTemplate(**{'type': 'Audio'}), MediaStreamTemplate)
+        self.assertIsInstance(MediaStreamTemplate(**{'type': 'audio'}), MediaStreamTemplate)
 
     def test_audio_stream_template_type_repr(self):
-        self.assertEqual(repr(MediaStreamTemplate(**{'type': 'Audio'})), "MediaStreamTemplate(**{'type': 'Audio'})")
+        self.assertEqual(repr(MediaStreamTemplate(**{'type': 'audio'})), "MediaStreamTemplate(**{'type': 'audio'})")
 
     def test_video_stream_template_str(self):
-        self.assertEqual(str(MediaStreamTemplate(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'Video',
+        self.assertEqual(str(MediaStreamTemplate(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'video',
                                                     'profile': 'Main', 'codec': 'mpeg2video', 'height': '1080'})),
-                         "Video Stream Template: codec: mpeg2video, height: 1080, profile: Main, sample_format: "
-                         "yuv420p, type: Video, width: 1920")
+                         "video stream template: codec: mpeg2video, height: 1080, profile: Main, sample_format: "
+                         "yuv420p, type: video, width: 1920")
 
     def test_image_stream_creation(self):
-        self.assertIsInstance(MediaStreamTemplate(**{'type': 'Image'}), MediaStreamTemplate)
+        self.assertIsInstance(MediaStreamTemplate(**{'type': 'image'}), MediaStreamTemplate)
 
     def test_image_stream_type_repr(self):
-        self.assertEqual(repr(MediaStreamTemplate(**{'type': 'Image'})), "MediaStreamTemplate(**{'type': 'Image'})")
+        self.assertEqual(repr(MediaStreamTemplate(**{'type': 'image'})), "MediaStreamTemplate(**{'type': 'image'})")
 
     def test_subtitle_stream_creation(self):
-        self.assertIsInstance(MediaStreamTemplate(**{'type': 'Subtitle'}), MediaStreamTemplate)
+        self.assertIsInstance(MediaStreamTemplate(**{'type': 'subtitle'}), MediaStreamTemplate)
 
     def test_subtitle_type_repr(self):
-        self.assertEqual(repr(MediaStreamTemplate(**{'type': 'Subtitle'})),
-                         "MediaStreamTemplate(**{'type': 'Subtitle'})")
+        self.assertEqual(repr(MediaStreamTemplate(**{'type': 'subtitle'})),
+                         "MediaStreamTemplate(**{'type': 'subtitle'})")
 
     def test_data_stream_creation(self):
-        self.assertIsInstance(MediaStreamTemplate(**{'type': 'Data'}), MediaStreamTemplate)
+        self.assertIsInstance(MediaStreamTemplate(**{'type': 'data'}), MediaStreamTemplate)
 
     def test_data_type_repr(self):
-        self.assertEqual(repr(MediaStreamTemplate(**{'type': 'Data'})), "MediaStreamTemplate(**{'type': 'Data'})")
+        self.assertEqual(repr(MediaStreamTemplate(**{'type': 'data'})), "MediaStreamTemplate(**{'type': 'data'})")
 
     def test_attachment_stream_creation(self):
-        self.assertIsInstance(MediaStreamTemplate(**{'type': 'Attachment'}), MediaStreamTemplate)
+        self.assertIsInstance(MediaStreamTemplate(**{'type': 'attachment'}), MediaStreamTemplate)
 
     def test_attachment_type_repr(self):
-        self.assertEqual(repr(MediaStreamTemplate(**{'type': 'Attachment'})),
-                         "MediaStreamTemplate(**{'type': 'Attachment'})")
+        self.assertEqual(repr(MediaStreamTemplate(**{'type': 'attachment'})),
+                         "MediaStreamTemplate(**{'type': 'attachment'})")
 
 
 class TestMediaStreamTemplateAnalysis(unittest.TestCase):
@@ -140,12 +140,12 @@ class TestMediaStreamTemplateAnalysis(unittest.TestCase):
         """
         Deve retornar verdadeiro sempre pois o template não faz nenhuma exigência
         """
-        self.assertTrue(MediaStreamTemplate(**{'type': 'Video'}) == MediaStream(**{'type': 'Video',
+        self.assertTrue(MediaStreamTemplate(**{'type': 'video'}) == MediaStream(**{'type': 'video',
                                             'sample_format': 'yuv420p', 'width': '66718', 'height': '643816hsa',
                                             'blablabla': 'sakjhfashkjf'}))
 
     def test_minimal_template_equality(self):
-        self.assertTrue(MediaStreamTemplate(**{'type': 'Video'}) == MediaStream(**{'type': 'Video',
+        self.assertTrue(MediaStreamTemplate(**{'type': 'video'}) == MediaStream(**{'type': 'video',
                             'sample_format': 'yuv420p', 'width': '66718', 'height': '643816hsa',
                             'blablabla': 'sakjhfashkjf'}))
 
@@ -153,48 +153,48 @@ class TestMediaStreamTemplateAnalysis(unittest.TestCase):
         """
         Testa um Template com todas as informações
         """
-        self.assertTrue(MediaStreamTemplate(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'Video',
+        self.assertTrue(MediaStreamTemplate(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'video',
                                                'profile': 'Main', 'codec': 'mpeg2video',
                                                 'height': '1080'}) ==
-        MediaStream(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'Video', 'profile': 'Main',
+        MediaStream(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'video', 'profile': 'Main',
                        'codec': 'mpeg2video', 'height': '1080'}))
 
     def test_full_template_equal2(self):
-        self.assertTrue(MediaStreamTemplate(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'Video',
+        self.assertTrue(MediaStreamTemplate(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'video',
                                                'profile': 'Main', 'codec': 'mpeg2video', 'height': '1080'}) ==\
-            MediaStream(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'Video', 'profile': 'Main',
+            MediaStream(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'video', 'profile': 'Main',
                            'codec': 'mpeg2video', 'height': '1080'}))
 
     def test_full_template_equal3(self):
         """
         Testa Um media stream sem uma chave que esta no Template
         """
-        self.assertFalse(MediaStreamTemplate(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'Video',
+        self.assertFalse(MediaStreamTemplate(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'video',
                                                'profile': 'Main', 'codec': 'mpeg2video', 'height': '1080'}) ==\
-            MediaStream(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'Video',
+            MediaStream(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'video',
                            'codec': 'mpeg2video', 'height': '1080'}))
 
     def test_stream_difference_with_different_height(self):
         """
         Testa um MediaFile diferente
         """
-        self.assertTrue(MediaStreamTemplate(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'Video',
+        self.assertTrue(MediaStreamTemplate(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'video',
                                                'profile': 'Main', 'codec': 'mpeg2video', 'height': '1080'}).
-                        difference(MediaStream(**{'sample_format': 'yuv420p', 'width': '1280', 'type': 'Video',
+                        difference(MediaStream(**{'sample_format': 'yuv420p', 'width': '1280', 'type': 'video',
                                                   'profile': 'Main', 'codec': 'mpeg2video', 'height': '720'})))
 
     def test_stream_difference_with_equal_streams(self):
         """
         Testa a diferença
         """
-        self.assertFalse(MediaStreamTemplate(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'Video',
+        self.assertFalse(MediaStreamTemplate(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'video',
                                                 'profile': 'Main', 'codec': 'mpeg2video', 'height': '1080',
                                                 'metadata': {'title': 'Test with Metadata'},
                                                 'disposition': {"default": 1, "dub": 0, "original": 0, "comment": 0,
                                                                 "lyrics": 0, "karaoke": 0, "forced": 1,
                                                                 "hearing_impaired": 0, "visual_impaired": 0,
                                                                 "clean_effects": 0, "attached_pic": 0}}).
-                         difference(MediaStream(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'Video',
+                         difference(MediaStream(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'video',
                                                    'profile': 'Main', 'codec': 'mpeg2video', 'height': '1080',
                                                    'metadata': {'title': 'Test with Metadata'},
                                                    'disposition': {"default": 1, "dub": 0, "original": 0, "comment": 0,
@@ -206,14 +206,14 @@ class TestMediaStreamTemplateAnalysis(unittest.TestCase):
         """
         Testa um MediaFile diferente
         """
-        self.assertEqual(MediaStreamTemplate(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'Video',
+        self.assertEqual(MediaStreamTemplate(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'video',
                                                 'profile': 'Main', 'codec': 'mpeg2video', 'height': '1080',
                                                 'metadata': {'title': 'Test with Metadata'},
                                                 'disposition': {"default": 1, "dub": 0, "original": 0, "comment": 0,
                                                                 "lyrics": 0, "karaoke": 0, "forced": 1,
                                                                 "hearing_impaired": 0, "visual_impaired": 0,
                                                                 "clean_effects": 0, "attached_pic": 0}}).
-                         difference(MediaStream(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'Video',
+                         difference(MediaStream(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'video',
                                                    'profile': 'Main', 'codec': 'mpeg2video', 'height': '1080',
                                                    'metadata': {'title': 'Different Metadata!'},
                                                    'disposition': {"default": 1, "dub": 0, "original": 0, "comment": 0,
@@ -227,14 +227,14 @@ class TestMediaStreamTemplateAnalysis(unittest.TestCase):
         """
         Testa a diferença
         """
-        self.assertEqual(MediaStreamTemplate(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'Video',
+        self.assertEqual(MediaStreamTemplate(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'video',
                                                 'profile': 'Main', 'codec': 'mpeg2video', 'height': '1080',
                                                 'metadata': {'title': 'Test with Metadata'},
                                                 'disposition': {"default": 1, "dub": 0, "original": 0, "comment": 0,
                                                                 "lyrics": 0, "karaoke": 0, "forced": 1,
                                                                 "hearing_impaired": 0, "visual_impaired": 0,
                                                                 "clean_effects": 0, "attached_pic": 0}}).
-                         difference(MediaStream(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'Video',
+                         difference(MediaStream(**{'sample_format': 'yuv420p', 'width': '1920', 'type': 'video',
                                                    'profile': 'Main', 'codec': 'mpeg2video', 'height': '1080',
                                                    'metadata': {'title': 'Test with Metadata'},
                                                    'disposition': {"default": 0, "dub": 0, "original": 0, "comment": 0,

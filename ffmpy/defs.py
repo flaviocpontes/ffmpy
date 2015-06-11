@@ -1,5 +1,6 @@
-from ffmpy import __author__, __version__, __version_info__, __copyright__
+# -*- coding: utf-8 -*-
 
+from ffmpy import __author__, __version__, __version_info__, __copyright__
 
 video_codecs = {'mpeg2video': 'MPEG-2 video',
                 'h264': 'H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10',
@@ -36,7 +37,8 @@ video_formats = {'mov,mp4,m4a,3gp,3g2,mj2': 'QuickTime / MOV',
                  'matroska,webm': 'Matroska / WebM',
                  'avi': 'AVI (Audio Video Interleaved)',
                  'ogg': 'Ogg',
-                 'asf': 'ASF (Advanced / Active Streaming Format)'}
+                 'asf': 'ASF (Advanced / Active Streaming Format)',
+                 'mxf': 'MXF (Material eXchange Format)'}
 
 audio_formats = {'flac': 'raw FLAC',
                  'mp3': 'MP2/3 (MPEG audio layer 2/3)',

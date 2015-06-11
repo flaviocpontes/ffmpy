@@ -4,7 +4,7 @@
 import io
 import re
 import datetime
-from defs import *
+from ffmpy.defs import *
 
 def decodedatetime(datestring):
     """
@@ -409,10 +409,7 @@ class InputStartTime(State):
         values = re.match(', start: (\d*\.\d*)', parser.remaining)
         parser.root.update({'start_time': values.groups()[0]})
         parser.remaining = parser.remaining[values.end():]
-        if re.match(', bitrate: (\d*) kb/s', parser.remaining) or re.match(', bitrate: (\S*)', parser.remaining):
-            parser.state = InputBitrate()
-        else:
-            parser.remaining = ''
+        parser.state = InputBitrate()
 
 
 class InputBitrate(State):
@@ -540,47 +537,6 @@ class StreamType(State):
             parser.state = AttachmentStreamCodec()
         else:
             parser.remaining = ''
-
-
-class StreamCodecSpec(State):
-    """
-    Etiquetas do codec.
-    """
-    def process(self, parser):
-        values = re.match('\((\S*)\s/\s(\S*)\), ', parser.remaining)
-        parser.root.update({'codec_tag_string': values.groups()[0],
-                            'codec_tag': values.groups()[1]})
-        parser.remaining = parser.remaining[values.end():]
-        if re.match('(\S*?)\(\S*?,\s\S*\),', parser.remaining) or re.match('(\S*?),', parser.remaining):
-            parser.state = VideoStreamPixelFormat()
-        elif re.match('\S* Hz,', parser.remaining):
-            parser.state = AudioStreamSamplingRate()
-
-
-class StreamBitrate(State):
-    """
-    Bitrate.
-    """
-    def process(self, parser):
-        values = re.match('(\d*) kb/s', parser.remaining)
-        parser.root.update({'bitrate': str(int(values.groups()[0])*1000)})
-        parser.remaining = parser.remaining[values.end():]
-        if parser.remaining.startswith(', '):
-            parser.remaining = parser.remaining[2:]
-            parser.state = StreamTimeBase()
-
-
-class StreamTimeBase(State):
-    """
-    fps, tbr, tbn, tbc.
-    """
-    def process(self, parser):
-        values = re.match('(\d*.\d*) fps, (\d*.\d*) tbr, (\S*?) tbn, (\S*?) tbc', parser.remaining)
-        parser.root.update({'reported_frame_rate': values.groups()[0],
-                            'average_frame_rate': values.groups()[1],
-                            'container_time_base': values.groups()[2],
-                            'codec_time_base': values.groups()[3]})
-        parser.remaining = parser.remaining[values.end():]
 
 
 class StreamMetadata(State):
@@ -727,8 +683,12 @@ class VideoStreamBitrate(State):
     Bitrate.
     """
     def process(self, parser):
-        values = re.match('(\d*) kb/s', parser.remaining)
-        parser.root.update({'bitrate': values.groups()[0]})
+        if re.match('max\. \d* kb/s', parser.remaining):
+            values = re.match('max\. (\d*) kb/s', parser.remaining)
+            parser.root.update({'max_bit_rate': values.groups()[0]})
+        else:
+            values = re.match('(\d*) kb/s', parser.remaining)
+            parser.root.update({'bitrate': values.groups()[0]})
         parser.remaining = parser.remaining[values.end():]
         if parser.remaining.startswith(', '):
             parser.remaining = parser.remaining[2:]
@@ -741,17 +701,11 @@ class StillImageStreamCodec(State):
     Codec do fluxo.
     """
     def process(self, parser):
-        if re.match('\S*,\s', parser.remaining):
-            # Codec without profile or tag
-            values = re.match('(\S*),\s', parser.remaining)
-        elif re.match('\S*\s', parser.remaining):
-            # Codec with profile or tag
-            values = re.match('(\S*)\s', parser.remaining)
-
+        # Codec without profile or tag
+        values = re.match('(\S*),\s', parser.remaining)
         parser.root.update({'codec': values.groups()[0],
                             'codec_long_name': get_codec_long_name(values.groups()[0])})
         parser.remaining = parser.remaining[values.end():]
-
         parser.state = StillImagePixelFormat()
 
 class StillImageStreamCodecSpec(State):

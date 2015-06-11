@@ -45,7 +45,7 @@ class _FFMPEGStream():
     Classe abstrata ancestral dos MediaStreams que faz a validação inicial
     """
 
-    allowed_types = ['Audio', 'Video', 'Image', 'Subtitle', 'Data', 'Attachment']
+    allowed_types = ['audio', 'video', 'image', 'subtitle', 'data', 'attachment']
 
     def __new__(cls, *args, **kwargs):
         try:
@@ -145,127 +145,17 @@ class MediaStreamTemplate(_FFMPEGStream):
         self.__dict__ = kwargs
 
     def __str__(self):
-        return '{} Stream Template: {}'.format(self.__dict__.get('type'),
+        return '{} stream template: {}'.format(self.__dict__.get('type'),
                                                ', '.join(['{}: {}'.format(k, v) for k, v in sorted(self.__dict__.items())]))
 
     def __repr__(self):
         return 'MediaStreamTemplate(**'+str(self.__dict__)+')'
 
 
-class MediaFile:
+class _FFMPEGContainer:
     """
-    Representa um arquivo de mídia, composto por vários fluxos de tipos diferentes
+    Base para as abstrações representando arquivos de mídia
     """
-
-    def __new__(cls, *args, **kwargs):
-        """
-        Verifica se o arquivo é válido e não cria uma instância se não for.
-        :param cls:
-        :return: MediaFile
-        """
-        try:
-            if len(kwargs) > 0:
-                assert os.access(kwargs.get('filename'), os.R_OK)
-            if len(kwargs) > 1:
-                if not kwargs.get('duration') or not kwargs.get('start time') or\
-                        not kwargs.get('bitrate') or not kwargs.get('type'):
-                    raise AttributeError('MediaFile - ERRO - Lista de parâmetros incompleta')
-            return super(MediaFile, cls).__new__(cls)
-        except AssertionError as e:
-            logging.error('Erro. Não foi possível acessar o arquivo {}.'.format(kwargs.get('filename')))
-            return None
-        except AttributeError as e:
-            logging.error(e)
-            return None
-
-    @staticmethod
-    def parse_file(filename):
-        return probe.MediaProbe.get_media_file_input_params(filename)
-
-    def __init__(self, **kwargs):
-        self.filename = kwargs.get('filename')
-        if len(kwargs) == 1:  # Caso só haja o filename
-            kwargs.update(MediaFile.parse_file(self.filename))
-
-        # Se houver os outros parâmetros
-        self.duration = kwargs.get('duration')
-        self.start_time = kwargs.get('start time')
-        self.bitrate = kwargs.get('bitrate')
-        self.metadata = kwargs.get('metadata')
-        self.type = kwargs.get('type')
-
-        self.streams = []
-        for stream in sorted(kwargs.get('streams').keys()):
-            self.streams.append(MediaStream(**kwargs.get('streams').get(stream)))
-
-    def __str__(self):
-        return 'Arquivo {}'.format(self.filename)
-
-    def __repr__(self):
-        output = {}
-        output['filename'] = self.filename
-        output['duration'] = self.duration
-        output['start time'] = self.start_time
-        output['bitrate'] = self.bitrate
-        output['metadata'] = self.metadata
-        output['streams'] = {}
-        for stream in self.streams:
-            output['streams'][str(self.streams.index(stream))] = stream.__dict__
-
-        return str('MediaFile(**'+str(output)+')')
-
-    def get_streams_by_type(self, type):
-        result = []
-        for stream in self.streams:
-            if stream.type == type:
-                result.append(stream)
-        return result
-
-    def get_video_streams(self):
-        return self.get_streams_by_type('Video')
-
-    def get_image_streams(self):
-        return self.get_streams_by_type('Image')
-
-    def get_audio_streams(self):
-        return self.get_streams_by_type('Audio')
-
-    def get_subtitle_streams(self):
-        return self.get_streams_by_type('Subtitle')
-
-    def get_data_streams(self):
-        return self.get_streams_by_type('Data')
-
-    def get_attachments(self):
-        return self.get_streams_by_type('Attachment')
-
-
-class MediaFileTemplate():
-    """
-    Representa os parametros de um arquivo de mídia.
-    É usado como base de comparação e como base para gerar parâmetros para os comandos de conversão do FFMPEG.
-    """
-
-    def __init__(self, **kwargs):
-        self.type = kwargs.get('type')
-
-        if kwargs.get('duration'):
-            self.duration = kwargs.get('duration')
-        if kwargs.get('start time'):
-            self.start_time = kwargs.get('start time')
-        if kwargs.get('bitrate'):
-            self.bitrate = kwargs.get('bitrate')
-        if kwargs.get('metadata'):
-            self.metadata = kwargs.get('metadata')
-        self.streams = []
-        for stream in kwargs.get('streams'):
-            self.streams.append(MediaStreamTemplate(**stream))
-
-    def __str__(self):
-        return '{} File Template: {}'.format(self.type, self.__dict__)
-
-    def __repr__(self):
-        return 'MediaFileTemplate(**'+str(self.__dict__)+')'
 
     def __eq__(self, other):
         for key in self.__dict__.keys():
@@ -313,3 +203,126 @@ class MediaFileTemplate():
                         difference['metadata'] = {}
                     difference['metadata'] = self.__dict__.get('metadata')
         return difference
+
+
+
+class MediaFile(_FFMPEGContainer):
+    """
+    Representa um arquivo de mídia, composto por vários fluxos de tipos diferentes
+    """
+
+    def __new__(cls, *args, **kwargs):
+        """
+        Verifica se o arquivo é válido e não cria uma instância se não for.
+        :param cls:
+        :return: MediaFile
+        """
+        try:
+            if len(kwargs) > 0:
+                assert os.access(kwargs.get('filename'), os.R_OK)
+            if len(kwargs) > 1:
+                if not kwargs.get('duration') or not kwargs.get('start_time') or\
+                        not kwargs.get('bit_rate') or not kwargs.get('format_name'):
+                    raise AttributeError('MediaFile - ERRO - Lista de parâmetros incompleta')
+            return super(MediaFile, cls).__new__(cls)
+        except AssertionError as e:
+            logging.error('Erro. Não foi possível acessar o arquivo {}.'.format(kwargs.get('filename')))
+            return None
+        except AttributeError as e:
+            logging.error(e)
+            return None
+
+    @staticmethod
+    def parse_file(file):
+        return MediaFile(**probe.MediaProbe.get_media_file_input_params(file))
+
+    def __init__(self, **kwargs):
+        self.filename = kwargs.get('filename')
+        if len(kwargs) == 1:  # Caso só haja o filename
+            kwargs.update(probe.MediaProbe.get_media_file_input_params(self.filename))
+
+        # Se houver os outros parâmetros
+        self.duration = kwargs.get('duration')
+        self.start_time = kwargs.get('start_time')
+        self.bitrate = kwargs.get('bit_rate')
+        self.metadata = kwargs.get('metadata')
+        self.type = kwargs.get('format_name')
+
+        self.streams = []
+        for stream in kwargs.get('streams'):
+            self.streams.append(MediaStream(**stream))
+
+    def __str__(self):
+        return 'Arquivo {}'.format(self.filename)
+
+    def __repr__(self):
+        output = {}
+        output['filename'] = self.filename
+        output['duration'] = self.duration
+        output['start_time'] = self.start_time
+        output['bit_rate'] = self.bitrate
+        output['metadata'] = self.metadata
+        output['streams'] = []
+        for stream in self.streams:
+            output['streams'].append(stream.__dict__)
+
+        return str('MediaFile(**'+str(output)+')')
+
+    def get_streams(self):
+        result = []
+        for stream in self.streams:
+            result.append(stream)
+        return result
+
+    def get_streams_by_type(self, type):
+        result = []
+        for stream in self.streams:
+            if stream.type == type:
+                result.append(stream)
+        return result
+
+    def get_video_streams(self):
+        return self.get_streams_by_type('video')
+
+    def get_image_streams(self):
+        return self.get_streams_by_type('image')
+
+    def get_audio_streams(self):
+        return self.get_streams_by_type('audio')
+
+    def get_subtitle_streams(self):
+        return self.get_streams_by_type('subtitle')
+
+    def get_data_streams(self):
+        return self.get_streams_by_type('data')
+
+    def get_attachments(self):
+        return self.get_streams_by_type('attachment')
+
+
+class MediaFileTemplate(_FFMPEGContainer):
+    """
+    Representa os parametros de um arquivo de mídia.
+    É usado como base de comparação e como base para gerar parâmetros para os comandos de conversão do FFMPEG.
+    """
+
+    def __init__(self, **kwargs):
+        self.type = kwargs.get('format_name')
+
+        if kwargs.get('duration'):
+            self.duration = kwargs.get('duration')
+        if kwargs.get('start_time'):
+            self.start_time = kwargs.get('start_time')
+        if kwargs.get('bit_rate'):
+            self.bitrate = kwargs.get('bit_rate')
+        if kwargs.get('metadata'):
+            self.metadata = kwargs.get('metadata')
+        self.streams = []
+        for stream in kwargs.get('streams'):
+            self.streams.append(MediaStreamTemplate(**stream))
+
+    def __str__(self):
+        return '{} File Template: {}'.format(self.type, self.__dict__)
+
+    def __repr__(self):
+        return 'MediaFileTemplate(**'+str(self.__dict__)+')'
