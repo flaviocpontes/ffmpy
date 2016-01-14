@@ -11,6 +11,11 @@ __version__ = '.'.join(map(str, __version_info__))
 __package__ = 'ffmpy'
 
 def which(program):
+    """
+    Finds the executable binary of
+    :param program:
+    :return: executable filename or None if no executable found
+    """
 
     def is_exec(fpath):
         return os.path.isfile(fpath) and os.access(fpath, os.X_OK)

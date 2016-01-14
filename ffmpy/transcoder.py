@@ -10,12 +10,14 @@ class _DataPads:
 class VideoDataPad(_DataPads):
 
     def __init__(self):
+        super().__init__()
         self.data_type = 'video'
 
 
 class AudioDataPad(_DataPads):
 
     def __init__(self):
+        super().__init__()
         self.data_type = 'video'
 
 
