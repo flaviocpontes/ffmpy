@@ -1,17 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from __init__ import __author__, __version__, __copyright__, __package__
-
 import unittest
+
+from os.path import join as joinpath
+
 import ffmpy
+
+from tests import TEST_FILE_PATH
 
 class TestMediaUse(unittest.TestCase):
 
     def test_compare_two_files(self):
         # User1 wants to compare two media files to see if their stream layouts are the same.
         # First he passes the same file to the API to see if they compare as the same
-        filename1 = filename2 = 'test_files/SIN001 Sinuca.mp4'
+        filename1 = filename2 = joinpath(TEST_FILE_PATH, 'SIN001 Sinuca.mp4')
         file1 = ffmpy.MediaFile.parse_file(filename1)
         file2 = ffmpy.MediaFile.parse_file(filename2)
         self.assertTrue(file1 == file2)
@@ -20,7 +23,7 @@ class TestMediaUse(unittest.TestCase):
         self.assertEqual(ffmpy.MediaFile.parse_file(filename1).difference(ffmpy.MediaFile.parse_file(filename2)), {})
 
         # Then he decides to try two different files to be sure different files are treated differenty
-        filename3 = 'test_files/COLB001 Color Bar.mp4'
+        filename3 = joinpath(TEST_FILE_PATH, 'COLB001 Color Bar.mp4')
         file3 = ffmpy.MediaFile.parse_file(filename3)
         self.assertFalse(file1 == file3)
 

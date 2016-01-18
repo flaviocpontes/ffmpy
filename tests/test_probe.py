@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from __init__ import __author__, __version__, __copyright__, __package__
+from ffmpy import __author__, __version__, __copyright__, __package__
 
 import os.path
 import datetime
@@ -9,7 +9,7 @@ import unittest
 from ffmpy.probe import *
 import parser
 
-test_file_path = 'test_files'
+from tests import TEST_FILE_PATH
 
 class TestParseProbeOutput(unittest.TestCase):
 
@@ -30,7 +30,7 @@ class TestParseProbeOutput(unittest.TestCase):
         self.assertRaises(AttributeError, MediaProbe.get_input_media_params, 'INVALID INPUT!!!!!')
 
     def test_ffprobe_video01(self):
-        file = os.path.join(test_file_path, '1 - The Gathering.avi.ffprobe')
+        file = os.path.join(TEST_FILE_PATH, '1 - The Gathering.avi.ffprobe')
         self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'format_name': 'avi',
                           'format_long_name': 'AVI (Audio Video Interleaved)',
@@ -91,7 +91,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                        'type': 'audio'}],})
 
     def test_ffprobe_video02(self):
-        file = os.path.join(test_file_path, '[gg-BSS]_Gundam_00_S2_-_01_[44C8CD36].mkv.ffprobe')
+        file = os.path.join(TEST_FILE_PATH, '[gg-BSS]_Gundam_00_S2_-_01_[44C8CD36].mkv.ffprobe')
         self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'format_name': 'matroska,webm',
                           'format_long_name': 'Matroska / WebM',
@@ -278,7 +278,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                        'type': 'attachment'}]})
 
     def test_ffprobe_video03(self):
-        file = os.path.join(test_file_path, '[HorribleSubs] Fairy Tail S2 - 52 [720p].mkv.ffprobe')
+        file = os.path.join(TEST_FILE_PATH, '[HorribleSubs] Fairy Tail S2 - 52 [720p].mkv.ffprobe')
         self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': '1902000',
                           'duration': '1464.97',
@@ -367,7 +367,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                    'encoder': 'no_variable_data'}})
 
     def test_ffprobe_video04(self):
-        file = os.path.join(test_file_path, 'Akira - 1988 [eng] dvdrip xvid [Honeyko].avi.ffprobe')
+        file = os.path.join(TEST_FILE_PATH, 'Akira - 1988 [eng] dvdrip xvid [Honeyko].avi.ffprobe')
         self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': '780000',
                           'duration': '7527.86',
@@ -431,7 +431,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                    'encoder': 'VirtualDubMod 1.5.4.1 (build 2178/release)'}})
 
     def test_ffprobe_video05(self):
-        file = os.path.join(test_file_path, 'AULA PROFISSOES.mov.ffprobe')
+        file = os.path.join(TEST_FILE_PATH, 'AULA PROFISSOES.mov.ffprobe')
         self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': '34926000',
                           'duration': '946.41',
@@ -548,7 +548,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                    'minor_version': '537199360'}})
 
     def test_ffprobe_video06(self):
-        file = os.path.join(test_file_path, 'b5c.s01e01.war_zone.dvdrip_xvid-medieval.avi.ffprobe')
+        file = os.path.join(TEST_FILE_PATH, 'b5c.s01e01.war_zone.dvdrip_xvid-medieval.avi.ffprobe')
         self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': '1100000',
                           'duration': '2655.66',
@@ -610,7 +610,7 @@ class TestParseProbeOutput(unittest.TestCase):
                           'tags': {'encoder': 'Nandub v1.0rc2'}})
 
     def test_ffprobe_video07(self):
-        file = os.path.join(test_file_path, 'Berserk_Golden_Age_Arc_I_Egg_of_the_Supreme_Ruler_(2012)_[1080p,BluRay,flac,x264]_-_Taka-THORA.mkv.ffprobe')
+        file = os.path.join(TEST_FILE_PATH, 'Berserk_Golden_Age_Arc_I_Egg_of_the_Supreme_Ruler_(2012)_[1080p,BluRay,flac,x264]_-_Taka-THORA.mkv.ffprobe')
         self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': '7102000',
                           'duration': '4610.03',
@@ -799,7 +799,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                             '(2012)'}})
 
     def test_ffprobe_video08(self):
-        file = os.path.join(test_file_path, 'Ghost_in_the_Shell_Arise_Ep_1_[1080p,BluRay,aac,x264]_-_THORA.mkv.ffprobe')
+        file = os.path.join(TEST_FILE_PATH, 'Ghost_in_the_Shell_Arise_Ep_1_[1080p,BluRay,aac,x264]_-_THORA.mkv.ffprobe')
         self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': '10726000',
                           'duration': '3502.55',
@@ -973,7 +973,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                    'title': 'Ghost in the Shell Arise - border1: Ghost Pain'}})
 
     def test_ffprobe_video09(self):
-        file = os.path.join(test_file_path, 'PANORAMA 20 VOD.mxf.ffprobe')
+        file = os.path.join(TEST_FILE_PATH, 'PANORAMA 20 VOD.mxf.ffprobe')
         self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': '27980000',
                           'duration': '33.1',
@@ -1065,7 +1065,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                    'uid': 'b913ce8a-1071-11e5-8c98-00090ffe0001'}})
 
     def test_ffprobe_imagem01(self):
-        file = os.path.join(test_file_path, 'Cover-akira.jpg.ffprobe')
+        file = os.path.join(TEST_FILE_PATH, 'Cover-akira.jpg.ffprobe')
         self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': '11211000',
                           'duration': '0.04',
@@ -1101,7 +1101,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                        'width': '643'}]})
 
     def test_ffprobe_imagem02(self):
-        file = os.path.join(test_file_path, 'teste.bmp.ffprobe')
+        file = os.path.join(TEST_FILE_PATH, 'teste.bmp.ffprobe')
         self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': 0,
                           'duration': 0,
@@ -1131,7 +1131,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                        'width': '663'}]})
 
     def test_ffprobe_imagem03(self):
-        file = os.path.join(test_file_path, 'teste.gif.ffprobe')
+        file = os.path.join(TEST_FILE_PATH, 'teste.gif.ffprobe')
         self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': 0,
                           'duration': 0,
@@ -1161,7 +1161,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                        'width': '663'}]})
 
     def test_ffprobe_imagem04(self):
-        file = os.path.join(test_file_path, 'teste.pgm.ffprobe')
+        file = os.path.join(TEST_FILE_PATH, 'teste.pgm.ffprobe')
         self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': '140036000',
                           'duration': '0.04',
@@ -1192,7 +1192,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                        'width': '663'}]})
 
     def test_ffprobe_imagem05(self):
-        file = os.path.join(test_file_path, 'teste.pix.ffprobe')
+        file = os.path.join(TEST_FILE_PATH, 'teste.pix.ffprobe')
         self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': 0,
                           'duration': 0,
@@ -1222,7 +1222,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                        'width': '663'}]})
 
     def test_ffprobe_imagem06(self):
-        file = os.path.join(test_file_path, 'teste.png.ffprobe')
+        file = os.path.join(TEST_FILE_PATH, 'teste.png.ffprobe')
         self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': 0,
                           'duration': 0,
@@ -1254,7 +1254,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                        'width': '663'}]})
 
     def test_ffprobe_imagem07(self):
-        file = os.path.join(test_file_path, 'teste.tga.ffprobe')
+        file = os.path.join(TEST_FILE_PATH, 'teste.tga.ffprobe')
         self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': '80418000',
                           'duration': '0.04',
@@ -1285,7 +1285,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                        'width': '663'}]})
 
     def test_ffprobe_imagem08(self):
-        file = os.path.join(test_file_path, 'teste.tiff.ffprobe')
+        file = os.path.join(TEST_FILE_PATH, 'teste.tiff.ffprobe')
         self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': 0,
                           'duration': 0,
@@ -1317,7 +1317,7 @@ class TestParseProbeOutput(unittest.TestCase):
                                        'width': '663'}]})
 
     def test_ffprobe_subtitle01(self):
-        file = os.path.join(test_file_path, 'My Neighbour Totoro (twin audio).srt.ffprobe')
+        file = os.path.join(TEST_FILE_PATH, 'My Neighbour Totoro (twin audio).srt.ffprobe')
         self.assertEqual(MediaProbe.get_input_media_params(open(file, 'r')),
                          {'bit_rate': 0,
                           'duration': 0,
