@@ -11,6 +11,15 @@ video_codecs = {'mpeg2video': 'MPEG-2 video',
                 'vc1': 'SMPTE VC-1',
                 'mjpeg': 'MJPEG (Motion JPEG)'}
 
+quicktime_video_codec_tags = {'xd54': 'XDCAM HD422 720p24 CBR',
+                              'xd59': 'XDCAM HD422 720p60 CBR',
+                              'xd5a': 'XDCAM HD422 720p50 CBR',
+                              'xd5b': 'XDCAM HD422 1080i60 CBR',
+                              'xd5c': 'XDCAM HD422 1080i50 CBR',
+                              'xd5d': 'XDCAM HD422 1080p24 CBR',
+                              'xd5e': 'XDCAM HD422 1080p25 CBR',
+                              'xd5f': 'XDCAM HD422 1080p30 CBR'}
+
 audio_codecs = {'flac': 'FLAC (Free Lossless Audio Codec)',
                 'mp3': 'MP3 (MPEG audio layer 3)',
                 'vorbis': 'Vorbis',
@@ -51,6 +60,7 @@ image_formats = {'png_pipe': 'piped png sequence',
                  'tiff_pipe': 'piped tiff sequence',
                  'mpeg': 'MPEG-PS (MPEG-2 Program Stream)',
                  'image2': 'image2 sequence'}
+
 
 def get_codec_long_name(codec_name):
     conversion_table = dict(list(video_codecs.items()) +

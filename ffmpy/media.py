@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Módulo que centraliza as classes para abstração das estruturas de mídia.
+Media operations and data structures
 """
 
 from ffmpy import __author__, __version__, __version_info__, __copyright__
@@ -13,7 +13,7 @@ import logging
 
 class MediaAnalyser:
     """
-    Classe estática que agrupa os métodos expostos para a análise de arquivos de mídia
+    Static Class that aggregates media comparison and validation
     """
 
     @staticmethod
@@ -31,6 +31,7 @@ class MediaAnalyser:
 
     @staticmethod
     def validate_with_template(media_file, media_file_template):
+        logging.debug('MEDIAANALYSER - Validação com gabarito: {}, {}'.format(media_file, ))
         descriptor = probe.MediaProbe.get_input_media_params(media_file)
         media_file = MediaFile(**descriptor)
         return media_file_template == media_file
@@ -42,7 +43,7 @@ class MediaAnalyser:
 
 class _FFMPEGStream():
     """
-    Classe abstrata ancestral dos MediaStreams que faz a validação inicial
+    Abstract parent class for the Media Streams. Enforces allowed Media Stream types.
     """
 
     allowed_types = ['audio', 'video', 'image', 'subtitle', 'data', 'attachment']
@@ -58,8 +59,12 @@ class _FFMPEGStream():
         """
         Compares the layout of the MediaStreamTemplate with another MediaStreamTemplate or a MediaStream.
         Doesn't take stream metadata into account.
-        :param other:
-        :return:
+
+        Args:
+            other (_FFMPEGStream): The other stream to calculate the difference
+
+        Returns:
+            bool: Returns false if any key in the other dict has a different value
         """
         for key in self.__dict__.keys():
             if key != 'metadata':
@@ -75,10 +80,14 @@ class _FFMPEGStream():
 
     def difference(self, other, include_metadata=False):
         """
-        Retorna as diferenças entre o template do fluxo e o fluxo. Cada campo é retornado com uma dupla
-        {campo: (valor encontrado, valor esperado)}
-        :param other: VideoStream
-        :return: dict
+        Calculates the difference between this Stream and the other stream
+
+        Args:
+            other (_FFMPEGStream): The other stream to calculate the difference
+            include_metadata (bool): Flag to include metadata in the comparison
+
+        Returns:
+            dict: A dict of tuples in the following format: {fieldname: (actual_value, expected_value)}
         """
         difference = {}
         for key in self.__dict__.keys():
@@ -205,17 +214,17 @@ class _FFMPEGContainer:
         return difference
 
 
-
 class MediaFile(_FFMPEGContainer):
-    """
-    Representa um arquivo de mídia, composto por vários fluxos de tipos diferentes
-    """
+    """Abstracts a Media File, made of various media streams"""
 
     def __new__(cls, *args, **kwargs):
-        """
-        Verifica se o arquivo é válido e não cria uma instância se não for.
-        :param cls:
-        :return: MediaFile
+        """Checks if the file exists and abort instance creation if not.
+
+        Args:
+            **dict: media file input params
+
+        Returns:
+            MediaFile: A representation of the media file
         """
         try:
             if len(kwargs) > 0:
@@ -269,12 +278,25 @@ class MediaFile(_FFMPEGContainer):
         return str('MediaFile(**'+str(output)+')')
 
     def get_streams(self):
+        """Returns all streams defined in the media file.
+
+        Returns:
+            list: [MediaStreams]
+        """
         result = []
         for stream in self.streams:
             result.append(stream)
         return result
 
-    def get_streams_by_type(self, type):
+    def __get_streams_by_type(self, type):
+        """Returns all streams of a supplied type defined in the media file.
+
+            Args:
+                type (str): 'video', 'image', 'audio', 'subtitle', 'data' or 'attachment'
+
+            Returns:
+                list: [MediaStreams]
+            """
         result = []
         for stream in self.streams:
             if stream.type == type:
@@ -282,28 +304,27 @@ class MediaFile(_FFMPEGContainer):
         return result
 
     def get_video_streams(self):
-        return self.get_streams_by_type('video')
+        return self.__get_streams_by_type('video')
 
     def get_image_streams(self):
-        return self.get_streams_by_type('image')
+        return self.__get_streams_by_type('image')
 
     def get_audio_streams(self):
-        return self.get_streams_by_type('audio')
+        return self.__get_streams_by_type('audio')
 
     def get_subtitle_streams(self):
-        return self.get_streams_by_type('subtitle')
+        return self.__get_streams_by_type('subtitle')
 
     def get_data_streams(self):
-        return self.get_streams_by_type('data')
+        return self.__get_streams_by_type('data')
 
     def get_attachments(self):
-        return self.get_streams_by_type('attachment')
+        return self.__get_streams_by_type('attachment')
 
 
 class MediaFileTemplate(_FFMPEGContainer):
-    """
-    Representa os parametros de um arquivo de mídia.
-    É usado como base de comparação e como base para gerar parâmetros para os comandos de conversão do FFMPEG.
+    """Abstracts a MEdia File parameters.
+    It is used for validation and for generating FFMPEG transcoding commands.
     """
 
     def __init__(self, **kwargs):

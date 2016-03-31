@@ -6,15 +6,18 @@ import os.path
 
 __author__ = 'Flávio Cardoso Pontes <flaviopontes@acerp.org.br>'
 __copyright__ = 'Copyright © 2012, 2014 Associação de Comunicação Educativa Roquette Pinto - ACERP'
-__version_info__ = (0, 2, 0, 'dev')
+__version_info__ = (0, 2, 1, 'dev')
 __version__ = '.'.join(map(str, __version_info__))
 __package__ = 'ffmpy'
 
 def which(program):
-    """
-    Finds the executable binary of
-    :param program:
-    :return: executable filename or None if no executable found
+    """Finds the executable binary of a program
+
+    Args:
+        program (str): the programs supposed executable filename
+
+    Returns:
+        str: The programs real executable filename or None if not found
     """
 
     def is_exec(fpath):
