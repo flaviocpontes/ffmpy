@@ -10,6 +10,7 @@ __version_info__ = (0, 2, 1, 'dev')
 __version__ = '.'.join(map(str, __version_info__))
 __package__ = 'ffmpy'
 
+
 def which(program):
     """Finds the executable binary of a program
 

@@ -30,7 +30,7 @@ class TestMediaUse(unittest.TestCase):
         # As he is very curious, he then wants to see the difference between the files
         self.assertNotEqual(ffmpy.MediaFile.parse_file(filename1).difference(ffmpy.MediaFile.parse_file(filename3)), {})
 
-        # After all these comparisons, he decided to look
+        # After all these comparisons, he decided to take a look at the streams of each file.
         print(file1.get_video_streams())
         print(file2.get_video_streams())
         print(file3.get_video_streams())
