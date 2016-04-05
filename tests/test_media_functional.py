@@ -9,6 +9,7 @@ import ffmpy
 
 from tests import TEST_FILE_PATH
 
+
 class TestMediaUse(unittest.TestCase):
 
     def test_compare_two_files(self):

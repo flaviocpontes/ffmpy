@@ -6,7 +6,7 @@ import os.path
 
 __author__ = 'Flávio Cardoso Pontes <flaviopontes@acerp.org.br>'
 __copyright__ = 'Copyright © 2012, 2014 Associação de Comunicação Educativa Roquette Pinto - ACERP'
-__version_info__ = (0, 2, 2, 0)
+__version_info__ = (0, 2, 2, 1)
 __version__ = '.'.join(map(str, __version_info__))
 __package__ = 'ffmpy'
 

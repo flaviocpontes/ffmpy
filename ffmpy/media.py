@@ -42,7 +42,14 @@ class MediaAnalyser:
 
     @staticmethod
     def validate_with_template(media_file, media_file_template):
-        logging.debug('MEDIAANALYSER - Validação com gabarito: {}, {}'.format(media_file, ))
+        logging.debug('MEDIAANALYSER - Validação com gabarito: {}, {}'.format(media_file, media_file_template))
+        if isinstance(media_file_template, dict):
+            media_file_template = MediaFileTemplate(**media_file_template)
+        elif isinstance(media_file_template, MediaFileTemplate):
+            pass
+        else:
+            raise ValueError('media_file_template must be a MediaFileTemplate instance or a dict')
+
         descriptor = probe.MediaProbe.get_media_file_input_params(media_file)
         media_file = MediaFile(**descriptor)
         return media_file_template == media_file
@@ -61,10 +68,15 @@ class _FFMPEGStream():
 
     def __new__(cls, *args, **kwargs):
         try:
-            assert kwargs.get('type') in MediaStream.allowed_types
+            stream_type = kwargs.get('type')
+            if not stream_type: raise ValueError
+            assert stream_type.lower() in MediaStream.allowed_types
             return super(_FFMPEGStream, cls).__new__(cls)
         except AssertionError as e:
             logging.error('Invalid media stream type: {}'.format(kwargs.get('type')))
+        except ValueError as e:
+            logging.error('Media stream type must be filled.')
+
 
     def __eq__(self, other):
         """
@@ -339,7 +351,7 @@ class MediaFileTemplate(_FFMPEGContainer):
     """
 
     def __init__(self, **kwargs):
-        self.type = kwargs.get('format_name')
+        self.type = kwargs.get('format_name') or kwargs.get('type')
 
         if kwargs.get('duration'):
             self.duration = kwargs.get('duration')
