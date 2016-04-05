@@ -17,12 +17,23 @@ class MediaAnalyser:
     """
 
     @staticmethod
-    def compare_with_template(media_file, media_file_template):
-        descriptor = probe.MediaProbe.get_input_media_params(media_file)
+    def compare_media_file_with_template(media_file, media_file_template):
+        """Compares an input MEdiaFile parameters against a MediaFileTemplate parameters
+
+        Args:
+            media_file (MediaFile): MediaFile object to be compared
+            media_file_template (MediaFileTempalte): MediaFileTemplate
+
+        Returns:
+            dict: a dict with only the keys that exist in media_file_template and not in media_file
+
+        """
+        descriptor = probe.MediaProbe.get_media_file_input_params(media_file)
         media_file = MediaFile(**descriptor)
-        assert isinstance(media_file_template, MediaFileTemplate)
         if isinstance(media_file_template, dict):
             media_file_template = MediaFileTemplate(**media_file_template)
+        elif isinstance(media_file_template, MediaFileTemplate):
+            pass
         else:
             raise ValueError('media_file_template must be a MediaFileTemplate instance or a dict')
 
@@ -32,13 +43,13 @@ class MediaAnalyser:
     @staticmethod
     def validate_with_template(media_file, media_file_template):
         logging.debug('MEDIAANALYSER - Validação com gabarito: {}, {}'.format(media_file, ))
-        descriptor = probe.MediaProbe.get_input_media_params(media_file)
+        descriptor = probe.MediaProbe.get_media_file_input_params(media_file)
         media_file = MediaFile(**descriptor)
         return media_file_template == media_file
 
     @staticmethod
-    def get_media_file_difference(filename1, filename2):
-        return MediaFile.parse_file(filename1)
+    def media_file_difference(filename1, filename2):
+        return MediaFile.parse_file(filename1).difference(MediaFile.parse_file(filename2))
 
 
 class _FFMPEGStream():

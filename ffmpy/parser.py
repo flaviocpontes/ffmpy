@@ -47,7 +47,7 @@ class Context:
         elif isinstance(parse_string, str):
             self.parse_string = io.StringIO(parse_string)
         else:
-            raise ValueError('parse_string must be a str or a io.TextIOBase child.')
+            raise ValueError('parse_string must be a str or a io.TextIOBase child, not {}'.format(type(parse_string)))
 
         self.result = {}
         self.subcontext = None
