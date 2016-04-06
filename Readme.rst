@@ -4,8 +4,7 @@ FFMPY
 
 FFMPY is a wrapper library around FFMPEG.
 It interfaces with ffmpeg through the shell and interprets the program stdout/stderr to generate it's internal structures.
-It implements the following functionalities:
-
+The following functionality is planned or implemented.
 
 Media Analysis
 --------------

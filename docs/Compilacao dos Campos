@@ -1,0 +1,45 @@
+Campos Comuns (Audio/Video/Data):
+index;
+codec_type(video);
+codec_time_base;
+codec_tag_string;
+codec_tag;
+r_frame_rate;
+avg_frame_rate;
+time_base;
+start_pts;
+start_time;
+duration_ts;
+duration;
+nb_frames;
+disposition;
+tags;
+
+Campos Comuns (Audio/Video):
+codec_name;
+codec_long_name(calculado);
+bit_rate;
+
+Campos Video:
+profile;
+level;
+width;
+height;
+has_b_frames;
+sample_aspect_ratio;
+display_aspect_ratio;
+pix_fmt;
+color_range;
+color_space;
+color_transfer;
+color_primaries;
+chroma_location;
+timecode;
+refs;
+max_bit_rate;
+
+Campos Audio:
+sample_fmt;
+sample_rate;
+channels;
+bits_per_sample;
