@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from ffmpy import __author__, __version__, __copyright__, __package__
+from ffmpymedia import __author__, __version__, __copyright__, __package__
 
 import os.path
 import datetime
 import unittest
-from ffmpy.probe import *
-import parser
+from ffmpymedia.probe import *
+import ffmpymedia.parser as parser
 
 from tests import TEST_FILE_PATH
 

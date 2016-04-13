@@ -3,8 +3,8 @@
 import os
 import subprocess
 import logging
-from ffmpy.parser import ProbeContext
-from ffmpy import ffprobe_path
+from ffmpymedia.parser import ProbeContext
+from ffmpymedia import ffprobe_path
 
 
 class MediaProbe:
@@ -61,7 +61,7 @@ class MediaProbe:
         """Processes ffprobe otput and returns only the first files parameters
 
         Args:
-            ffprobe_output (str): The output string from ffprobe or io.TextIOBase from a live ffmpeg process
+            ffprobe_output (str | TextIOBase): The output string from ffprobe or io.TextIOBase from a live ffmpeg process
         """
         resultado = MediaProbe._parse_ffprobe_output(ffprobe_output)
         return resultado.get('Input 0')

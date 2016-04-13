@@ -1,16 +1,16 @@
 from setuptools import setup, find_packages  # Always prefer setuptools over distutils
 from codecs import open  # To use a consistent encoding
 from os import path
-from ffmpy import __version__, __author__, __copyright__
+from ffmpymedia import __version__, __author__, __copyright__
 
 here = path.abspath(path.dirname(__file__))
 
 # Get the long description from the relevant file
-with open(path.join(here, 'Readme.rst'), encoding='utf-8') as f:
+with open(path.join(here, 'Readme.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='ffmpy',
+    name='ffmpymedia',
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
@@ -20,10 +20,10 @@ setup(
     description='Wrapper around the FFMPEG utility',
     long_description=long_description,
 
-    packages=['ffmpy'],
+    packages=['ffmpymedia'],
 
     # The project's main homepage.
-    url='https://bitbucket.org/acerpinnovacao/ffmpy',
+    url='https://bitbucket.org/acerpinnovacao/ffmpymedia',
 
     # Choose your license
     license='Proprietary',
@@ -45,7 +45,9 @@ setup(
 
         # Specify the Python versions you support here. In particular, ensure
         # that you indicate whether you support Python 2, Python 3 or both.
+        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
     ],
 
     author='Flávio Cardoso Pontes',

@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from ffmpy import __author__, __version__, __copyright__, __package__
+from ffmpymedia import __author__, __version__, __copyright__, __package__
 from os.path import join as joinpath
 
 import unittest
 
-from ffmpy.media import *
+from ffmpymedia.media import *
 from tests import TEST_FILE_PATH
 
 class TestMediaStream(unittest.TestCase):

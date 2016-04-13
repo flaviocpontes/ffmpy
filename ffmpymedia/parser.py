@@ -4,7 +4,7 @@
 import io
 import re
 import datetime
-from ffmpy.defs import *
+from ffmpymedia.defs import *
 
 def decodedatetime(datestring):
     """

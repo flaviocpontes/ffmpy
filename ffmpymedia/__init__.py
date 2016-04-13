@@ -6,9 +6,9 @@ import os.path
 
 __author__ = 'Flávio Cardoso Pontes <flaviopontes@acerp.org.br>'
 __copyright__ = 'Copyright © 2012, 2014 Associação de Comunicação Educativa Roquette Pinto - ACERP'
-__version_info__ = (0, 2, 2, 1)
+__version_info__ = (0, 3, 0, 0)
 __version__ = '.'.join(map(str, __version_info__))
-__package__ = 'ffmpy'
+__package__ = 'ffmpymedia'
 
 
 def which(program):
@@ -48,7 +48,7 @@ ffserver_path = which('/opt/ffmpeg/bin/ffserver')
 if not ffserver_path:
     FileNotFoundError('Não foi possível possível encontrar o executável do ffserver')
 
-from ffmpy.media import MediaAnalyser, MediaStream, MediaStreamTemplate, MediaFile, MediaFileTemplate
-from ffmpy.probe import MediaProbe
+from ffmpymedia.media import MediaAnalyser, MediaStream, MediaStreamTemplate, MediaFile, MediaFileTemplate
+from ffmpymedia.probe import MediaProbe
 
 __all__ = ['MediaAnalyser', 'MediaStream', 'MediaStreamTemplate', 'MediaFile', 'MediaFileTemplate', 'MediaProbe']

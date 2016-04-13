@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-from os.path import dirname, join
+import os
+import sys
 
-__author__ = 'flaviopontes'
+sys.path.insert(0, os.path.abspath('..'))
 
-TESTS_PATH = dirname(__file__)
-PROJECT_ROOT = dirname(TESTS_PATH)
-TEST_FILE_PATH = join(PROJECT_ROOT, 'test_files')
+TESTS_PATH = os.path.dirname(__file__)
+PROJECT_ROOT = os.path.dirname(TESTS_PATH)
+TEST_FILE_PATH = os.path.join(PROJECT_ROOT, 'test_files')

@@ -5,8 +5,8 @@
 Media operations and data structures
 """
 
-from ffmpy import __author__, __version__, __version_info__, __copyright__
-from ffmpy import probe
+from ffmpymedia import __author__, __version__, __version_info__, __copyright__
+from ffmpymedia import probe
 import os
 import logging
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from ffmpy import __author__, __version__, __version_info__, __copyright__
+from ffmpymedia import __author__, __version__, __version_info__, __copyright__
 
 video_codecs = {'mpeg2video': 'MPEG-2 video',
                 'h264': 'H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10',
