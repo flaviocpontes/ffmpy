@@ -1,6 +1,6 @@
-# FFMPY
+# FFMPYMEDIA
 
-FFMPY é um biblioteca que empacota o FFMPEG.
+FFMPYMEDIA é um biblioteca que empacota o FFMPEG.
 Ela interage com o ffmpeg através de chamadas de shell e interpreta os fluxos de saída para gerar as suas esttruturas internas.
 No momento, somente o utilitário ffprobe está empacotado e só está provida a seguinte funcionalidade:
 

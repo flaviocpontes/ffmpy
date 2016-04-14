@@ -18,7 +18,11 @@ quicktime_video_codec_tags = {'xd54': 'XDCAM HD422 720p24 CBR',
                               'xd5c': 'XDCAM HD422 1080i50 CBR',
                               'xd5d': 'XDCAM HD422 1080p24 CBR',
                               'xd5e': 'XDCAM HD422 1080p25 CBR',
-                              'xd5f': 'XDCAM HD422 1080p30 CBR'}
+                              'xd5f': 'XDCAM HD422 1080p30 CBR',
+                              'xdvb': 'XDCAM EX 1080i60 (35 Mb/s VBR)',
+                              'DX50': 'MPEG-4 part 2',
+                              'XVID': 'MPEG-4 part 2',
+                              }
 
 audio_codecs = {'flac': 'FLAC (Free Lossless Audio Codec)',
                 'mp3': 'MP3 (MPEG audio layer 3)',
@@ -26,7 +30,9 @@ audio_codecs = {'flac': 'FLAC (Free Lossless Audio Codec)',
                 'aac': 'AAC (Advanced Audio Coding)',
                 'mp2': 'MP2 (MPEG audio layer 2)',
                 'pcm_s16le': 'PCM signed 16-bit little-endian',
-                'wmav2': 'Windows Media Audio 2'}
+                'wmav2': 'Windows Media Audio 2',
+                'sowt': 'PCM signed 16-bit little-endian',
+                }
 
 image_codecs = {'png': 'PNG (Portable Network Graphics) image',
                 'bmp': 'BMP (Windows and OS/2 bitmap)',

@@ -1,7 +1,7 @@
-from setuptools import setup, find_packages  # Always prefer setuptools over distutils
-from codecs import open  # To use a consistent encoding
+from setuptools import setup
+from codecs import open
 from os import path
-from ffmpymedia import __version__, __author__, __copyright__
+from ffmpymedia import __version__
 
 here = path.abspath(path.dirname(__file__))
 
@@ -24,9 +24,10 @@ setup(
 
     # The project's main homepage.
     url='https://bitbucket.org/acerpinnovacao/ffmpymedia',
+    download_url='https://github.com/peterldowns/mypackage/tarball/0.3.1',
 
     # Choose your license
-    license='Proprietary',
+    license='MIT',
 
     # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
@@ -41,7 +42,7 @@ setup(
         'Topic :: Software Development :: Build Tools',
 
         # Pick your license as you wish (should match "license" above)
-        'License :: Proprietary :: Copyright 2012-2016 ACERP, All rights reserved',
+        'License :: OSI Approved :: MIT License',
 
         # Specify the Python versions you support here. In particular, ensure
         # that you indicate whether you support Python 2, Python 3 or both.
