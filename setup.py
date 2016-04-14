@@ -6,7 +6,7 @@ from ffmpymedia import __version__
 here = path.abspath(path.dirname(__file__))
 
 # Get the long description from the relevant file
-with open(path.join(here, 'Readme.md'), encoding='utf-8') as f:
+with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
@@ -21,6 +21,7 @@ setup(
     long_description=long_description,
 
     packages=['ffmpymedia'],
+    data_files=[('', 'README.md')],
 
     # The project's main homepage.
     url='https://github.com/flaviocpontes/ffmpymedia',
