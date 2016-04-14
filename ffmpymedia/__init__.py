@@ -5,8 +5,8 @@ import os
 import os.path
 
 __author__ = 'Flávio Cardoso Pontes <flaviopontes@acerp.org.br>'
-__copyright__ = 'Copyright © 2012, 2016 Associação de Comunicação Educativa Roquette Pinto - ACERP'
-__version_info__ = (0, 3, 1)
+__copyright__ = 'Copyright © 2016 Roquette Pinto Comunicação Educativa'
+__version_info__ = (0, 3, 2)
 __version__ = '.'.join(map(str, __version_info__))
 __package__ = 'ffmpymedia'
 

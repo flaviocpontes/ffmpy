@@ -23,8 +23,8 @@ setup(
     packages=['ffmpymedia'],
 
     # The project's main homepage.
-    url='https://bitbucket.org/acerpinnovacao/ffmpymedia',
-    download_url='https://github.com/peterldowns/mypackage/tarball/0.3.1',
+    url='https://github.com/flaviocpontes/ffmpymedia',
+    download_url='https://github.com/flaviocpontes/ffmpymedia/tarball/0.3.2',
 
     # Choose your license
     license='MIT',
@@ -39,7 +39,6 @@ setup(
 
         # Indicate who your project is intended for
         'Intended Audience :: Developers',
-        'Topic :: Software Development :: Build Tools',
 
         # Pick your license as you wish (should match "license" above)
         'License :: OSI Approved :: MIT License',
