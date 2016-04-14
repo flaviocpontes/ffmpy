@@ -21,7 +21,6 @@ setup(
     long_description=long_description,
 
     packages=['ffmpymedia'],
-    data_files=[('', 'README.md')],
 
     # The project's main homepage.
     url='https://github.com/flaviocpontes/ffmpymedia',
