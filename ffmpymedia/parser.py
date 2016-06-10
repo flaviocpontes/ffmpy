@@ -730,6 +730,7 @@ class StillImagePixelFormat(State):
         else:
             parser.state = StillImageResolution()
 
+
 class StillImageColorSpec(State):
     """
     """
@@ -891,7 +892,7 @@ class DataStreamCodecSpec(State):
         values = re.match('\((\S*)\s/\s(\S*?)\)', parser.remaining)
         parser.root.update({'codec_tag_string': values.groups()[0],
                             'codec_tag': values.groups()[1]})
-        parser.remaining = parser.remaining[values.end():]
+        parser.remaining = ""
 
 
 class SubtitleStreamCodec(State):

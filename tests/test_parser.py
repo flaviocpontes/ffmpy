@@ -56,3 +56,4 @@ class TesteProbeContext(unittest.TestCase):
 
     def test_invalid_input(self):
         self.assertRaises(ValueError, parser.ProbeContext, True)
+
