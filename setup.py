@@ -24,7 +24,7 @@ setup(
 
     # The project's main homepage.
     url='https://github.com/flaviocpontes/ffmpymedia',
-    download_url='https://github.com/flaviocpontes/ffmpymedia/tarball/0.3.2',
+    download_url='https://github.com/flaviocpontes/ffmpymedia/tarball/0.3.2.2',
 
     # Choose your license
     license='MIT',
